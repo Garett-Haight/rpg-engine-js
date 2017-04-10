@@ -90,6 +90,7 @@ body{
 	height: 32px;
 	background-color: blue;
 	position: absolute;
+	z-index: 999;
 }
 
 .selector{
@@ -103,7 +104,7 @@ body{
 	border: 1px dotted #000;
 	display: inline-block;
 	margin: 0 0 0 15px;
-	padding: 0;
+	padding: 10px;
 	list-style-type: none;
 	overflow-y: scroll;
 }
@@ -111,7 +112,11 @@ body{
 #console li{
 	font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
 	font-size: 11px;
-	padding: 10px;
+	padding: 2px;
+}
+
+#console li:nth-child(even){
+	background-color: #eee;
 }
 
 /* Message types */

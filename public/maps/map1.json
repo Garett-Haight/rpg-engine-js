@@ -49,7 +49,7 @@
                  "visible":true,
                  "width":32,
                  "x":224,
-                 "y":32
+                 "y":64
                 }, 
                 {
                  "gid":5,
@@ -58,12 +58,13 @@
                  "name":"dungeon_key",
                  "properties":
                     {
-                     "action": "item",
+                     "action":"item",
                      "item":"key",
                      "qty":1
                     },
                  "propertytypes":
                     {
+                     "action":"string",
                      "item":"string",
                      "qty":"int"
                     },
@@ -73,6 +74,30 @@
                  "width":32,
                  "x":192,
                  "y":256
+                }, 
+                {
+                 "gid":91,
+                 "height":32,
+                 "id":13,
+                 "name":"",
+                 "properties":
+                    {
+                     "action":"item",
+                     "item":"bread",
+                     "qty":1
+                    },
+                 "propertytypes":
+                    {
+                     "action":"string",
+                     "item":"string",
+                     "qty":"int"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":32,
+                 "y":288
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -117,7 +142,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":12,
+ "nextobjectid":14,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":32,

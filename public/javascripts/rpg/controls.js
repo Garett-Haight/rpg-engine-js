@@ -32,7 +32,7 @@ class Controls {
         if (this.checkUp(player)) {
             player.pos_y -= GLOBALS.TILE_HEIGHT;
             player.update();
-            this.checkProximity(player, this.game.map);
+            this.checkForEvent(player, this.game.map);
         }
     }
 
@@ -47,7 +47,7 @@ class Controls {
         if (this.checkDown(player)) {
             player.pos_y += GLOBALS.TILE_HEIGHT;
             player.update();
-            this.checkProximity(player, this.game.map);
+            this.checkForEvent(player, this.game.map);
         }
     }
 
@@ -61,7 +61,7 @@ class Controls {
         if (this.checkRight(player)) {
             player.pos_x += GLOBALS.TILE_WIDTH;
             player.update();
-            this.checkProximity(player, this.game.map);
+            this.checkForEvent(player, this.game.map);
         }
     }
 
@@ -76,7 +76,7 @@ class Controls {
         if (this.checkLeft(player)) {
             player.pos_x -= GLOBALS.TILE_WIDTH;
             player.update();
-            this.checkProximity(player, this.game.map);
+            this.checkForEvent(player, this.game.map);
         }
     }
 
@@ -96,14 +96,11 @@ class Controls {
     	}
     }
 
-    checkProximity(player, map) {
+    checkForEvent(player, map) {
     	this.events = [];
     	for (let e of map.events) {
-    		if (e.x == player.pos_x && e.y == player.pos_y || // event above
-    			e.x == player.pos_x + GLOBALS.TILE_WIDTH && e.y == player.pos_y + GLOBALS.TILE_HEIGHT || //event to the right
-    			e.x == player.pos_x && e.y == player.pos_y + (2 * GLOBALS.TILE_HEIGHT) || // event below
-    			e.x == player.pos_x - GLOBALS.TILE_WIDTH && e.y == player.pos_y + GLOBALS.TILE_HEIGHT // event to the left
-    			) {
+            // events are positioned at bottom left in Tiled....
+    		if (e.x == player.pos_x && e.y == player.pos_y + GLOBALS.TILE_HEIGHT) {
     			this.events.push(e);
     		}
     	}

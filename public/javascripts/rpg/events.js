@@ -5,6 +5,8 @@ class Events{
 				return "events!";
 			},
 			teleport(args, game) {
+				console.log(args);
+				console.log(game);
 				// load new map
 
 				// move player to new map
@@ -12,7 +14,7 @@ class Events{
 				return "teleport!";
 			},
 			item(args, game) {
-				console.log(args);
+				var itemCount = 0;;
 				var props = args.properties;
 				var inv = game.player.inventory;
 				if(typeof inv[props.item] === 'undefined') {
@@ -23,6 +25,7 @@ class Events{
 					// add item to inventory
 					while(inv[props.item] < GLOBALS.ITEM_LIMIT && props.qty > 0) { // while inventory isn't full and there are items left to be picked up
 						inv[props.item] ++;
+						itemCount++;
 						props.qty--;
 					}
 
@@ -36,16 +39,16 @@ class Events{
 								game.map.events.splice(index, 1);
 							}
 						}
-						return "Added %n of " + props.item;
+						return `Added (${itemCount}) of ${props.item}`;
 					}
 					else {
 						// change quantity 
-						return "Added %n of " + props.item;
+						return `Added (${itemCount}) of ${props.item}`;
 					}
 					
 				}
 				else {
-					return "Can't carry anymore of " + props.item +"!";
+					return `Can't carry anymore of ${props.item}!`;
 				}
 			}
 		};
