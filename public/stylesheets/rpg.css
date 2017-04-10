@@ -4,9 +4,17 @@ body{
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
+	background-color: #000;
+	font-family: "Brush Script MT", cursive;
+	color: #fff;
 }
+
 #game{
 	padding:20px;
+}
+
+#gameContainer{
+	width: 680px;
 }
 
 #map{
@@ -26,13 +34,14 @@ body{
 	margin: 0;
 }
 
+
 .row .tile{
 	width: 32px;
 	height: 32px;
 	float: left;
 	background-image: url('/images/basic.png');
 	background-position: -64px 0;
-	box-shadow: inset 0px 0px 0px 1px black;
+	/*box-shadow: inset 0px 0px 0px 1px black;*/
 }
 
 .row .wall {
@@ -97,26 +106,92 @@ body{
 	box-shadow: inset 0px 0px 0px 1px green;
 }
 
+
+/* Status Inerface */
+#statusPanel{
+	width: 320px;
+	height: 100px;
+	border: 5px ridge silver;
+	padding: 10px;
+	float: left;
+}
+
+#healthMeter{
+	background-image: url('/images/heart2.png');
+	background-repeat: repeat-x;
+	width: 60px;
+	height: 7px;
+}
+
+/* Control interface */
+#controls{
+	background-color: #000;
+	color: #fff;
+	width: 320px;
+	height: 162px;
+	border: 5px ridge silver;
+	display: inline-block;
+	margin: 0;
+	padding: 10px;
+	float: left;
+}
+
+#controls > div {
+	width: 50%;
+	height: 100%;
+	display: inline-block;
+	text-align: center;
+	vertical-align: middle;
+}
+
+#controls > div:first-child > button {
+	width: 50px;
+	height: 50px;
+}
+
+#controls > div:last-child > button {
+	padding: 15px;
+}
+
+#upArrowButton, #downArrowButton{
+	display: block;
+	margin: 0 auto;
+}
+
+#leftArrowButton, #rightArrowButton{
+	display: inline-block;
+	margin: 5px;
+}
+
+#checkButton, #invButton{
+	display:block;
+	margin: 5px;
+}
+
+
+
 /* Console styling */
 #console{
-	width: 320px;
-	height: 480px;
-	border: 1px dotted #000;
+	background-color: #000;
+	color: #fff;
+	width: 662px;
+	height: 200px;
+	border: 5px ridge silver;
 	display: inline-block;
-	margin: 0 0 0 15px;
-	padding: 10px;
+	margin: 0;
+	padding: 10px 0;
 	list-style-type: none;
 	overflow-y: scroll;
+	float: left;
 }
 
 #console li{
-	font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
-	font-size: 11px;
-	padding: 2px;
+	font-size: 14px;
+	padding: 2px 10px;
 }
 
 #console li:nth-child(even){
-	background-color: #eee;
+	background-color: #212f3c;
 }
 
 /* Message types */

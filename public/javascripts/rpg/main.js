@@ -13,6 +13,11 @@ const GLOBALS = {
 	ITEM_LIMIT: 99
 }
 
+// use this for static text content later?
+const CONTENT = {
+
+};
+
 var gameObj;
 class Game {
 	constructor(map) {
@@ -22,6 +27,7 @@ class Game {
 		this.mapList = {};
 		this.mapList[this.map.mapName] = this.map;
 		this.events = new Events();
+		this.interface = new Interface(this);
 		this.console = new Console();
 	}
 }

@@ -28,6 +28,8 @@ class Controls {
         });
     }
 
+    
+
     moveUp(player) {
         if (this.checkUp(player)) {
             player.pos_y -= GLOBALS.TILE_HEIGHT;
@@ -88,8 +90,6 @@ class Controls {
 
     interact(player, map) {
     	if(this.events.length > 0) {
-    		// just grab the first event in proximity to the player until I figure out how to handle multiple events
-    		// just handling events right under the player would fix this problem... you'd just need to offset them in the editor
     		var event = this.events[0]['properties']['action'];
 	    	var result = this.game.events.eventList[event](this.events[0], this.game);
 	    	this.game.console.sendMessage(result);
