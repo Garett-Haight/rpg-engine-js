@@ -21,6 +21,8 @@ class Map {
 							mapObj.drawEntities();
 							mapObj.parseCollisions();
 							mapObj.parseEvents();
+							mapObj.drawEvents();
+
 						}
 					}
 					else{
@@ -67,6 +69,7 @@ class Map {
 		this.collisions = collisions;
 	}
 
+	// Events are items, map teleports, etc.
 	parseEvents() {
 		var events;
 		for (let layer of this.map.layers ) {
@@ -77,6 +80,22 @@ class Map {
 		this.events = events;
 	}
 
+	drawEvents() {
+		var entitiesContainer = document.querySelector('#entities');
+		if(this.events.length > 0) {
+			for(let e of this.events) {
+				if (e.visible) {
+					var eventElem = document.createElement("div");
+					eventElem.id = "item_" + e.id;
+					eventElem.className = "item";
+					eventElem.style.top = e.y - GLOBALS.TILE_HEIGHT + "px";
+					eventElem.style.left = e.x + "px";
+					entitiesContainer.appendChild(eventElem);
+				}
+			}
+		}
+	}
+	// Entities are players, mobs, and NPCs
 	drawEntities (container="#map") {
 		var map = this.map;
 		var mapElement = document.querySelector(container);

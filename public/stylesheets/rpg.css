@@ -5,7 +5,7 @@ body{
 	height: 100%;
 	overflow: hidden;
 	background-color: #000;
-	font-family: "Brush Script MT", cursive;
+	font-family: 'Share Tech Mono', monospace;
 	color: #fff;
 }
 
@@ -93,6 +93,16 @@ body{
 	left: 0;
 }
 
+.item{
+	position: absolute;
+	display: block;
+	height: 32px;
+	width: 32px;
+	background-color: lime;
+	opacity: 0.7;
+	border: 2px solid #999;
+}
+
 /* Player styling */
 #player{
 	width: 32px;
@@ -172,7 +182,7 @@ body{
 
 /* Console styling */
 #console{
-	background-color: #000;
+	background-color: #212f3c;
 	color: #fff;
 	width: 662px;
 	height: 200px;
@@ -188,10 +198,11 @@ body{
 #console li{
 	font-size: 14px;
 	padding: 2px 10px;
+	text-shadow: 1px 1px 0px #333;
 }
 
 #console li:nth-child(even){
-	background-color: #212f3c;
+	/*background-color: #212f3c;*/
 }
 
 /* Message types */
@@ -203,3 +214,6 @@ body{
 	color: red;
 }
 
+.hide{
+	display: none !important;
+}

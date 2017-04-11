@@ -31,9 +31,15 @@ class Events{
 
 					if ( props.qty < 1 ) {
 						// remove item from events in proximity 
-
+						game.controls.events = [];
 
 						// remove item from game map
+						for(let e of document.getElementById("entities").children) {
+							if (e.id === "item_" + args.id) {
+								document.getElementById("entities").removeChild(e);
+							}
+						}
+
 						for (let [index, value] of game.map.events.entries()) {
 							if (value.id === args.id) {
 								game.map.events.splice(index, 1);

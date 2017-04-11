@@ -26,9 +26,11 @@ class Controls {
             	this.interact(game.player, game.map);
             }
         });
+
+        
     }
 
-    
+
 
     moveUp(player) {
         if (this.checkUp(player)) {
