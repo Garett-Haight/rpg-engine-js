@@ -21,10 +21,10 @@ const CONTENT = {
 var gameObj;
 class Game {
 	constructor(map) {
-		this.player = {};
-		this.map = new Map(map, this, true);
+		this.player = null;
+        this.mapList = {};
+        this.map = new Map(map, this, true);
 		this.controls = new Controls(this);
-		this.mapList = {};
 		this.mapList[this.map.mapName] = this.map;
 		this.events = new Events();
 		this.interface = new Interface(this);

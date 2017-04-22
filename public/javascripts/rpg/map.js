@@ -1,8 +1,8 @@
 class Map {
 	constructor(map, game, drawMap=false) {
-		this.request = this.getMap(map, drawMap);
-		this.player = game.player;
-		this.game = game;
+        this.game = game;
+        this.player = game.player;
+        this.promise = this.getMap(map, drawMap);
 		this.mapName = map;
 		this.collisions = [];
 		this.events = [];
@@ -10,28 +10,56 @@ class Map {
 
 	getMap(mapName, drawMap) {
 		var mapObj = this;
-		var request = new XMLHttpRequest();
-		request.open('Get', '/maps/' + mapName + '.json');
-		request.onreadystatechange = function() {
-				if(request.readyState === 4) {
-					if(request.status === 200) {
-						mapObj.map = JSON.parse(request.responseText);
-						if(drawMap) {
-							mapObj.drawMap();
-							mapObj.drawEntities();
-							mapObj.parseCollisions();
-							mapObj.parseEvents();
-							mapObj.drawEvents();
 
+		// check if map has already been loaded to mapList
+		var mapPromise = new Promise((resolve, reject) => {
+			if (!this.game.mapList[mapName]) {
+				var request = new XMLHttpRequest();
+				request.open('Get', '/maps/' + mapName + '.json');
+				request.onreadystatechange = function() {
+					if(request.readyState === 4) {
+						if(request.status === 200) {
+							resolve(JSON.parse(request.responseText));
+						}
+						else {
+							reject("Something went wrong.");
 						}
 					}
-					else{
-						console.error("Something went wrong.");
-					}
-				}
-			};
-		request.send();
-		return request;
+				};
+				request.send();
+			}
+			else {
+				resolve(this.game.mapList[mapName].map);
+			}
+		});
+
+		mapPromise.then((response) => {
+			mapObj.map = response;
+            this.mapName = mapName;
+            if (drawMap) {
+				mapObj.drawMap();
+				mapObj.drawEntities();
+				mapObj.parseCollisions();
+				mapObj.parseEvents();
+				mapObj.drawEvents();
+			}
+		});
+
+		return mapPromise;
+	}
+
+	loadMap(mapName, args) {
+		// update mapList with current version of the map
+		// should probably do this for events, etc. too
+		this.game.mapList[this.mapName] = this;
+
+		var mapPromise = this.getMap(mapName, true);
+
+		mapPromise.then(() => {
+            var entitiesContainer = document.querySelector('#entities');
+            this.placePlayer(entitiesContainer, args);
+		});
+
 	}
 
 	drawMap (container="#map") {
@@ -40,6 +68,10 @@ class Map {
 		var mapElement = document.querySelector(container);
 
 		// clear map element contents when new map is loaded
+		while(mapElement.firstChild){
+			mapElement.removeChild(mapElement.firstChild);
+		}
+
 		for (let i = 0; i < map.height; i++) {
 			var rowElement = document.createElement('ul');
 			rowElement.className = 'row';
@@ -95,6 +127,7 @@ class Map {
 			}
 		}
 	}
+
 	// Entities are players, mobs, and NPCs
 	drawEntities (container="#map") {
 		var map = this.map;
@@ -113,17 +146,31 @@ class Map {
 						// Tiled positions objects at bottom left instead of top left
 						e.y = e.y - GLOBALS.TILE_HEIGHT;
 						if (e.name == "Player") {
-							var playerElem;
-							if ( !(playerElem = document.querySelector("#entities #player")) ) {
-								playerElem = document.createElement("div");
-								playerElem.id = "player";
-								entitiesContainer.appendChild(playerElem);
-							}
-							this.game.player = new Player(playerElem, {x: e.x, y: e.y});
+							this.placePlayer(entitiesContainer, {x: e.x, y: e.y});
 						}
 					}
 				}
 			}
 		}
+	}
+
+	placePlayer(container, args) {
+        var playerElem;
+        if ( !(playerElem = document.querySelector("#entities #player")) ) {
+            playerElem = document.createElement("div");
+            playerElem.id = "player";
+            container.appendChild(playerElem);
+        }
+
+        if(!this.game.player) {
+            this.game.player = new Player(playerElem, {x: args.x, y: args.y});
+        }
+        else {
+        	this.game.player.elem = playerElem;
+        	this.game.player.pos_x = args.x;
+        	this.game.player.pos_y = args.y;
+        	this.game.player.update();
+		}
+
 	}
 }

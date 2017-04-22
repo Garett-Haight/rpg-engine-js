@@ -17,12 +17,62 @@
          "name":"Collisions",
          "opacity":1,
          "type":"tilelayer",
+         "visible":false,
+         "width":10,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "height":10,
+         "name":"Events",
+         "objects":[
+                {
+                 "gid":5,
+                 "height":32,
+                 "id":1,
+                 "name":"",
+                 "properties":
+                    {
+                     "action":"teleport",
+                     "destination_x":8,
+                     "destination_y":2,
+                     "map":"map1"
+                    },
+                 "propertytypes":
+                    {
+                     "action":"string",
+                     "destination_x":"int",
+                     "destination_y":"int",
+                     "map":"string"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":224,
+                 "y":288
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":10,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "height":10,
+         "name":"Entities",
+         "objects":[],
+         "opacity":1,
+         "type":"objectgroup",
          "visible":true,
          "width":10,
          "x":0,
          "y":0
         }],
- "nextobjectid":1,
+ "nextobjectid":2,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":32,
@@ -30,7 +80,7 @@
         {
          "columns":10,
          "firstgid":1,
-         "image":"..\/..\/shared\/loan\/public\/images\/basic.png",
+         "image":"..\/..\/..\/loan\/public\/images\/basic.png",
          "imageheight":320,
          "imagewidth":320,
          "margin":0,

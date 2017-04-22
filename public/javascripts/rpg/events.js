@@ -5,16 +5,22 @@ class Events{
 				return "events!";
 			},
 			teleport(args, game) {
-				console.log(args);
-				console.log(game);
-				// load new map
-
-				// move player to new map
-
-				return "teleport!";
+				// load new map and move player to new map
+				game.map.loadMap(args.properties.map,
+					{
+						x: args.properties.destination_x * GLOBALS.TILE_WIDTH,
+						y: (args.properties.destination_y - 1) * GLOBALS.TILE_HEIGHT
+					}
+				);
+				if(args.properties.eventMessage) {
+					return args.properties.eventMessage;
+				}
+				else {
+					return "Moving to a new map";
+				}
 			},
 			item(args, game) {
-				var itemCount = 0;;
+				var itemCount = 0;
 				var props = args.properties;
 				var inv = game.player.inventory;
 				if(typeof inv[props.item] === 'undefined') {

@@ -36,13 +36,15 @@
                     {
                      "action":"teleport",
                      "destination_x":8,
-                     "destination_y":9
+                     "destination_y":9,
+                     "map":"map2"
                     },
                  "propertytypes":
                     {
                      "action":"string",
                      "destination_x":"int",
-                     "destination_y":"int"
+                     "destination_y":"int",
+                     "map":"string"
                     },
                  "rotation":0,
                  "type":"Event",
@@ -79,7 +81,7 @@
                  "gid":91,
                  "height":32,
                  "id":13,
-                 "name":"",
+                 "name":"bread",
                  "properties":
                     {
                      "action":"item",
@@ -137,7 +139,7 @@
                 }],
          "opacity":1,
          "type":"objectgroup",
-         "visible":false,
+         "visible":true,
          "width":0,
          "x":0,
          "y":0
