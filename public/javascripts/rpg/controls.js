@@ -41,10 +41,12 @@ class Controls {
     }
 
     checkUp(player) {
-        var upRow = Math.floor(player.pos_y / GLOBALS.TILE_HEIGHT) - 1;
-        var upCol = Math.floor(player.pos_x / GLOBALS.TILE_WIDTH);
-        // return value from collision map
-        return !this.game.map.collisions[upRow][upCol];
+        if(player.pos_y > 0) { // stay within map bounds
+            var upRow = Math.floor(player.pos_y / GLOBALS.TILE_HEIGHT) - 1;
+            var upCol = Math.floor(player.pos_x / GLOBALS.TILE_WIDTH);
+            // return value from collision map
+            return !this.game.map.collisions[upRow][upCol];
+        }
     }
 
     moveDown(player) {
@@ -56,9 +58,11 @@ class Controls {
     }
 
     checkDown(player) {
-        var downRow = Math.floor(player.pos_y / GLOBALS.TILE_HEIGHT) + 1;
-        var downCol = Math.floor(player.pos_x / GLOBALS.TILE_WIDTH);
-        return !this.game.map.collisions[downRow][downCol];
+        if (player.pos_y < ((GLOBALS.MAP_HEIGHT * GLOBALS.TILE_HEIGHT) - GLOBALS.TILE_HEIGHT)) {
+            var downRow = Math.floor(player.pos_y / GLOBALS.TILE_HEIGHT) + 1;
+            var downCol = Math.floor(player.pos_x / GLOBALS.TILE_WIDTH);
+            return !this.game.map.collisions[downRow][downCol];
+        }
     }
 
     moveRight(player) {
@@ -70,9 +74,11 @@ class Controls {
     }
 
     checkRight(player) {
-        var rightRow = Math.floor(player.pos_y / GLOBALS.TILE_HEIGHT);
-        var rightCol = Math.floor(player.pos_x / GLOBALS.TILE_WIDTH) + 1;
-        return !this.game.map.collisions[rightRow][rightCol];
+        if (player.pos_x < ((GLOBALS.MAP_WIDTH * GLOBALS.TILE_WIDTH) - GLOBALS.TILE_WIDTH)) {
+            var rightRow = Math.floor(player.pos_y / GLOBALS.TILE_HEIGHT);
+            var rightCol = Math.floor(player.pos_x / GLOBALS.TILE_WIDTH) + 1;
+            return !this.game.map.collisions[rightRow][rightCol];
+        }
     }
 
 
@@ -85,9 +91,11 @@ class Controls {
     }
 
     checkLeft(player) {
-        var leftRow = Math.floor(player.pos_y / GLOBALS.TILE_HEIGHT);
-        var leftCol = Math.floor(player.pos_x / GLOBALS.TILE_WIDTH) - 1;
-        return !this.game.map.collisions[leftRow][leftCol];
+        if (player.pos_x > 0) {
+            var leftRow = Math.floor(player.pos_y / GLOBALS.TILE_HEIGHT);
+            var leftCol = Math.floor(player.pos_x / GLOBALS.TILE_WIDTH) - 1;
+            return !this.game.map.collisions[leftRow][leftCol];
+        }
     }
 
     interact(player, map) {
