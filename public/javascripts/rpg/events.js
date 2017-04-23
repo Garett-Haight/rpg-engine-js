@@ -8,7 +8,7 @@ class Events{
 				// load new map and move player to new map
 				game.map.loadMap(args.properties.map,
 					{
-						x: args.properties.destination_x * GLOBALS.TILE_WIDTH,
+						x: (args.properties.destination_x - 1) * GLOBALS.TILE_WIDTH,
 						y: (args.properties.destination_y - 1) * GLOBALS.TILE_HEIGHT
 					}
 				);

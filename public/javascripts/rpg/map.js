@@ -4,12 +4,15 @@ class Map {
         this.player = game.player;
         this.promise = this.getMap(map, drawMap);
 		this.mapName = map;
-		this.collisions = [];
-		this.events = [];
 	}
 
 	getMap(mapName, drawMap) {
 		var mapObj = this;
+
+        // Clear current maps
+        mapObj.map = null;
+        mapObj.collisions = null;
+        mapObj.events = null;
 
 		// check if map has already been loaded to mapList
 		var mapPromise = new Promise((resolve, reject) => {
@@ -29,18 +32,38 @@ class Map {
 				request.send();
 			}
 			else {
-				resolve(this.game.mapList[mapName].map);
+				resolve(this.game.mapList[mapName]);
 			}
 		});
 
+
+
+
 		mapPromise.then((response) => {
-			mapObj.map = response;
             this.mapName = mapName;
+            if(!this.game.mapList[mapName]) {
+            	// non-cached response returns JSON which needs to be parsed
+                mapObj.map = response;
+            }
+            else {
+            	// cached response returns an object,
+				// we can skip the parsing functions and assign values from stored arrays/objects
+                mapObj.map = response.map;
+                mapObj.collisions = response.collisions;
+                mapObj.events = response.events;
+            }
+
             if (drawMap) {
 				mapObj.drawMap();
 				mapObj.drawEntities();
-				mapObj.parseCollisions();
-				mapObj.parseEvents();
+				if(!mapObj.collisions) {
+                    mapObj.parseCollisions();
+                }
+                // no need to parse events twice
+                if (!mapObj.events) {
+                    mapObj.parseEvents();
+                }
+
 				mapObj.drawEvents();
 			}
 		});
@@ -50,8 +73,7 @@ class Map {
 
 	loadMap(mapName, args) {
 		// update mapList with current version of the map
-		// should probably do this for events, etc. too
-		this.game.mapList[this.mapName] = this;
+		this.game.mapList[this.mapName] = Object.assign(Object.create(this), this);
 
 		var mapPromise = this.getMap(mapName, true);
 

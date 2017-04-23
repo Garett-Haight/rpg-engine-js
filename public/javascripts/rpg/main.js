@@ -25,7 +25,7 @@ class Game {
         this.mapList = {};
         this.map = new Map(map, this, true);
 		this.controls = new Controls(this);
-		this.mapList[this.map.mapName] = this.map;
+		//this.mapList[this.map.mapName] = this.map;
 		this.events = new Events();
 		this.interface = new Interface(this);
 		this.console = new Console();
