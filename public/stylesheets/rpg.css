@@ -84,6 +84,7 @@ body{
 	/*Character tile takes priority*/
 	background-position: -224px 0 !important;
 }
+
 /*Entities*/
 #entities{
 	width: 100%;
@@ -100,14 +101,14 @@ body{
 	width: 32px;
 	background-color: lime;
 	opacity: 0.7;
-
 }
 
 /* Player styling */
 #player{
 	width: 32px;
 	height: 32px;
-	background-color: blue;
+	background-image: url('/images/basic.png');
+	background-position: -288px -288px;
 	position: absolute;
 	z-index: 999;
 }
@@ -115,7 +116,6 @@ body{
 .selector{
 	box-shadow: inset 0px 0px 0px 1px green;
 }
-
 
 /* Status Inerface */
 #statusPanel{

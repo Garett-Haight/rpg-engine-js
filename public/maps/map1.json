@@ -34,17 +34,21 @@
                  "name":"Door_event",
                  "properties":
                     {
-                     "action":"teleport",
+                     "action":"door",
                      "destination_x":8,
                      "destination_y":9,
-                     "map":"map2"
+                     "locked":true,
+                     "map":"map2",
+                     "unlock":"{\"item\": \"dungeon_key\", \"qty\": 1}"
                     },
                  "propertytypes":
                     {
                      "action":"string",
                      "destination_x":"int",
                      "destination_y":"int",
-                     "map":"string"
+                     "locked":"bool",
+                     "map":"string",
+                     "unlock":"string"
                     },
                  "rotation":0,
                  "type":"Event",
@@ -61,13 +65,15 @@
                  "properties":
                     {
                      "action":"item",
-                     "item":"key",
+                     "item":"dungeon_key",
+                     "name":"dungeon key",
                      "qty":1
                     },
                  "propertytypes":
                     {
                      "action":"string",
                      "item":"string",
+                     "name":"string",
                      "qty":"int"
                     },
                  "rotation":0,
@@ -124,18 +130,6 @@
                  "width":32,
                  "x":160,
                  "y":160
-                }, 
-                {
-                 "gid":5,
-                 "height":32,
-                 "id":8,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":32,
-                 "x":0,
-                 "y":32
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -144,7 +138,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":14,
+ "nextobjectid":15,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":32,
