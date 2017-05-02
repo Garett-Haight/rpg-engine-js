@@ -1,4 +1,4 @@
-const body = document.querySelector("#gameContainer");
+const body = document.querySelector(".top");
 
 // create map element
 const mapElement = document.createElement("div");

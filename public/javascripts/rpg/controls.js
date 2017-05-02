@@ -115,4 +115,9 @@ class Controls {
     		}
     	}
     }
+
+    viewInventory() {
+        this.inv.className = "";
+        this.statusPanel.className = "hide";
+    }
 }

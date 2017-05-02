@@ -1,12 +1,26 @@
 class Interface{
 	constructor(game) {
 		this.game = game;
-        this.container = document.querySelector('#gameContainer');
+        this.container = document.querySelector('#menu');
+        if (this.container === null) {
+            this.container = document.createElement('div');
+            this.container.id = "menu";
+            document.querySelector(".top").appendChild(this.container);
+        }
        	
-
+        // status panels and controls are the default menu state
         this.statusPanel = document.createElement("div");
         this.statusPanel.id = "statusPanel";
-        body.appendChild(this.statusPanel);
+        this.container.appendChild(this.statusPanel);
+
+        // Inventory panel
+        this.inv = document.createElement("div");
+        this.inv.id = "inventoryPanel";
+        var itemList = document.createElement("ul");
+        itemList.id = "itemList";
+        this.inv.appendChild(itemList);
+        this.inv.className = "hide";
+        this.container.appendChild(this.inv);
 
         // Health meter... or just a table for now
        // var healthMeter = document.createElement("div");
@@ -28,7 +42,7 @@ class Interface{
 
         this.controlsElement = document.createElement("div");
         this.controlsElement.id = "controls";
-        body.appendChild(this.controlsElement);
+        this.container.appendChild(this.controlsElement);
 
         var arrowDiv = document.createElement("div");
         var actionDiv = document.createElement("div");
@@ -36,13 +50,18 @@ class Interface{
         this.controlsElement.appendChild(actionDiv);
 
         this.createButton("Check", "checkButton", actionDiv, "interact");
-        this.createButton("Inventory", "invButton", actionDiv, null);
+        this.createButton("Inventory", "invButton", actionDiv, viewInventory);
 
         this.createButton("▲", "upArrowButton", arrowDiv, "moveUp");
         this.createButton("◀", "leftArrowButton", arrowDiv, "moveLeft");
         this.createButton("▶", "rightArrowButton", arrowDiv, "moveRight");
         this.createButton("▼", "downArrowButton", arrowDiv, "moveDown");
+
+
+
+
 	}
+
 
 	createButton(text, id, appendTo=this.container, func) {
         var button = document.createElement("button");
@@ -58,4 +77,6 @@ class Interface{
         	);
         }
     }
+
+
 }

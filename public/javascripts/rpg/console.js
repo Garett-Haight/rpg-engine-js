@@ -1,6 +1,6 @@
 class Console {
 	constructor() {
-		const body = document.querySelector('#gameContainer');
+		const body = document.querySelector('.bottom');
 		this.consoleElement = document.createElement('ul');
 		this.consoleElement.id = "console";
 		body.appendChild(this.consoleElement);
