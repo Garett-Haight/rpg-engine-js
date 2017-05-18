@@ -1,16 +1,23 @@
+import GameMap from "./map";
+import Controls from "./controls";
+import Console from "./console";
+import Events from "./events";
+import Interface from "./interface";
+
+
 const body = document.querySelector(".top");
 
 // create map element
-const mapElement = document.createElement("div");
+const mapElement = document.createElement("canvas");
 mapElement.id = "map";
 body.appendChild(mapElement);
 
-const GLOBALS = {
-	TILE_WIDTH: 32,
-	TILE_HEIGHT: 32,
-	MAP_WIDTH: 10,
-	MAP_HEIGHT: 10,
-	ITEM_LIMIT: 99
+window.GLOBALS = {
+    TILE_WIDTH: 32,
+    TILE_HEIGHT: 32,
+    MAP_WIDTH: 10,
+    MAP_HEIGHT: 10,
+    ITEM_LIMIT: 99
 }
 
 // use this for static text content later?
@@ -18,12 +25,24 @@ const CONTENT = {
 
 };
 
+window.TILESET = [
+	"#000",
+	"#000",
+	"#333",
+	"#999",
+	"#ffa464",
+	"#00ff00",
+	"#00ffff",
+	"#fff",
+	"#00ff99"
+];
+
 var gameObj;
 class Game {
 	constructor(map) {
 		this.player = null;
         this.mapList = {};
-        this.map = new Map(map, this, true);
+        this.map = new GameMap(map, this, true);
 		this.controls = new Controls(this);
 		//this.mapList[this.map.mapName] = this.map;
 		this.events = new Events();

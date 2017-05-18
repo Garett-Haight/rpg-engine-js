@@ -1,4 +1,4 @@
-class Console {
+export default class Console {
 	constructor() {
 		const body = document.querySelector('.bottom');
 		this.consoleElement = document.createElement('ul');

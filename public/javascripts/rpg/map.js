@@ -1,4 +1,6 @@
-class Map {
+import Player from "./player";
+
+export default class GameMap {
 	constructor(map, game, drawMap=false) {
         this.game = game;
         this.player = game.player;
@@ -7,12 +9,11 @@ class Map {
 	}
 
 	getMap(mapName, drawMap) {
-		var mapObj = this;
 
         // Clear current maps
-        mapObj.map = null;
-        mapObj.collisions = null;
-        mapObj.events = null;
+        this.map = null;
+        this.collisions = null;
+        this.events = null;
 
 		// check if map has already been loaded to mapList
 		var mapPromise = new Promise((resolve, reject) => {
@@ -36,35 +37,22 @@ class Map {
 			}
 		});
 
-
-
-
 		mapPromise.then((response) => {
             this.mapName = mapName;
             if(!this.game.mapList[mapName]) {
             	// non-cached response returns JSON which needs to be parsed
-                mapObj.map = response;
+                this.map = response;
             }
             else {
             	// cached response returns an object,
 				// we can skip the parsing functions and assign values from stored arrays/objects
-                mapObj.map = response.map;
-                mapObj.collisions = response.collisions;
-                mapObj.events = response.events;
+                this.map = response.map;
+                this.collisions = response.collisions;
+                this.events = response.events;
             }
 
             if (drawMap) {
-				mapObj.drawMap();
-				mapObj.drawEntities();
-				if(!mapObj.collisions) {
-                    mapObj.parseCollisions();
-                }
-                // no need to parse events twice
-                if (!mapObj.events) {
-                    mapObj.parseEvents();
-                }
-
-				mapObj.drawEvents();
+				this.render();
 			}
 		});
 
@@ -88,20 +76,23 @@ class Map {
 		var map = this.map;
 		var tiles = map.layers[0].data;
 		var mapElement = document.querySelector(container);
+		var ctx = mapElement.getContext("2d");
+		// Clear previous render
+		ctx.clearRect(0,0, GLOBALS.MAP_WIDTH * GLOBALS.TILE_WIDTH, GLOBALS.MAP_HEIGHT * GLOBALS.TILE_HEIGHT);
 
-		// clear map element contents when new map is loaded
-		while(mapElement.firstChild){
-			mapElement.removeChild(mapElement.firstChild);
-		}
+		mapElement.width = GLOBALS.MAP_WIDTH * GLOBALS.TILE_WIDTH;
+		mapElement.height = GLOBALS.MAP_HEIGHT * GLOBALS.TILE_HEIGHT;
+		map.width = GLOBALS.MAP_WIDTH;
+		map.height = GLOBALS.MAP_HEIGHT;
 
 		for (let i = 0; i < map.height; i++) {
-			var rowElement = document.createElement('ul');
-			rowElement.className = 'row';
-			mapElement.appendChild(rowElement);
 			for(let j = 0; j < map.width; j++) {
-				var tileElement = document.createElement('li');
-				tileElement.className = 'tile tile_' + tiles[(i*GLOBALS.MAP_WIDTH) + j];
-				rowElement.appendChild(tileElement);
+				ctx.fillStyle = TILESET[tiles[(i*GLOBALS.MAP_WIDTH) + j]];
+                ctx.fillRect(
+                	j * GLOBALS.TILE_WIDTH,
+					i * GLOBALS.TILE_HEIGHT,
+					GLOBALS.TILE_WIDTH,
+					GLOBALS.TILE_HEIGHT);
 			}
 			this.tilesDrawn = true;
 		}
@@ -134,24 +125,42 @@ class Map {
 		this.events = events;
 	}
 
-	drawEvents() {
-		var entitiesContainer = document.querySelector('#entities');
-		if(this.events.length > 0) {
+	drawEvents(container=".top") {
+		var eventsContainer;
+        var mapElement = document.querySelector(container);
+
+        if (!(eventsContainer = document.querySelector('#events'))) {
+			eventsContainer = document.createElement("canvas");
+			eventsContainer.id = "events";
+
+            eventsContainer.width = GLOBALS.MAP_WIDTH * GLOBALS.TILE_WIDTH;
+            eventsContainer.height = GLOBALS.MAP_HEIGHT * GLOBALS.TILE_HEIGHT;
+
+            mapElement.appendChild(eventsContainer);
+		}
+
+		var ctx = eventsContainer.getContext("2d");
+        ctx.fillStyle = TILESET[5];
+
+		if (this.events.length > 0) {
 			for(let e of this.events) {
 				if (e.visible) {
-					var eventElem = document.createElement("div");
-					eventElem.id = "item_" + e.id;
-					eventElem.className = "item";
-					eventElem.style.top = e.y - GLOBALS.TILE_HEIGHT + "px";
-					eventElem.style.left = e.x + "px";
-					entitiesContainer.appendChild(eventElem);
+					ctx.fillRect(e.x, e.y - GLOBALS.TILE_HEIGHT, GLOBALS.TILE_WIDTH, GLOBALS.TILE_HEIGHT);
+					// var eventElem = document.createElement("div");
+					// eventElem.id = "item_" + e.id;
+					// eventElem.className = "item";
+					// eventElem.style.top = e.y - GLOBALS.TILE_HEIGHT + "px";
+					// eventElem.style.left = e.x + "px";
+					// entitiesContainer.appendChild(eventElem);
+
+
 				}
 			}
 		}
 	}
 
 	// Entities are players, mobs, and NPCs
-	drawEntities (container="#map") {
+	drawEntities (container=".top") {
 		var map = this.map;
 		var mapElement = document.querySelector(container);
 		for (let layer of map.layers) {
@@ -159,15 +168,22 @@ class Map {
 				if (this.tilesDrawn) {
 					var entitiesContainer;
 					if (!(entitiesContainer = document.querySelector('#entities'))) {
-						entitiesContainer = document.createElement('div');
+						entitiesContainer = document.createElement('canvas');
 						entitiesContainer.id = "entities";
+
+						entitiesContainer.width = GLOBALS.MAP_WIDTH * GLOBALS.TILE_WIDTH;
+						entitiesContainer.height = GLOBALS.MAP_HEIGHT * GLOBALS.TILE_HEIGHT;
 						mapElement.appendChild(entitiesContainer);
+
 					}
+
+                    var ctx = entitiesContainer.getContext("2d");
+                    ctx.clearRect(0,0, GLOBALS.MAP_WIDTH * GLOBALS.TILE_WIDTH, GLOBALS.MAP_HEIGHT * GLOBALS.TILE_HEIGHT);
 
 					for (let e of layer.objects) {
 						// Tiled positions objects at bottom left instead of top left
 						e.y = e.y - GLOBALS.TILE_HEIGHT;
-						if (e.name == "Player") {
+						if (e.name == "Player" && !this.game.player) {
 							this.placePlayer(entitiesContainer, {x: e.x, y: e.y});
 						}
 					}
@@ -177,22 +193,30 @@ class Map {
 	}
 
 	placePlayer(container, args) {
-        var playerElem;
-        if ( !(playerElem = document.querySelector("#entities #player")) ) {
-            playerElem = document.createElement("div");
-            playerElem.id = "player";
-            container.appendChild(playerElem);
-        }
-
         if(!this.game.player) {
-            this.game.player = new Player(playerElem, {x: args.x, y: args.y});
+            this.game.player = new Player(container, this.game, {x: args.x, y: args.y});
         }
         else {
-        	this.game.player.elem = playerElem;
+        	this.game.player.canvas = container;
         	this.game.player.pos_x = args.x;
         	this.game.player.pos_y = args.y;
         	this.game.player.update();
 		}
-
 	}
+
+	render() {
+        this.drawMap();
+        if(!this.collisions) {
+            this.parseCollisions();
+        }
+
+        // no need to parse events twice
+        if (!this.events) {
+            this.parseEvents();
+        }
+
+        this.drawEvents();
+        this.drawEntities();
+
+    }
 }

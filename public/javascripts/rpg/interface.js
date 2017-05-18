@@ -1,4 +1,4 @@
-class Interface{
+export default class Interface{
 	constructor(game) {
 		this.game = game;
         this.container = document.querySelector('#menu');
@@ -50,15 +50,12 @@ class Interface{
         this.controlsElement.appendChild(actionDiv);
 
         this.createButton("Check", "checkButton", actionDiv, "interact");
-        this.createButton("Inventory", "invButton", actionDiv, viewInventory);
+        this.createButton("Inventory", "invButton", actionDiv, "viewInventory");
 
         this.createButton("▲", "upArrowButton", arrowDiv, "moveUp");
         this.createButton("◀", "leftArrowButton", arrowDiv, "moveLeft");
         this.createButton("▶", "rightArrowButton", arrowDiv, "moveRight");
         this.createButton("▼", "downArrowButton", arrowDiv, "moveDown");
-
-
-
 
 	}
 

@@ -30,12 +30,7 @@ body{
 
 
 #map{
-	width: 320px;
-	height: 320px;
-	border: 1px solid skyblue;
-	display: inline-block;
-	float: left;
-	position: relative;
+
 }
 
 #menu{
@@ -104,9 +99,7 @@ body{
 }
 
 /*Entities*/
-#entities{
-	width: 100%;
-	height: 100%;
+#entities, #events{
 	position: absolute;
 	top: 0;
 	left: 0;

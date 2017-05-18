@@ -1,4 +1,4 @@
-class Events{
+export default class Events{
 	constructor() {
 		this.eventList = {
 			event(args, game) {
