@@ -60,6 +60,6 @@ function getNodeIndex (n) {
 	}
 
 document.addEventListener('DOMContentLoaded', (e) => {
-	gameObj = new Game('map1');
-	gameObj.console.sendMessage("Ye find yeself in yon dungeon. Obvious exits are NORTH, SOUTH, and DENNIS");
+	window.gameObj = new Game(1);
+	window.gameObj.console.sendMessage("Ye find yeself in yon dungeon. Obvious exits are NORTH, SOUTH, and DENNIS");
 });

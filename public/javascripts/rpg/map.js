@@ -8,7 +8,7 @@ export default class GameMap {
 		this.mapName = map;
 	}
 
-	getMap(mapName, drawMap) {
+	getMap(mapId, drawMap) {
 
         // Clear current maps
         this.map = null;
@@ -17,9 +17,9 @@ export default class GameMap {
 
 		// check if map has already been loaded to mapList
 		var mapPromise = new Promise((resolve, reject) => {
-			if (!this.game.mapList[mapName]) {
+			if (!this.game.mapList[mapId]) {
 				var request = new XMLHttpRequest();
-				request.open('Get', '/maps/' + mapName + '.json');
+				request.open('Get', '/map/' + mapId);
 				request.onreadystatechange = function() {
 					if(request.readyState === 4) {
 						if(request.status === 200) {
@@ -33,15 +33,16 @@ export default class GameMap {
 				request.send();
 			}
 			else {
-				resolve(this.game.mapList[mapName]);
+				resolve(this.game.mapList[mapId]);
 			}
 		});
 
 		mapPromise.then((response) => {
-            this.mapName = mapName;
-            if(!this.game.mapList[mapName]) {
+            this.mapName = mapId;
+            if(!this.game.mapList[mapId]) {
             	// non-cached response returns JSON which needs to be parsed
                 this.map = response;
+                this.parseEvents();
             }
             else {
             	// cached response returns an object,
@@ -59,11 +60,11 @@ export default class GameMap {
 		return mapPromise;
 	}
 
-	loadMap(mapName, args) {
+	loadMap(mapId, args) {
 		// update mapList with current version of the map
 		this.game.mapList[this.mapName] = Object.assign(Object.create(this), this);
 
-		var mapPromise = this.getMap(mapName, true);
+		var mapPromise = this.getMap(mapId, true);
 
 		mapPromise.then(() => {
             var entitiesContainer = document.querySelector('#entities');
@@ -140,20 +141,13 @@ export default class GameMap {
 		}
 
 		var ctx = eventsContainer.getContext("2d");
+        ctx.clearRect(0,0, GLOBALS.MAP_WIDTH * GLOBALS.TILE_WIDTH, GLOBALS.MAP_HEIGHT * GLOBALS.TILE_HEIGHT);
         ctx.fillStyle = TILESET[5];
 
 		if (this.events.length > 0) {
 			for(let e of this.events) {
 				if (e.visible) {
 					ctx.fillRect(e.x, e.y - GLOBALS.TILE_HEIGHT, GLOBALS.TILE_WIDTH, GLOBALS.TILE_HEIGHT);
-					// var eventElem = document.createElement("div");
-					// eventElem.id = "item_" + e.id;
-					// eventElem.className = "item";
-					// eventElem.style.top = e.y - GLOBALS.TILE_HEIGHT + "px";
-					// eventElem.style.left = e.x + "px";
-					// entitiesContainer.appendChild(eventElem);
-
-
 				}
 			}
 		}

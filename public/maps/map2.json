@@ -24,7 +24,6 @@
         }, 
         {
          "draworder":"topdown",
-         "height":0,
          "name":"Events",
          "objects":[
                 {
@@ -37,7 +36,7 @@
                      "action":"teleport",
                      "destination_x":8,
                      "destination_y":2,
-                     "map":"map1"
+                     "map":"1"
                     },
                  "propertytypes":
                     {
@@ -56,19 +55,16 @@
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
-         "width":0,
          "x":0,
          "y":0
         }, 
         {
          "draworder":"topdown",
-         "height":0,
          "name":"Entities",
          "objects":[],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
-         "width":0,
          "x":0,
          "y":0
         }],
@@ -91,6 +87,7 @@
          "tilewidth":32
         }],
  "tilewidth":32,
- "version":1,
+ "type":"map",
+ "version":"1.0.0",
  "width":10
 }
