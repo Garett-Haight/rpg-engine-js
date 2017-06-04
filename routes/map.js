@@ -21,6 +21,11 @@ router.get('/', function(req, res, next){
 router.get('/:id', function(req, res, next) {
     var data = null;
     pool.getConnection(function(err, connection) {
+        if (err) {
+            res.json({"code" : 100, "status" : err});
+            return;
+        }
+
         connection.query('SELECT CONVERT(map USING utf8) from game_data.map_data WHERE id="' + req.params.id + '";', function(err, rows, fields) {
             connection.release();
             if (!err && rows.length > 0) {
@@ -34,7 +39,7 @@ router.get('/:id', function(req, res, next) {
         });
 
         connection.on('error', function(err) {
-            res.json({"code": 100, "status" : "Error connecting to database."});
+            res.json({"code": 100, "status" : err});
         });
     });
 });
