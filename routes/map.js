@@ -8,7 +8,7 @@ router.get('/', function(req, res, next){
 });
 
 router.get('/:id', function(req, res, next) {
-    MongoClient.connect("mongodb://localhost:27017/game_data", function(err, db){
+    MongoClient.connect("mongodb://"+process.env.MONGO_PORT_27017_TCP_ADDR+"/game_data", function(err, db){
         if (err) {
             res.json({"status" : err});
             return;
