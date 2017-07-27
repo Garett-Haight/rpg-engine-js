@@ -6,8 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var rpg = require('./routes/rpg');
-var map = require('./routes/map');
-var serialize = require('./routes/serialize');
 var PORT = process.env.PORT || '8080';
 
 var app = express();
@@ -25,9 +23,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', rpg);
-app.use('/serialize', serialize);
-// app.use('/rpg', rpg);
-app.use('/map/', map);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

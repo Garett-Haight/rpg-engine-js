@@ -19,7 +19,7 @@ export default class GameMap {
 		var mapPromise = new Promise((resolve, reject) => {
 			if (!this.game.mapList[mapId]) {
 				var request = new XMLHttpRequest();
-				request.open('Get', '/map/' + mapId);
+				request.open('Get', '/maps/map' + mapId + '.json');
 				request.onreadystatechange = function() {
 					if(request.readyState === 4) {
 						if(request.status === 200) {
@@ -141,7 +141,7 @@ export default class GameMap {
 		}
 
 		var ctx = eventsContainer.getContext("2d");
-        ctx.clearRect(0,0, GLOBALS.MAP_WIDTH * GLOBALS.TILE_WIDTH, GLOBALS.MAP_HEIGHT * GLOBALS.TILE_HEIGHT);
+		ctx.clearRect(0,0, GLOBALS.MAP_WIDTH * GLOBALS.TILE_WIDTH, GLOBALS.MAP_HEIGHT * GLOBALS.TILE_HEIGHT);
         ctx.fillStyle = TILESET[5];
 
 		if (this.events.length > 0) {
@@ -173,7 +173,7 @@ export default class GameMap {
 
                     var ctx = entitiesContainer.getContext("2d");
                     ctx.clearRect(0,0, GLOBALS.MAP_WIDTH * GLOBALS.TILE_WIDTH, GLOBALS.MAP_HEIGHT * GLOBALS.TILE_HEIGHT);
-
+					
 					for (let e of layer.objects) {
 						// Tiled positions objects at bottom left instead of top left
 						e.y = e.y - GLOBALS.TILE_HEIGHT;
