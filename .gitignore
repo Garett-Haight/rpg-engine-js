@@ -109,4 +109,4 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-public/javascripts/rpg.bundle.js
+#public/javascripts/rpg.bundle.js
