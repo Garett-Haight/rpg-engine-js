@@ -72,7 +72,7 @@ export default class Events{
 				if(inv[props.item] < GLOBALS.ITEM_LIMIT) {
 					// add item to inventory
 					while(inv[props.item] < GLOBALS.ITEM_LIMIT && props.qty > 0) { // while inventory isn't full and there are items left to be picked up
-						inv[props.item] ++;
+						inv[props.item]++;
 						itemCount++;
 						props.qty--;
 					}
@@ -103,6 +103,10 @@ export default class Events{
 				else {
 					return `Can't carry anymore of ${itemName}!`;
 				}
+			},
+			message(args, game) {
+				var props = args.properties;
+				return props.message;
 			}
 		};
 	}

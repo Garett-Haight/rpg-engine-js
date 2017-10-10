@@ -11,11 +11,13 @@ export default class Interface{
         // status panels and controls are the default menu state
         this.statusPanel = document.createElement("div");
         this.statusPanel.id = "statusPanel";
+        this.statusPanel.classList.add("panel");
         this.container.appendChild(this.statusPanel);
 
         // Inventory panel
         this.inv = document.createElement("div");
         this.inv.id = "inventoryPanel";
+        this.inv.classList.add("panel");
         var itemList = document.createElement("ul");
         itemList.id = "itemList";
         this.inv.appendChild(itemList);
@@ -42,6 +44,7 @@ export default class Interface{
 
         this.controlsElement = document.createElement("div");
         this.controlsElement.id = "controls";
+        this.controlsElement.classList.add("panel");
         this.container.appendChild(this.controlsElement);
 
         var arrowDiv = document.createElement("div");

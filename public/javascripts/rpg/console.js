@@ -3,6 +3,7 @@ export default class Console {
 		const body = document.querySelector('.bottom');
 		this.consoleElement = document.createElement('ul');
 		this.consoleElement.id = "console";
+		this.consoleElement.classList.add("panel");
 		body.appendChild(this.consoleElement);
 	}
 

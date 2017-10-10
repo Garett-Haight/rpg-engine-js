@@ -208,9 +208,7 @@ export default class GameMap {
         if (!this.events) {
             this.parseEvents();
         }
-
         this.drawEvents();
         this.drawEntities();
-
     }
 }

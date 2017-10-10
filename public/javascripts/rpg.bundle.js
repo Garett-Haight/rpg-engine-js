@@ -88,6 +88,7 @@ var Console = function () {
 		var body = document.querySelector('.bottom');
 		this.consoleElement = document.createElement('ul');
 		this.consoleElement.id = "console";
+		this.consoleElement.classList.add("panel");
 		body.appendChild(this.consoleElement);
 	}
 
@@ -452,6 +453,10 @@ var Events = function Events() {
 			} else {
 				return "Can't carry anymore of " + itemName + "!";
 			}
+		},
+		message: function message(args, game) {
+			var props = args.properties;
+			return props.message;
 		}
 	};
 };
@@ -488,11 +493,13 @@ var Interface = function () {
                 // status panels and controls are the default menu state
                 this.statusPanel = document.createElement("div");
                 this.statusPanel.id = "statusPanel";
+                this.statusPanel.classList.add("panel");
                 this.container.appendChild(this.statusPanel);
 
                 // Inventory panel
                 this.inv = document.createElement("div");
                 this.inv.id = "inventoryPanel";
+                this.inv.classList.add("panel");
                 var itemList = document.createElement("ul");
                 itemList.id = "itemList";
                 this.inv.appendChild(itemList);
@@ -518,6 +525,7 @@ var Interface = function () {
 
                 this.controlsElement = document.createElement("div");
                 this.controlsElement.id = "controls";
+                this.controlsElement.classList.add("panel");
                 this.container.appendChild(this.controlsElement);
 
                 var arrowDiv = document.createElement("div");
@@ -910,7 +918,6 @@ var GameMap = function () {
 			if (!this.events) {
 				this.parseEvents();
 			}
-
 			this.drawEvents();
 			this.drawEntities();
 		}
