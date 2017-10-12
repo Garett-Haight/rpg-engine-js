@@ -14,7 +14,7 @@ export default class Player {
 		// player attrs
 		this.hp = 100;
 		this.mp = 100;
-		this.inventory = {};
+		this.inventory = game.startingInventory;
 		this.draw();
 	};
 

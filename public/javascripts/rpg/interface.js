@@ -21,13 +21,16 @@ export default class Interface{
         var itemList = document.createElement("ul");
         itemList.id = "itemList";
         this.inv.appendChild(itemList);
-        this.inv.className = "hide";
+        this.inv.className = "hide panel";
         this.container.appendChild(this.inv);
+        
+
 
         // Health meter... or just a table for now
-       // var healthMeter = document.createElement("div");
-       // healthMeter.id = "healthMeter";
-       // this.statusPanel.appendChild(healthMeter);
+        // var healthMeter = document.createElement("div");
+        // healthMeter.id = "healthMeter";
+        // this.statusPanel.appendChild(healthMeter);
+
        	var statusTable = document.createElement("table");
        	var tr = document.createElement("tr");
        	var td = document.createElement("td");
@@ -40,7 +43,6 @@ export default class Interface{
        	tr.appendChild(td2);
 
        	statusPanel.appendChild(statusTable);
-
 
         this.controlsElement = document.createElement("div");
         this.controlsElement.id = "controls";

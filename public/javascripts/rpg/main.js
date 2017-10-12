@@ -48,6 +48,8 @@ class Game {
 		this.events = new Events();
 		this.interface = new Interface(this);
 		this.console = new Console();
+		// starting inventory
+		this.startingInventory = {potion: 1, mana: 1};
 	}
 }
 
