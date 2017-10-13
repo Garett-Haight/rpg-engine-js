@@ -82,9 +82,9 @@ body{
 }
 
 #inventoryPanel{
-	width: 340px;
+	width: 320px;
 	height: 120px;
-	padding: 0 !important;
+	padding: 0 10px 0 10px !important;
 	overflow-x: hidden;
 }
 
@@ -99,6 +99,16 @@ body{
 	padding: 2px;
 	font-size: 24px;
 }
+
+#inventoryPanel ul li div{
+	width: 50%;
+	display: inline-block;
+}
+
+#inventoryPanel ul li div:last-child{
+	text-align: right;
+}
+
 
 #healthMeter{
 	background-image: url('/images/heart2.png');
@@ -154,6 +164,7 @@ body{
 #checkButton, #invButton{
 	display:block;
 	margin: 5px;
+	width: 90px;
 }
 
 

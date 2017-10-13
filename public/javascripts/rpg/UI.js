@@ -1,4 +1,4 @@
-export default class Interface{
+export default class UI{
 	constructor(game) {
 		this.game = game;
         this.container = document.querySelector('#menu');
@@ -7,6 +7,8 @@ export default class Interface{
             this.container.id = "menu";
             document.querySelector(".top").appendChild(this.container);
         }
+
+        this.inventoryOpen = false;
        	
         // status panels and controls are the default menu state
         this.statusPanel = document.createElement("div");
@@ -23,13 +25,7 @@ export default class Interface{
         this.inv.appendChild(itemList);
         this.inv.className = "hide panel";
         this.container.appendChild(this.inv);
-        
 
-
-        // Health meter... or just a table for now
-        // var healthMeter = document.createElement("div");
-        // healthMeter.id = "healthMeter";
-        // this.statusPanel.appendChild(healthMeter);
 
        	var statusTable = document.createElement("table");
        	var tr = document.createElement("tr");
@@ -55,7 +51,7 @@ export default class Interface{
         this.controlsElement.appendChild(actionDiv);
 
         this.createButton("Check", "checkButton", actionDiv, "interact");
-        this.createButton("Inventory", "invButton", actionDiv, "viewInventory");
+        this.createButton("Inventory", "invButton", actionDiv, "toggleInventoryStatusPanel");
 
         this.createButton("▲", "upArrowButton", arrowDiv, "moveUp");
         this.createButton("◀", "leftArrowButton", arrowDiv, "moveLeft");
@@ -74,11 +70,47 @@ export default class Interface{
         	button.addEventListener(
         		'click', 
         		function(e) {
-        			this.game.controls[func](this.game.player);
+                    this.game.controls[func](this.game.player);
+                     // keep button from taking focus
+                    document.getElementById(button.id).blur();
         		}.bind(this)
         	);
         }
     }
 
+    viewInventory() {
+        // update the inventory list
+        this.updateInventory();
 
+        // show the inventory panel
+        this.inv.classList.remove("hide");
+        // hide the status panel
+        this.statusPanel.classList.add("hide");
+        this.inventoryOpen = true;
+        document.getElementById("invButton").innerText = "Status";
+    }
+
+    viewStatus() {
+        // show the status panel
+        this.statusPanel.classList.remove("hide");
+        // hide the inventory panel
+        this.inv.classList.add("hide");
+        this.inventoryOpen = false;
+        document.getElementById("invButton").innerText = "Inventory";
+    }
+
+    updateInventory() {
+        var itemList = document.getElementById("itemList");
+        var inventory = this.game.player.inventory
+
+        while(itemList.firstChild) {
+            itemList.removeChild(itemList.firstChild);
+        }
+        
+        for(var item in inventory) {
+            var li = document.createElement('li');
+            li.innerHTML = "<div>" + item + "</div><div>" +inventory[item] + "</div>";
+            itemList.appendChild(li);
+        }
+    }
 }

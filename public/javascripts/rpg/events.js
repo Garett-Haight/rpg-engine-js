@@ -71,7 +71,9 @@ export default class Events{
 
 				if(inv[props.item] < GLOBALS.ITEM_LIMIT) {
 					// add item to inventory
+					// TODO: This would be more efficient if you just subtract the overage from the item amt and add it
 					while(inv[props.item] < GLOBALS.ITEM_LIMIT && props.qty > 0) { // while inventory isn't full and there are items left to be picked up
+						// We should probably have a class for inventory with some get/set methods
 						inv[props.item]++;
 						itemCount++;
 						props.qty--;
@@ -93,10 +95,18 @@ export default class Events{
 								game.map.events.splice(index, 1);
 							}
 						}
+						if(game.ui.inventoryOpen) {
+							// If the inventory panel is visible, it needs to be updated
+							game.ui.updateInventory();
+						}
 						return `Added (${itemCount}) of ${itemName}`;
 					}
 					else {
 						// change quantity 
+						if(game.ui.inventoryOpen) {
+							// If the inventory panel is visible, it needs to be updated
+							game.ui.updateInventory();
+						}
 						return `Added (${itemCount}) of ${itemName}`;
 					}
 				}

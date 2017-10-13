@@ -3,6 +3,7 @@ export default class Controls {
         this.game = game;
         this.events = [];
         // event listeners
+        // TODO: Debounce input
         document.addEventListener('keydown', (e) => {
         	//console.log(e);
             if (e.keyCode === 40) { // Arrow Down
@@ -116,25 +117,15 @@ export default class Controls {
     	}
     }
 
-    viewInventory() {
-        // TODO: move to interface class
-        var itemList = document.getElementById("itemList");
-        var inventory = this.game.player.inventory
-        // update the inventory list
-        while(itemList.firstChild) {
-            itemList.removeChild(itemList.firstChild);
+    toggleInventoryStatusPanel() {
+        var ui = this.game.ui;
+        if(!ui.inventoryOpen) {
+            ui.viewInventory();
         }
-        
-        for(var item in inventory) {
-            var li = document.createElement('li');
-            li.innerText = item + " : " +inventory[item];
-            itemList.appendChild(li);
+        else {
+            ui.viewStatus();
         }
-
-        // show the inventory panel
-        this.game.interface.inv.classList.remove("hide");
-        // hide the status panel
-        this.game.interface.statusPanel.classList.add("hide");
-
+        // keep button from taking focus
+        document.getElementById("invButton").blur();
     }
 }

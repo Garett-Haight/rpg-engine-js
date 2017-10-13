@@ -2,7 +2,8 @@ import GameMap from "./map";
 import Controls from "./controls";
 import Console from "./console";
 import Events from "./events";
-import Interface from "./interface";
+import UI from "./UI";
+import NPC from "./NPC";
 
 
 const body = document.querySelector(".top");
@@ -46,7 +47,7 @@ class Game {
 		this.controls = new Controls(this);
 		//this.mapList[this.map.mapName] = this.map;
 		this.events = new Events();
-		this.interface = new Interface(this);
+		this.ui = new UI(this);
 		this.console = new Console();
 		// starting inventory
 		this.startingInventory = {potion: 1, mana: 1};
