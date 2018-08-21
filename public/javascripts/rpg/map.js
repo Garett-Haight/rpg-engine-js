@@ -1,4 +1,5 @@
 import Player from "./player";
+import Tileset from "./Tileset"
 
 export default class GameMap {
 	constructor(map, game, drawMap=false) {
@@ -6,6 +7,7 @@ export default class GameMap {
         this.player = game.player;
         this.promise = this.getMap(map, drawMap);
 		this.mapName = map;
+		this.tileset = game.TileSets.Tilesets[0].Tileset;
 	}
 
 	getMap(mapId, drawMap) {
@@ -19,7 +21,7 @@ export default class GameMap {
 		var mapPromise = new Promise((resolve, reject) => {
 			if (!this.game.mapList[mapId]) {
 				var request = new XMLHttpRequest();
-				request.open('Get', '/maps/map' + mapId + '.json');
+				request.open('Get', '/maps/map' + mapId + '_new.json');
 				request.onreadystatechange = function() {
 					if(request.readyState === 4) {
 						if(request.status === 200) {
@@ -53,7 +55,9 @@ export default class GameMap {
             }
 
             if (drawMap) {
-				this.render();
+				this.tileset.tilesetImage.onload = function() {
+					this.render();
+				}.bind(this);
 			}
 		});
 
@@ -85,15 +89,26 @@ export default class GameMap {
 		mapElement.height = GLOBALS.MAP_HEIGHT * GLOBALS.TILE_HEIGHT;
 		map.width = GLOBALS.MAP_WIDTH;
 		map.height = GLOBALS.MAP_HEIGHT;
-
+		
 		for (let i = 0; i < map.height; i++) {
 			for(let j = 0; j < map.width; j++) {
-				ctx.fillStyle = TILESET[tiles[(i*GLOBALS.MAP_WIDTH) + j]];
-                ctx.fillRect(
-                	j * GLOBALS.TILE_WIDTH,
-					i * GLOBALS.TILE_HEIGHT,
+				var tileCoords = this.tileset.getTileCoords(tiles[(i*GLOBALS.MAP_WIDTH) + j]);
+				ctx.drawImage(
+					this.tileset.tilesetImage, 
+					tileCoords.x, 
+					tileCoords.y, 
+					GLOBALS.TILE_WIDTH,
+					GLOBALS.TILE_HEIGHT,
+					j * GLOBALS.TILE_WIDTH, 
+					i * GLOBALS.TILE_HEIGHT, 
 					GLOBALS.TILE_WIDTH,
 					GLOBALS.TILE_HEIGHT);
+				// ctx.fillStyle = TILESET[tiles[(i*GLOBALS.MAP_WIDTH) + j]];
+                // ctx.fillRect(
+                // 	j * GLOBALS.TILE_WIDTH,
+				// 	i * GLOBALS.TILE_HEIGHT,
+				// 	GLOBALS.TILE_WIDTH,
+				// 	GLOBALS.TILE_HEIGHT);
 			}
 			this.tilesDrawn = true;
 		}

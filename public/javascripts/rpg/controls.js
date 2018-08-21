@@ -124,8 +124,6 @@ export default class Controls {
         }
         else {
             ui.viewStatus();
-        }
-        // keep button from taking focus
-        document.getElementById("invButton").blur();
+        } 
     }
 }

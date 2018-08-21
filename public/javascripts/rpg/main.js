@@ -4,6 +4,8 @@ import Console from "./console";
 import Events from "./events";
 import UI from "./UI";
 import NPC from "./NPC";
+import Tileset from "./Tileset";
+import Tilesets from "./Tilesets";
 
 
 const body = document.querySelector(".top");
@@ -14,17 +16,27 @@ mapElement.id = "map";
 body.appendChild(mapElement);
 
 window.GLOBALS = {
-    TILE_WIDTH: 32,
-    TILE_HEIGHT: 32,
-    MAP_WIDTH: 10,
-    MAP_HEIGHT: 10,
-    ITEM_LIMIT: 99
+    TILE_WIDTH: 16,
+    TILE_HEIGHT: 16,
+    MAP_WIDTH: 20,
+    MAP_HEIGHT: 20,
+	ITEM_LIMIT: 99,
+	img_path: "/images/"
 }
 
 // use this for static text content later?
 const CONTENT = {
 
 };
+
+// var tileImages = ["0x72_16x16DungeonTileset.v4.png", "0x72_16x16DungeonTileset_walls.v1.png"];
+var tileImages = [
+	{
+		src: "0x72_16x16DungeonTileset.v4.png", // going to need to get first gid values for each tileset
+		height: 16,
+		width: 16
+	}
+];
 
 window.TILESET = [
 	"#000",
@@ -41,6 +53,12 @@ window.TILESET = [
 var gameObj;
 class Game {
 	constructor(map) {
+		var tempTilesets = [];
+		tileImages.forEach(element => {
+			tempTilesets.push(new Tileset(element));
+		});
+		this.TileSets = new Tilesets(tempTilesets);
+		console.log(this.TileSets);
 		this.player = null;
         this.mapList = {};
         this.map = new GameMap(map, this, true);
