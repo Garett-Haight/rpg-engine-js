@@ -73,7 +73,9 @@
 "use strict";
 class Tileset {
     constructor(tileset) { 
+        
         this.name = tileset.src;
+        console.log(this);
         this.tilesetImage = new Image();
         this.tilesetImage.src = GLOBALS.img_path + tileset.src;
 
@@ -81,7 +83,7 @@ class Tileset {
         this.tilesetWidth = tileset.width;
         this.tilesetHeight = tileset.height;
 
-       this.getTileCoords = function(id) {
+       this.getTileCoords = function(id) { // This should be cached
             var x = ((id) % (this.tilesetWidth) * GLOBALS.TILE_WIDTH);
             // Might be able to replace Math.floor with | 0 bitwise operation
             var y = Math.floor((id) / (this.tilesetWidth))  * GLOBALS.TILE_HEIGHT;
@@ -338,12 +340,10 @@ class Controls {
     }
 
     checkUp(player) {
-        if(player.pos_y > 0) { // stay within map bounds
-            var upRow = Math.floor(player.pos_y / GLOBALS.TILE_HEIGHT) - 1;
-            var upCol = Math.floor(player.pos_x / GLOBALS.TILE_WIDTH);
-            // return value from collision map
-            return !this.game.map.collisions[upRow][upCol];
-        }
+        return !this.checkCollision({
+            x: player.pos_x, 
+            y: player.pos_y - player.playerSize
+        });
     }
 
     moveDown(player) {
@@ -355,11 +355,10 @@ class Controls {
     }
 
     checkDown(player) {
-        if (player.pos_y < ((GLOBALS.MAP_HEIGHT * GLOBALS.TILE_HEIGHT) - GLOBALS.TILE_HEIGHT)) {
-            var downRow = Math.floor(player.pos_y / GLOBALS.TILE_HEIGHT) + 1;
-            var downCol = Math.floor(player.pos_x / GLOBALS.TILE_WIDTH);
-            return !this.game.map.collisions[downRow][downCol];
-        }
+        return !this.checkCollision({
+            x: player.pos_x, 
+            y: player.pos_y + (player.playerSize * 2) // check the point that you're moving TO
+        });
     }
 
     moveRight(player) {
@@ -371,11 +370,10 @@ class Controls {
     }
 
     checkRight(player) {
-        if (player.pos_x < ((GLOBALS.MAP_WIDTH * GLOBALS.TILE_WIDTH) - GLOBALS.TILE_WIDTH)) {
-            var rightRow = Math.floor(player.pos_y / GLOBALS.TILE_HEIGHT);
-            var rightCol = Math.floor(player.pos_x / GLOBALS.TILE_WIDTH) + 1;
-            return !this.game.map.collisions[rightRow][rightCol];
-        }
+        return !this.checkCollision({
+            x: player.pos_x + (player.playerSize * 2), 
+            y: player.pos_y
+        });
     }
 
 
@@ -388,11 +386,28 @@ class Controls {
     }
 
     checkLeft(player) {
-        if (player.pos_x > 0) {
-            var leftRow = Math.floor(player.pos_y / GLOBALS.TILE_HEIGHT);
-            var leftCol = Math.floor(player.pos_x / GLOBALS.TILE_WIDTH) - 1;
-            return !this.game.map.collisions[leftRow][leftCol];
+        return !this.checkCollision({
+            x: player.pos_x - player.playerSize,
+            y: player.pos_y
+        });
+    }
+
+    checkCollision(p) {
+        for (let collisions of this.game.map.collisions) {
+            // return true if collides with collision rect or falls outside map bounds
+            var collides =  this.isInBounds(p, collisions) || 
+            p.y < 0 || 
+            p.y > (GLOBALS.MAP_HEIGHT * GLOBALS.TILE_HEIGHT) ||
+            p.x < 0 ||
+            p.x > (GLOBALS.MAP_WIDTH * GLOBALS.TILE_WIDTH);
+            if(collides) { return true; }
         }
+    }
+
+    isInBounds(p, rect) { // returns true if p is within the bounds of rect
+        return  (p.x <= rect.x + rect.width && p.x > rect.x) &&
+                (p.y <= rect.y + rect.height && p.y > rect.y);
+
     }
 
     interact(player, map) {
@@ -684,12 +699,8 @@ class GameMap {
 		var collisions = [];
 		for ( let layer of this.map.layers ) {
 			if (layer.name == "Collisions") {
-				for (let i = 0; i < GLOBALS.MAP_HEIGHT; i++) {
-					var cells = [];
-					for (let j = 0; j < GLOBALS.MAP_WIDTH; j++) {
-						cells.push(layer.data[(i*GLOBALS.MAP_WIDTH)+j]);
-					}
-					collisions.push(cells);
+				for (let i = 0; i < layer.objects.length; i++) {
+					collisions.push(layer.objects[i]);
 				}
 			}
 		}
@@ -907,7 +918,7 @@ class Player {
 		this.game = game;
 		this.canvas = canvas;
 		this.tilesDrawn = false;
-
+		this.playerSize = GLOBALS.TILE_WIDTH;
 		// player positioning
 		this.pos_x = pos.x;
 		this.pos_y = pos.y;

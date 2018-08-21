@@ -1,6 +1,8 @@
 export default class Tileset {
     constructor(tileset) { 
+        
         this.name = tileset.src;
+        console.log(this);
         this.tilesetImage = new Image();
         this.tilesetImage.src = GLOBALS.img_path + tileset.src;
 

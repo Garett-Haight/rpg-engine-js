@@ -118,12 +118,8 @@ export default class GameMap {
 		var collisions = [];
 		for ( let layer of this.map.layers ) {
 			if (layer.name == "Collisions") {
-				for (let i = 0; i < GLOBALS.MAP_HEIGHT; i++) {
-					var cells = [];
-					for (let j = 0; j < GLOBALS.MAP_WIDTH; j++) {
-						cells.push(layer.data[(i*GLOBALS.MAP_WIDTH)+j]);
-					}
-					collisions.push(cells);
+				for (let i = 0; i < layer.objects.length; i++) {
+					collisions.push(layer.objects[i]);
 				}
 			}
 		}

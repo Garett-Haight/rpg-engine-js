@@ -3,7 +3,7 @@ export default class Player {
 		this.game = game;
 		this.canvas = canvas;
 		this.tilesDrawn = false;
-
+		this.playerSize = GLOBALS.TILE_WIDTH;
 		// player positioning
 		this.pos_x = pos.x;
 		this.pos_y = pos.y;

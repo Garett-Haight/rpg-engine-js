@@ -42,12 +42,10 @@ export default class Controls {
     }
 
     checkUp(player) {
-        if(player.pos_y > 0) { // stay within map bounds
-            var upRow = Math.floor(player.pos_y / GLOBALS.TILE_HEIGHT) - 1;
-            var upCol = Math.floor(player.pos_x / GLOBALS.TILE_WIDTH);
-            // return value from collision map
-            return !this.game.map.collisions[upRow][upCol];
-        }
+        return !this.checkCollision({
+            x: player.pos_x, 
+            y: player.pos_y - player.playerSize
+        });
     }
 
     moveDown(player) {
@@ -59,11 +57,10 @@ export default class Controls {
     }
 
     checkDown(player) {
-        if (player.pos_y < ((GLOBALS.MAP_HEIGHT * GLOBALS.TILE_HEIGHT) - GLOBALS.TILE_HEIGHT)) {
-            var downRow = Math.floor(player.pos_y / GLOBALS.TILE_HEIGHT) + 1;
-            var downCol = Math.floor(player.pos_x / GLOBALS.TILE_WIDTH);
-            return !this.game.map.collisions[downRow][downCol];
-        }
+        return !this.checkCollision({
+            x: player.pos_x, 
+            y: player.pos_y + (player.playerSize * 2) // check the point that you're moving TO
+        });
     }
 
     moveRight(player) {
@@ -75,11 +72,10 @@ export default class Controls {
     }
 
     checkRight(player) {
-        if (player.pos_x < ((GLOBALS.MAP_WIDTH * GLOBALS.TILE_WIDTH) - GLOBALS.TILE_WIDTH)) {
-            var rightRow = Math.floor(player.pos_y / GLOBALS.TILE_HEIGHT);
-            var rightCol = Math.floor(player.pos_x / GLOBALS.TILE_WIDTH) + 1;
-            return !this.game.map.collisions[rightRow][rightCol];
-        }
+        return !this.checkCollision({
+            x: player.pos_x + (player.playerSize * 2), 
+            y: player.pos_y
+        });
     }
 
 
@@ -92,11 +88,28 @@ export default class Controls {
     }
 
     checkLeft(player) {
-        if (player.pos_x > 0) {
-            var leftRow = Math.floor(player.pos_y / GLOBALS.TILE_HEIGHT);
-            var leftCol = Math.floor(player.pos_x / GLOBALS.TILE_WIDTH) - 1;
-            return !this.game.map.collisions[leftRow][leftCol];
+        return !this.checkCollision({
+            x: player.pos_x - player.playerSize,
+            y: player.pos_y
+        });
+    }
+
+    checkCollision(p) {
+        for (let collisions of this.game.map.collisions) {
+            // return true if collides with collision rect or falls outside map bounds
+            var collides =  this.isInBounds(p, collisions) || 
+            p.y < 0 || 
+            p.y > (GLOBALS.MAP_HEIGHT * GLOBALS.TILE_HEIGHT) ||
+            p.x < 0 ||
+            p.x > (GLOBALS.MAP_WIDTH * GLOBALS.TILE_WIDTH);
+            if(collides) { return true; }
         }
+    }
+
+    isInBounds(p, rect) { // returns true if p is within the bounds of rect
+        return  (p.x <= rect.x + rect.width && p.x > rect.x) &&
+                (p.y <= rect.y + rect.height && p.y > rect.y);
+
     }
 
     interact(player, map) {
