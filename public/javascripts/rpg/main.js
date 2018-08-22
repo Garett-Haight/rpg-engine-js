@@ -32,7 +32,7 @@ const CONTENT = {
 // var tileImages = ["0x72_16x16DungeonTileset.v4.png", "0x72_16x16DungeonTileset_walls.v1.png"];
 var tileImages = [
 	{
-		src: "0x72_16x16DungeonTileset.v4.png", // going to need to get first gid values for each tileset
+		src: "0x72_16x16DungeonTileset_walls.v1.png", // going to need to get first gid values for each tileset
 		height: 16,
 		width: 16
 	}
@@ -53,12 +53,6 @@ window.TILESET = [
 var gameObj;
 class Game {
 	constructor(map) {
-		var tempTilesets = [];
-		tileImages.forEach(element => {
-			tempTilesets.push(new Tileset(element));
-		});
-		this.TileSets = new Tilesets(tempTilesets);
-		console.log(this.TileSets);
 		this.player = null;
         this.mapList = {};
         this.map = new GameMap(map, this, true);

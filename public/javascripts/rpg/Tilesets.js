@@ -8,5 +8,28 @@ export default class Tilesets {
                 Tileset: element
             });
         });
+
+
+        this.getTileCoordsById = function(id) { 
+            var coords = false;
+            this.Tilesets.forEach((tileset, i) => {
+                if(id >= tileset.Tileset.firstgid) {
+                    coords = tileset.Tileset.getTileCoords(id);
+                    return;
+                }
+            });
+            return coords;
+        }
+
+        this.getTilesetImageById = function(id) {
+            var image = false;
+            this.Tilesets.forEach((tileset, i) => {
+                if(id >= tileset.Tileset.firstgid) { // need to flush this out a little
+                    image = tileset.Tileset.tilesetImage;
+                    return;
+                }
+            });
+            return image;
+        }
     }
 }

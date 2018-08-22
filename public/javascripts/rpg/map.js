@@ -1,4 +1,5 @@
 import Player from "./player";
+import Tilesets from "./Tilesets"
 import Tileset from "./Tileset"
 
 export default class GameMap {
@@ -7,7 +8,7 @@ export default class GameMap {
         this.player = game.player;
         this.promise = this.getMap(map, drawMap);
 		this.mapName = map;
-		this.tileset = game.TileSets.Tilesets[0].Tileset;
+		this.loadedTiles = [];
 	}
 
 	getMap(mapId, drawMap) {
@@ -43,7 +44,8 @@ export default class GameMap {
             this.mapName = mapId;
             if(!this.game.mapList[mapId]) {
             	// non-cached response returns JSON which needs to be parsed
-                this.map = response;
+				this.map = response;
+				this.getTilesets();
                 this.parseEvents();
             }
             else {
@@ -55,16 +57,32 @@ export default class GameMap {
             }
 
             if (drawMap) {
-				this.tileset.tilesetImage.onload = function() {
-					this.render();
-				}.bind(this);
+				var self = this;
+				this.tilesets.Tilesets.forEach(tileset => {
+					// There has got to be a better way to do this
+					// Maybe the constructor for each Tileset could return a promise instead of
+					// handling it here
+
+					new Promise((resolve, reject) => {
+						tileset.Tileset.tilesetImage.onload = function() {
+							resolve(tileset.Tileset.name);
+						}
+					}).then(response => {
+						self.loadedTiles.push(response);
+						console.log(response);
+						if	(self.loadedTiles.length == this.tilesets.Tilesets.length) { // when tiles are downloaded, we can render the map
+							console.log("rendering!");
+							self.render();
+						}
+					});	
+				}); 
 			}
 		});
 
 		return mapPromise;
 	}
 
-	loadMap(mapId, args) {
+	loadMap(mapId, args) { // bit of a misnomer... this seems to be more for teleporting to new maps
 		// update mapList with current version of the map
 		this.game.mapList[this.mapName] = Object.assign(Object.create(this), this);
 
@@ -92,9 +110,10 @@ export default class GameMap {
 		
 		for (let i = 0; i < map.height; i++) {
 			for(let j = 0; j < map.width; j++) {
-				var tileCoords = this.tileset.getTileCoords(tiles[(i*GLOBALS.MAP_WIDTH) + j]);
+				var tileCoords = this.tilesets.getTileCoordsById(tiles[(i*GLOBALS.MAP_WIDTH) + j] + 1);
+				var image = this.tilesets.getTilesetImageById(tiles[(i*GLOBALS.MAP_WIDTH) + j] + 1); // gids start at 1 for some reason
 				ctx.drawImage(
-					this.tileset.tilesetImage, 
+					image, 
 					tileCoords.x, 
 					tileCoords.y, 
 					GLOBALS.TILE_WIDTH,
@@ -103,12 +122,6 @@ export default class GameMap {
 					i * GLOBALS.TILE_HEIGHT, 
 					GLOBALS.TILE_WIDTH,
 					GLOBALS.TILE_HEIGHT);
-				// ctx.fillStyle = TILESET[tiles[(i*GLOBALS.MAP_WIDTH) + j]];
-                // ctx.fillRect(
-                // 	j * GLOBALS.TILE_WIDTH,
-				// 	i * GLOBALS.TILE_HEIGHT,
-				// 	GLOBALS.TILE_WIDTH,
-				// 	GLOBALS.TILE_HEIGHT);
 			}
 			this.tilesDrawn = true;
 		}
@@ -124,6 +137,22 @@ export default class GameMap {
 			}
 		}
 		this.collisions = collisions;
+	}
+
+	getTilesets() {
+		var tilesets = [];
+		for(let tileset of this.map.tilesets) {
+			// This might cause some resource bloating... need to find a way to cache images
+			// maybe embed them on the page and provide a dom reference?
+			tilesets.push(new Tileset({
+				name: tileset.name,
+				src: tileset.image.split('\\').pop().split('/').pop(), 
+				height: tileset.tileheight,
+				width: tileset.tilewidth,
+				firstgid: tileset.firstgid
+			}));
+		}
+		this.tilesets = new Tilesets(tilesets);
 	}
 
 	// Events are items, map teleports, etc.

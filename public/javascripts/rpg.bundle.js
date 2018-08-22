@@ -73,8 +73,9 @@
 "use strict";
 class Tileset {
     constructor(tileset) { 
-        
-        this.name = tileset.src;
+        this.name = tileset.name
+        this.src = tileset.src;
+        this.firstgid = tileset.firstgid;
         console.log(this);
         this.tilesetImage = new Image();
         this.tilesetImage.src = GLOBALS.img_path + tileset.src;
@@ -84,12 +85,12 @@ class Tileset {
         this.tilesetHeight = tileset.height;
 
        this.getTileCoords = function(id) { // This should be cached
-            var x = ((id) % (this.tilesetWidth) * GLOBALS.TILE_WIDTH);
+            var x = ((id - this.firstgid) % (this.tilesetWidth) * GLOBALS.TILE_WIDTH);
             // Might be able to replace Math.floor with | 0 bitwise operation
-            var y = Math.floor((id) / (this.tilesetWidth))  * GLOBALS.TILE_HEIGHT;
+            var y = Math.floor((id - this.firstgid) / (this.tilesetWidth))  * GLOBALS.TILE_HEIGHT;
             return {x: x, y: y};
         }
-        console.log(this.getTileCoords(0));
+        //console.log(this.getTileCoords(0));
     }
 
     
@@ -133,6 +134,29 @@ class Tilesets {
                 Tileset: element
             });
         });
+
+
+        this.getTileCoordsById = function(id) { 
+            var coords = false;
+            this.Tilesets.forEach((tileset, i) => {
+                if(id >= tileset.Tileset.firstgid) {
+                    coords = tileset.Tileset.getTileCoords(id);
+                    return;
+                }
+            });
+            return coords;
+        }
+
+        this.getTilesetImageById = function(id) {
+            var image = false;
+            this.Tilesets.forEach((tileset, i) => {
+                if(id >= tileset.Tileset.firstgid) { // need to flush this out a little
+                    image = tileset.Tileset.tilesetImage;
+                    return;
+                }
+            });
+            return image;
+        }
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Tilesets;
@@ -578,7 +602,9 @@ class Events{
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__player__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Tileset__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Tilesets__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Tileset__ = __webpack_require__(0);
+
 
 
 
@@ -588,7 +614,7 @@ class GameMap {
         this.player = game.player;
         this.promise = this.getMap(map, drawMap);
 		this.mapName = map;
-		this.tileset = game.TileSets.Tilesets[0].Tileset;
+		this.loadedTiles = [];
 	}
 
 	getMap(mapId, drawMap) {
@@ -624,7 +650,8 @@ class GameMap {
             this.mapName = mapId;
             if(!this.game.mapList[mapId]) {
             	// non-cached response returns JSON which needs to be parsed
-                this.map = response;
+				this.map = response;
+				this.getTilesets();
                 this.parseEvents();
             }
             else {
@@ -636,16 +663,32 @@ class GameMap {
             }
 
             if (drawMap) {
-				this.tileset.tilesetImage.onload = function() {
-					this.render();
-				}.bind(this);
+				var self = this;
+				this.tilesets.Tilesets.forEach(tileset => {
+					// There has got to be a better way to do this
+					// Maybe the constructor for each Tileset could return a promise instead of
+					// handling it here
+
+					new Promise((resolve, reject) => {
+						tileset.Tileset.tilesetImage.onload = function() {
+							resolve(tileset.Tileset.name);
+						}
+					}).then(response => {
+						self.loadedTiles.push(response);
+						console.log(response);
+						if	(self.loadedTiles.length == this.tilesets.Tilesets.length) { // when tiles are downloaded, we can render the map
+							console.log("rendering!");
+							self.render();
+						}
+					});	
+				}); 
 			}
 		});
 
 		return mapPromise;
 	}
 
-	loadMap(mapId, args) {
+	loadMap(mapId, args) { // bit of a misnomer... this seems to be more for teleporting to new maps
 		// update mapList with current version of the map
 		this.game.mapList[this.mapName] = Object.assign(Object.create(this), this);
 
@@ -673,9 +716,10 @@ class GameMap {
 		
 		for (let i = 0; i < map.height; i++) {
 			for(let j = 0; j < map.width; j++) {
-				var tileCoords = this.tileset.getTileCoords(tiles[(i*GLOBALS.MAP_WIDTH) + j]);
+				var tileCoords = this.tilesets.getTileCoordsById(tiles[(i*GLOBALS.MAP_WIDTH) + j] + 1);
+				var image = this.tilesets.getTilesetImageById(tiles[(i*GLOBALS.MAP_WIDTH) + j] + 1); // gids start at 1 for some reason
 				ctx.drawImage(
-					this.tileset.tilesetImage, 
+					image, 
 					tileCoords.x, 
 					tileCoords.y, 
 					GLOBALS.TILE_WIDTH,
@@ -684,12 +728,6 @@ class GameMap {
 					i * GLOBALS.TILE_HEIGHT, 
 					GLOBALS.TILE_WIDTH,
 					GLOBALS.TILE_HEIGHT);
-				// ctx.fillStyle = TILESET[tiles[(i*GLOBALS.MAP_WIDTH) + j]];
-                // ctx.fillRect(
-                // 	j * GLOBALS.TILE_WIDTH,
-				// 	i * GLOBALS.TILE_HEIGHT,
-				// 	GLOBALS.TILE_WIDTH,
-				// 	GLOBALS.TILE_HEIGHT);
 			}
 			this.tilesDrawn = true;
 		}
@@ -705,6 +743,22 @@ class GameMap {
 			}
 		}
 		this.collisions = collisions;
+	}
+
+	getTilesets() {
+		var tilesets = [];
+		for(let tileset of this.map.tilesets) {
+			// This might cause some resource bloating... need to find a way to cache images
+			// maybe embed them on the page and provide a dom reference?
+			tilesets.push(new __WEBPACK_IMPORTED_MODULE_2__Tileset__["a" /* default */]({
+				name: tileset.name,
+				src: tileset.image.split('\\').pop().split('/').pop(), 
+				height: tileset.tileheight,
+				width: tileset.tilewidth,
+				firstgid: tileset.firstgid
+			}));
+		}
+		this.tilesets = new __WEBPACK_IMPORTED_MODULE_1__Tilesets__["a" /* default */](tilesets);
 	}
 
 	// Events are items, map teleports, etc.
@@ -855,7 +909,7 @@ const CONTENT = {
 // var tileImages = ["0x72_16x16DungeonTileset.v4.png", "0x72_16x16DungeonTileset_walls.v1.png"];
 var tileImages = [
 	{
-		src: "0x72_16x16DungeonTileset.v4.png", // going to need to get first gid values for each tileset
+		src: "0x72_16x16DungeonTileset_walls.v1.png", // going to need to get first gid values for each tileset
 		height: 16,
 		width: 16
 	}
@@ -876,12 +930,6 @@ window.TILESET = [
 var gameObj;
 class Game {
 	constructor(map) {
-		var tempTilesets = [];
-		tileImages.forEach(element => {
-			tempTilesets.push(new __WEBPACK_IMPORTED_MODULE_6__Tileset__["a" /* default */](element));
-		});
-		this.TileSets = new __WEBPACK_IMPORTED_MODULE_7__Tilesets__["a" /* default */](tempTilesets);
-		console.log(this.TileSets);
 		this.player = null;
         this.mapList = {};
         this.map = new __WEBPACK_IMPORTED_MODULE_0__map__["a" /* default */](map, this, true);

@@ -1,7 +1,8 @@
 export default class Tileset {
     constructor(tileset) { 
-        
-        this.name = tileset.src;
+        this.name = tileset.name
+        this.src = tileset.src;
+        this.firstgid = tileset.firstgid;
         console.log(this);
         this.tilesetImage = new Image();
         this.tilesetImage.src = GLOBALS.img_path + tileset.src;
@@ -11,12 +12,12 @@ export default class Tileset {
         this.tilesetHeight = tileset.height;
 
        this.getTileCoords = function(id) { // This should be cached
-            var x = ((id) % (this.tilesetWidth) * GLOBALS.TILE_WIDTH);
+            var x = ((id - this.firstgid) % (this.tilesetWidth) * GLOBALS.TILE_WIDTH);
             // Might be able to replace Math.floor with | 0 bitwise operation
-            var y = Math.floor((id) / (this.tilesetWidth))  * GLOBALS.TILE_HEIGHT;
+            var y = Math.floor((id - this.firstgid) / (this.tilesetWidth))  * GLOBALS.TILE_HEIGHT;
             return {x: x, y: y};
         }
-        console.log(this.getTileCoords(0));
+        //console.log(this.getTileCoords(0));
     }
 
     
