@@ -1,4 +1,3 @@
-// add quest support, duh
 export default class Tilesets {
     constructor(Tilesets) { 
         this.Tilesets = [];
@@ -14,6 +13,8 @@ export default class Tilesets {
             var coords = false;
             this.Tilesets.forEach((tileset, i) => {
                 if(id >= tileset.Tileset.firstgid) {
+                     // The firstgid of a tileset image will change per map unless special precautions are taken. 
+                     // This value should probably be stored as a tileName => firstgid per map
                     coords = tileset.Tileset.getTileCoords(id);
                     return;
                 }

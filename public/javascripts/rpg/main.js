@@ -54,7 +54,8 @@ var gameObj;
 class Game {
 	constructor(map) {
 		this.player = null;
-        this.mapList = {};
+		this.mapList = {};
+		this.tileSets = [];
         this.map = new GameMap(map, this, true);
 		this.controls = new Controls(this);
 		//this.mapList[this.map.mapName] = this.map;

@@ -1,6 +1,7 @@
 import Player from "./player";
 import Tilesets from "./Tilesets"
 import Tileset from "./Tileset"
+import _ from "lodash"
 
 export default class GameMap {
 	constructor(map, game, drawMap=false) {
@@ -144,13 +145,18 @@ export default class GameMap {
 		for(let tileset of this.map.tilesets) {
 			// This might cause some resource bloating... need to find a way to cache images
 			// maybe embed them on the page and provide a dom reference?
-			tilesets.push(new Tileset({
-				name: tileset.name,
-				src: tileset.image.split('\\').pop().split('/').pop(), 
-				height: tileset.tileheight,
-				width: tileset.tilewidth,
-				firstgid: tileset.firstgid
-			}));
+			var isLoaded = !!_.find(tilesets, function(o) {
+				return o.name == tileset.name;
+			});
+			if (!isLoaded) {
+				tilesets.push(new Tileset({
+					name: tileset.name,
+					src: tileset.image.split('\\').pop().split('/').pop(), 
+					height: tileset.tileheight,
+					width: tileset.tilewidth,
+					firstgid: tileset.firstgid
+				}));
+			}
 		}
 		this.tilesets = new Tilesets(tilesets);
 	}
