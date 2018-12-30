@@ -5,7 +5,7 @@ import Events from "./events";
 import UI from "./UI";
 import NPC from "./NPC";
 import Tileset from "./Tileset";
-import Tilesets from "./Tilesets";
+// import {Tilesets} from "./Tilesets";
 
 
 const body = document.querySelector(".top");
@@ -55,7 +55,7 @@ class Game {
 	constructor(map) {
 		this.player = null;
 		this.mapList = {};
-		this.tileSets = [];
+		//this.tileSets = [];
         this.map = new GameMap(map, this, true);
 		this.controls = new Controls(this);
 		//this.mapList[this.map.mapName] = this.map;

@@ -1,10 +1,12 @@
 import Player from "./player";
-import Tilesets from "./Tilesets"
+import MapService from './services/MapService'
+import { GlobalTilesets } from "./Tilesets"
 import Tileset from "./Tileset"
 import _ from "lodash"
 
 export default class GameMap {
 	constructor(map, game, drawMap=false) {
+		this.mapService = new MapService();
         this.game = game;
         this.player = game.player;
         this.promise = this.getMap(map, drawMap);
@@ -20,32 +22,13 @@ export default class GameMap {
         this.events = null;
 
 		// check if map has already been loaded to mapList
-		var mapPromise = new Promise((resolve, reject) => {
-			if (!this.game.mapList[mapId]) {
-				var request = new XMLHttpRequest();
-				request.open('Get', '/maps/map' + mapId + '_new.json');
-				request.onreadystatechange = function() {
-					if(request.readyState === 4) {
-						if(request.status === 200) {
-							resolve(JSON.parse(request.responseText));
-						}
-						else {
-							reject("Something went wrong.");
-						}
-					}
-				};
-				request.send();
-			}
-			else {
-				resolve(this.game.mapList[mapId]);
-			}
-		});
-
-		mapPromise.then((response) => {
-            this.mapName = mapId;
+		this.mapService.getMap('map' + mapId + '_new.json')
+		.then((response) => {
+			this.mapName = mapId;
+			console.log(response);
             if(!this.game.mapList[mapId]) {
             	// non-cached response returns JSON which needs to be parsed
-				this.map = response;
+				this.map = response.data;
 				this.getTilesets();
                 this.parseEvents();
             }
@@ -59,28 +42,26 @@ export default class GameMap {
 
             if (drawMap) {
 				var self = this;
-				this.tilesets.Tilesets.forEach(tileset => {
+				this.tilesets.forEach(tileset => {
 					// There has got to be a better way to do this
 					// Maybe the constructor for each Tileset could return a promise instead of
 					// handling it here
 
-					new Promise((resolve, reject) => {
-						tileset.Tileset.tilesetImage.onload = function() {
-							resolve(tileset.Tileset.name);
-						}
-					}).then(response => {
-						self.loadedTiles.push(response);
-						console.log(response);
-						if	(self.loadedTiles.length == this.tilesets.Tilesets.length) { // when tiles are downloaded, we can render the map
-							console.log("rendering!");
-							self.render();
-						}
-					});	
+					// new Promise((resolve, reject) => {
+					// 	tileset.Tileset.tilesetImage.onload = function() {
+					// 		resolve(tileset.Tileset.name);
+					// 	}
+					// }).then(response => {
+					// 	self.loadedTiles.push(response);
+					// 	console.log(response);
+					// 	if	(self.loadedTiles.length == this.tilesets.Tilesets.length) { // when tiles are downloaded, we can render the map
+					// 		console.log("rendering!");
+					// 		self.render();
+					// 	}
+					// });	
 				}); 
 			}
 		});
-
-		return mapPromise;
 	}
 
 	loadMap(mapId, args) { // bit of a misnomer... this seems to be more for teleporting to new maps
@@ -143,22 +124,26 @@ export default class GameMap {
 	getTilesets() {
 		var tilesets = [];
 		for(let tileset of this.map.tilesets) {
+			var mapTileset = new Tileset(tileset);
+			if (!GlobalTilesets.exists(mapTileset)) {		
+				GlobalTilesets.add(mapTileset);
+			}
 			// This might cause some resource bloating... need to find a way to cache images
 			// maybe embed them on the page and provide a dom reference?
-			var isLoaded = !!_.find(tilesets, function(o) {
-				return o.name == tileset.name;
-			});
-			if (!isLoaded) {
-				tilesets.push(new Tileset({
-					name: tileset.name,
-					src: tileset.image.split('\\').pop().split('/').pop(), 
-					height: tileset.tileheight,
-					width: tileset.tilewidth,
-					firstgid: tileset.firstgid
-				}));
-			}
+			// var isLoaded = !!_.find(tilesets, function(o) {
+			// 	return o.name == tileset.name;
+			// });
+			// if (!isLoaded) {
+			// 	tilesets.push(new Tileset({
+			// 		name: tileset.name,
+			// 		src: tileset.image.split('\\').pop().split('/').pop(), 
+			// 		height: tileset.tileheight,
+			// 		width: tileset.tilewidth,
+			// 		firstgid: tileset.firstgid
+			// 	}));
+			// }
 		}
-		this.tilesets = new Tilesets(tilesets);
+		console.log(GlobalTilesets);
 	}
 
 	// Events are items, map teleports, etc.
