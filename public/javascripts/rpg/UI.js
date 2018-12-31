@@ -60,7 +60,15 @@ export default class UI{
 
 	}
 
+    createCanvas() {
 
+    }
+    
+    createPanel() {
+
+    }
+
+    
 	createButton(text, id, appendTo=this.container, func) {
         var button = document.createElement("button");
         button.innerText = text;

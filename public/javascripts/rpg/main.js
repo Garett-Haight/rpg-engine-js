@@ -1,19 +1,22 @@
-import GameMap from "./map";
-import Controls from "./controls";
-import Console from "./console";
-import Events from "./events";
+import Game from "./Game"
+import {MapStore} from "./MapStore";
+import GameMap from "./GameMap";
+import Controls from "./Controls";
+import Console from "./Console";
+import Events from "./Events";
 import UI from "./UI";
 import NPC from "./NPC";
+import TilesetStore from "./TilesetStore";
 import Tileset from "./Tileset";
-// import {Tilesets} from "./Tilesets";
+
 
 
 const body = document.querySelector(".top");
 
 // create map element
-const mapElement = document.createElement("canvas");
-mapElement.id = "map";
-body.appendChild(mapElement);
+// const mapElement = document.createElement("canvas");
+// mapElement.id = "map";
+// body.appendChild(mapElement);
 
 window.GLOBALS = {
     TILE_WIDTH: 16,
@@ -50,23 +53,6 @@ window.TILESET = [
 	"#00ff99"
 ];
 
-var gameObj;
-class Game {
-	constructor(map) {
-		this.player = null;
-		this.mapList = {};
-		//this.tileSets = [];
-        this.map = new GameMap(map, this, true);
-		this.controls = new Controls(this);
-		//this.mapList[this.map.mapName] = this.map;
-		this.events = new Events();
-		this.ui = new UI(this);
-		this.console = new Console();
-		// starting inventory
-		this.startingInventory = {potion: 1, mana: 1};
-	}
-}
-
 function getNodeIndex (n) {
 		var i = 0;
 		while(n = n.previousElementSibling) {
@@ -76,6 +62,6 @@ function getNodeIndex (n) {
 	}
 
 document.addEventListener('DOMContentLoaded', (e) => {
-	window.gameObj = new Game(1);
+	window.gameObj = new Game("#gameContainer", 1);
 	window.gameObj.console.sendMessage("Ye find yeself in yon dungeon. Obvious exits are NORTH, SOUTH, and DENNIS");
 });
