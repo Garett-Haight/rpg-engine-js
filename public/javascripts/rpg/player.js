@@ -1,9 +1,11 @@
+import Globals from './Globals'
+
 export default class Player {
 	constructor(canvas, game, pos={x:0,y:0}) {
 		this.game = game;
 		this.canvas = canvas;
 		this.tilesDrawn = false;
-		this.playerSize = GLOBALS.TILE_WIDTH;
+		this.playerSize = Globals.TILE_WIDTH;
 		// player positioning
 		this.pos_x = pos.x;
 		this.pos_y = pos.y;
@@ -21,7 +23,7 @@ export default class Player {
 	draw() {
 		var ctx = this.canvas.getContext("2d");
 		ctx.fillStyle = TILESET[6];
-		ctx.fillRect(this.pos_x, this.pos_y, GLOBALS.TILE_WIDTH, GLOBALS.TILE_HEIGHT);
+		ctx.fillRect(this.pos_x, this.pos_y, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
 	}
 
 	update() {

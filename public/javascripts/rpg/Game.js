@@ -5,11 +5,11 @@ import UI from './UI';
 import Console from './Console';
 
 export default class Game {
-	constructor(container, map) {
-        this.container = document.querySelector(container);
+	constructor(Config) {
+        this.container = document.querySelector(Config.container);
 		this.player = null;
 		this.mapList = {};
-        this.map = new GameMap(map, this, true);
+        this.map = new GameMap(Config.firstMap, this, true);
 		this.controls = new Controls(this);
 		this.events = new Events();
 		this.ui = new UI(this);
@@ -17,18 +17,9 @@ export default class Game {
         
 
         // create dom elements for game sections
-        let top = document.createElement('div');
-        top.id = "top";
-        this.container.appendChild(top);
-
-        let mapElement = document.createElement("canvas");
-        mapElement.id = "map";
-        top.appendChild(mapElement);
-
-        let bottom = document.createElement('div');
-        bottom.id = "bottom";
-        this.container.appendChild(bottom);
-
+        let top = UI.createPanel("top", this.container);
+        let mapElement = UI.createCanvas("map", top);
+        let bottom = UI.createPanel("bottom", this.container);
 
 		// starting inventory
 		this.startingInventory = {potion: 1, mana: 1};

@@ -1,3 +1,4 @@
+import Globals from './Globals'
 import Player from "./player";
 import MapService from './services/MapService'
 import TilesetStore from "./TilesetStore"
@@ -83,27 +84,27 @@ export default class GameMap {
 		var mapElement = document.querySelector(container);
 		var ctx = mapElement.getContext("2d");
 		// Clear previous render
-		ctx.clearRect(0,0, GLOBALS.MAP_WIDTH * GLOBALS.TILE_WIDTH, GLOBALS.MAP_HEIGHT * GLOBALS.TILE_HEIGHT);
+		ctx.clearRect(0,0, Globals.MAP_WIDTH * Globals.TILE_WIDTH, Globals.MAP_HEIGHT * Globals.TILE_HEIGHT);
 
-		mapElement.width = GLOBALS.MAP_WIDTH * GLOBALS.TILE_WIDTH;
-		mapElement.height = GLOBALS.MAP_HEIGHT * GLOBALS.TILE_HEIGHT;
-		map.width = GLOBALS.MAP_WIDTH;
-		map.height = GLOBALS.MAP_HEIGHT;
+		mapElement.width = Globals.MAP_WIDTH * Globals.TILE_WIDTH;
+		mapElement.height = Globals.MAP_HEIGHT * Globals.TILE_HEIGHT;
+		map.width = Globals.MAP_WIDTH;
+		map.height = Globals.MAP_HEIGHT;
 		
 		for (let i = 0; i < map.height; i++) {
 			for(let j = 0; j < map.width; j++) {
-				var tileCoords = this.tilesets.getTileCoordsById(tiles[(i*GLOBALS.MAP_WIDTH) + j] + 1);
-				var image = this.tilesets.getTilesetImageById(tiles[(i*GLOBALS.MAP_WIDTH) + j] + 1); // gids start at 1 for some reason
+				var tileCoords = this.tilesets.getTileCoordsById(tiles[(i*Globals.MAP_WIDTH) + j] + 1);
+				var image = this.tilesets.getTilesetImageById(tiles[(i*Globals.MAP_WIDTH) + j] + 1); // gids start at 1 for some reason
 				ctx.drawImage(
 					image, 
 					tileCoords.x, 
 					tileCoords.y, 
-					GLOBALS.TILE_WIDTH,
-					GLOBALS.TILE_HEIGHT,
-					j * GLOBALS.TILE_WIDTH, 
-					i * GLOBALS.TILE_HEIGHT, 
-					GLOBALS.TILE_WIDTH,
-					GLOBALS.TILE_HEIGHT);
+					Globals.TILE_WIDTH,
+					Globals.TILE_HEIGHT,
+					j * Globals.TILE_WIDTH, 
+					i * Globals.TILE_HEIGHT, 
+					Globals.TILE_WIDTH,
+					Globals.TILE_HEIGHT);
 			}
 			this.tilesDrawn = true;
 		}
@@ -165,20 +166,20 @@ export default class GameMap {
 			eventsContainer = document.createElement("canvas");
 			eventsContainer.id = "events";
 
-            eventsContainer.width = GLOBALS.MAP_WIDTH * GLOBALS.TILE_WIDTH;
-            eventsContainer.height = GLOBALS.MAP_HEIGHT * GLOBALS.TILE_HEIGHT;
+            eventsContainer.width = Globals.MAP_WIDTH * Globals.TILE_WIDTH;
+            eventsContainer.height = Globals.MAP_HEIGHT * Globals.TILE_HEIGHT;
 
             mapElement.appendChild(eventsContainer);
 		}
 
 		var ctx = eventsContainer.getContext("2d");
-		ctx.clearRect(0,0, GLOBALS.MAP_WIDTH * GLOBALS.TILE_WIDTH, GLOBALS.MAP_HEIGHT * GLOBALS.TILE_HEIGHT);
+		ctx.clearRect(0,0, Globals.MAP_WIDTH * Globals.TILE_WIDTH, Globals.MAP_HEIGHT * Globals.TILE_HEIGHT);
         ctx.fillStyle = TILESET[5];
 
 		if (this.events.length > 0) {
 			for(let e of this.events) {
 				if (e.visible) {
-					ctx.fillRect(e.x, e.y - GLOBALS.TILE_HEIGHT, GLOBALS.TILE_WIDTH, GLOBALS.TILE_HEIGHT);
+					ctx.fillRect(e.x, e.y - Globals.TILE_HEIGHT, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
 				}
 			}
 		}
@@ -196,18 +197,18 @@ export default class GameMap {
 						entitiesContainer = document.createElement('canvas');
 						entitiesContainer.id = "entities";
 
-						entitiesContainer.width = GLOBALS.MAP_WIDTH * GLOBALS.TILE_WIDTH;
-						entitiesContainer.height = GLOBALS.MAP_HEIGHT * GLOBALS.TILE_HEIGHT;
+						entitiesContainer.width = Globals.MAP_WIDTH * Globals.TILE_WIDTH;
+						entitiesContainer.height = Globals.MAP_HEIGHT * Globals.TILE_HEIGHT;
 						mapElement.appendChild(entitiesContainer);
 
 					}
 
                     var ctx = entitiesContainer.getContext("2d");
-                    ctx.clearRect(0,0, GLOBALS.MAP_WIDTH * GLOBALS.TILE_WIDTH, GLOBALS.MAP_HEIGHT * GLOBALS.TILE_HEIGHT);
+                    ctx.clearRect(0,0, Globals.MAP_WIDTH * Globals.TILE_WIDTH, Globals.MAP_HEIGHT * Globals.TILE_HEIGHT);
 					
 					for (let e of layer.objects) {
 						// Tiled positions objects at bottom left instead of top left
-						e.y = e.y - GLOBALS.TILE_HEIGHT;
+						e.y = e.y - Globals.TILE_HEIGHT;
 						if (e.name == "Player" && !this.game.player) {
 							this.placePlayer(entitiesContainer, {x: e.x, y: e.y});
 						}

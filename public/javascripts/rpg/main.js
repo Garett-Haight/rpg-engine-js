@@ -1,3 +1,5 @@
+import Config from './Config'
+import Globals from './Globals'
 import Game from "./Game"
 import {MapStore} from "./MapStore";
 import GameMap from "./GameMap";
@@ -9,23 +11,10 @@ import NPC from "./NPC";
 import TilesetStore from "./TilesetStore";
 import Tileset from "./Tileset";
 
-
-
-const body = document.querySelector(".top");
-
 // create map element
 // const mapElement = document.createElement("canvas");
 // mapElement.id = "map";
 // body.appendChild(mapElement);
-
-window.GLOBALS = {
-    TILE_WIDTH: 16,
-    TILE_HEIGHT: 16,
-    MAP_WIDTH: 20,
-    MAP_HEIGHT: 20,
-	ITEM_LIMIT: 99,
-	img_path: "/images/"
-}
 
 // use this for static text content later?
 const CONTENT = {
@@ -53,15 +42,7 @@ window.TILESET = [
 	"#00ff99"
 ];
 
-function getNodeIndex (n) {
-		var i = 0;
-		while(n = n.previousElementSibling) {
-			i++;
-		}
-		return i;
-	}
-
 document.addEventListener('DOMContentLoaded', (e) => {
-	window.gameObj = new Game("#gameContainer", 1);
-	window.gameObj.console.sendMessage("Ye find yeself in yon dungeon. Obvious exits are NORTH, SOUTH, and DENNIS");
+	var gameObj = new Game(Config);
+	//gameObj.console.sendMessage("Ye find yeself in yon dungeon. Obvious exits are NORTH, SOUTH, and DENNIS");
 });

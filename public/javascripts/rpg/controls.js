@@ -1,3 +1,5 @@
+import Globals from './Globals'
+
 export default class Controls {
     constructor(game) {
         this.game = game;
@@ -35,7 +37,7 @@ export default class Controls {
 
     moveUp(player) {
         if (this.checkUp(player)) {
-            player.pos_y -= GLOBALS.TILE_HEIGHT;
+            player.pos_y -= Globals.TILE_HEIGHT;
             player.update();
             this.checkForEvent(player, this.game.map);
         }
@@ -50,7 +52,7 @@ export default class Controls {
 
     moveDown(player) {
         if (this.checkDown(player)) {
-            player.pos_y += GLOBALS.TILE_HEIGHT;
+            player.pos_y += Globals.TILE_HEIGHT;
             player.update();
             this.checkForEvent(player, this.game.map);
         }
@@ -65,7 +67,7 @@ export default class Controls {
 
     moveRight(player) {
         if (this.checkRight(player)) {
-            player.pos_x += GLOBALS.TILE_WIDTH;
+            player.pos_x += Globals.TILE_WIDTH;
             player.update();
             this.checkForEvent(player, this.game.map);
         }
@@ -81,7 +83,7 @@ export default class Controls {
 
     moveLeft(player) {
         if (this.checkLeft(player)) {
-            player.pos_x -= GLOBALS.TILE_WIDTH;
+            player.pos_x -= Globals.TILE_WIDTH;
             player.update();
             this.checkForEvent(player, this.game.map);
         }
@@ -99,9 +101,9 @@ export default class Controls {
             // return true if collides with collision rect or falls outside map bounds
             var collides =  this.isInBounds(p, collisions) || 
             p.y < 0 || 
-            p.y > (GLOBALS.MAP_HEIGHT * GLOBALS.TILE_HEIGHT) ||
+            p.y > (Globals.MAP_HEIGHT * Globals.TILE_HEIGHT) ||
             p.x < 0 ||
-            p.x > (GLOBALS.MAP_WIDTH * GLOBALS.TILE_WIDTH);
+            p.x > (Globals.MAP_WIDTH * Globals.TILE_WIDTH);
             if(collides) { return true; }
         }
     }
@@ -124,7 +126,7 @@ export default class Controls {
     	this.events = [];
     	for (let e of map.events) {
             // events are positioned at bottom left in Tiled....
-    		if (e.x == player.pos_x && e.y == player.pos_y + GLOBALS.TILE_HEIGHT) {
+    		if (e.x == player.pos_x && e.y == player.pos_y + Globals.TILE_HEIGHT) {
     			this.events.push(e);
     		}
     	}

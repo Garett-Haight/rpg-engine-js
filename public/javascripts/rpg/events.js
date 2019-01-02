@@ -1,3 +1,5 @@
+import Globals from './Globals'
+
 export default class Events{
 	constructor() {
 		this.eventList = {
@@ -8,8 +10,8 @@ export default class Events{
 				// load new map and move player to new map
 				game.map.loadMap(args.properties.map,
 					{
-						x: (args.properties.destination_x - 1) * GLOBALS.TILE_WIDTH,
-						y: (args.properties.destination_y - 1) * GLOBALS.TILE_HEIGHT
+						x: (args.properties.destination_x - 1) * Globals.TILE_WIDTH,
+						y: (args.properties.destination_y - 1) * Globals.TILE_HEIGHT
 					}
 				);
 				if(args.properties.eventMessage) {
@@ -69,10 +71,10 @@ export default class Events{
 					inv[props.item] = 0;
 				}
 
-				if(inv[props.item] < GLOBALS.ITEM_LIMIT) {
+				if(inv[props.item] < Globals.ITEM_LIMIT) {
 					// add item to inventory
 					// TODO: This would be more efficient if you just subtract the overage from the item amt and add it
-					while(inv[props.item] < GLOBALS.ITEM_LIMIT && props.qty > 0) { // while inventory isn't full and there are items left to be picked up
+					while(inv[props.item] < Globals.ITEM_LIMIT && props.qty > 0) { // while inventory isn't full and there are items left to be picked up
 						// We should probably have a class for inventory with some get/set methods
 						inv[props.item]++;
 						itemCount++;
