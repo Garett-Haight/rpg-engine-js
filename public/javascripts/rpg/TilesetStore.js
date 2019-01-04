@@ -4,7 +4,6 @@ class TilesetStore {
             this.tilesets = [];
             TilesetStore.instance = this;
         }
-
         return TilesetStore.instance;
 
         // this.getTileCoordsById = function(id) { 
@@ -38,6 +37,7 @@ class TilesetStore {
     add(Tileset) {
         Tileset.id = this.tilesets.length;
         this.tilesets.push(Tileset);
+        console.log(this);
     }
 
     exists(Tileset) {

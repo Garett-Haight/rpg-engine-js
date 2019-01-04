@@ -10,7 +10,7 @@ class MapStore {
     }
 
     add(map) {
-        this.maps.push(Tileset);
+        this.maps.push(map);
     }
 
     exists(map) {

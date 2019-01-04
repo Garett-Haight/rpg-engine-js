@@ -118,7 +118,7 @@ export default class Controls {
     	if(this.events.length > 0) {
     		var event = this.events[0]['properties']['action'];
 	    	var result = this.game.events.eventList[event](this.events[0], this.game);
-	    	this.game.console.sendMessage(result);
+	    	//this.game.console.sendMessage(result);
     	}
     }
 

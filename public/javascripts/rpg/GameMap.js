@@ -1,18 +1,35 @@
 import Globals from './Globals'
 import Player from "./player";
+import MapStore from './MapStore'
 import MapService from './services/MapService'
 import TilesetStore from "./TilesetStore"
 import Tileset from "./Tileset"
 import _ from "lodash"
 
+class MapLayer {
+	constructor(name) {
+
+	}
+}
+
+class TileLayer extends MapLayer {
+	constructor(name) {
+		super(name);
+	}
+}
+
+class ObjectLayer extends MapLayer {
+	constructor(name) {
+		super(name);
+	}
+}
+
 export default class GameMap {
-	constructor(map, game, drawMap=false) {
-		this.mapService = new MapService();
-        this.game = game;
-        this.player = game.player;
-        this.promise = this.getMap(map, drawMap);
+	constructor(map, drawMap=false, mapService) {
+		this.mapService = mapService;
+		this.layers = [];
+        this.getMap(map, drawMap);
 		this.mapName = map;
-		this.loadedTiles = [];
 	}
 
 	getMap(mapId, drawMap) {
@@ -26,54 +43,50 @@ export default class GameMap {
 		this.mapService.getMap('map' + mapId + '_new.json')
 		.then((response) => {
 			this.mapName = mapId;
-			console.log(response);
-            if(!this.game.mapList[mapId]) {
-            	// non-cached response returns JSON which needs to be parsed
+            if(!MapStore.exists(response.data)) {
+				// non-cached response returns JSON which needs to be parsed
+				//MapStore.add(response.data)
 				this.map = response.data;
-				this.getTilesets();
-                this.parseEvents();
-            }
-            else {
-            	// cached response returns an object,
-				// we can skip the parsing functions and assign values from stored arrays/objects
-                this.map = response.map;
-                this.collisions = response.collisions;
-                this.events = response.events;
-            }
 
-            if (drawMap) {
-				var self = this;
-				// this.tilesets.forEach(tileset => {
-				// 	// There has got to be a better way to do this
-				// 	// Maybe the constructor for each Tileset could return a promise instead of
-				// 	// handling it here
+				this.parseLayers();
+				this.parseTilesets();
+				MapStore.add(this);
+				//this.parseEvents();
+				console.log(MapStore);
+            }
+		});
+	}
 
-				// 	// new Promise((resolve, reject) => {
-				// 	// 	tileset.Tileset.tilesetImage.onload = function() {
-				// 	// 		resolve(tileset.Tileset.name);
-				// 	// 	}
-				// 	// }).then(response => {
-				// 	// 	self.loadedTiles.push(response);
-				// 	// 	console.log(response);
-				// 	// 	if	(self.loadedTiles.length == this.tilesets.Tilesets.length) { // when tiles are downloaded, we can render the map
-				// 	// 		console.log("rendering!");
-				// 	// 		self.render();
-				// 	// 	}
-				// 	// });	
-				// }); 
+	parseLayers() {
+		this.map.layers.forEach(layer => {
+			if(layer.type == 'tilelayer') {
+				this.layers.push(new TileLayer(layer));
+			}
+			else if(layer.type == 'objectgroup') {
+				this.layers.push(new ObjectLayer(layer));
 			}
 		});
 	}
 
+	parseTilesets() {
+		var tilesets = [];
+		for(let tileset of this.map.tilesets) {
+			var mapTileset = new Tileset(tileset);
+			if (!TilesetStore.exists(mapTileset)) {		
+				TilesetStore.add(mapTileset);
+			}
+		}
+	}
+
 	loadMap(mapId, args) { // bit of a misnomer... this seems to be more for teleporting to new maps
 		// update mapList with current version of the map
-		this.game.mapList[this.mapName] = Object.assign(Object.create(this), this);
+		MapStore.add(Object.assign(Object.create(this), this)); 
 
 		var mapPromise = this.getMap(mapId, true);
 
 		mapPromise.then(() => {
-            var entitiesContainer = document.querySelector('#entities');
-            this.placePlayer(entitiesContainer, args);
+           // var entitiesContainer = document.querySelector('#entities');
+           // this.placePlayer(entitiesContainer, args);
 		});
 
 	}
