@@ -9,7 +9,7 @@ module.exports = {
     },
     devtool: 'cheap-eval-source-map',
     output: {
-        path: path.resolve(__dirname, '.'+path.sep+'public'+path.sep+'javascripts'),
+        path: path.resolve(__dirname, '.'+path.sep+'public'+path.sep+'javascripts'+path.sep+'dist'),
         filename: 'rpg.bundle.js',
     }
 };
