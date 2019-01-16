@@ -7,20 +7,26 @@ import Tileset from "./Tileset"
 import _ from "lodash"
 
 class MapLayer {
-	constructor(name) {
-
+	constructor(layer) {
+		this.name = layer.name;
+		this.width = layer.width;
+		this.height = layer.height;
 	}
 }
 
 class TileLayer extends MapLayer {
-	constructor(name) {
-		super(name);
+	constructor(layer) {
+		super(layer);
+		this.tiles = layer.data;
 	}
+
+
 }
 
 class ObjectLayer extends MapLayer {
-	constructor(name) {
-		super(name);
+	constructor(layer) {
+		super(layer);
+		this.objects = layer.data;
 	}
 }
 
@@ -69,12 +75,17 @@ export default class GameMap {
 	}
 
 	parseTilesets() {
-		var tilesets = [];
 		for(let tileset of this.map.tilesets) {
-			var mapTileset = new Tileset(tileset);
+			var mapTileset;
+			mapTileset = new Tileset(tileset);
 			if (!TilesetStore.exists(mapTileset)) {		
 				TilesetStore.add(mapTileset);
 			}
+			else {
+				mapTileset = TilesetStore.get(tileset.name);
+			}
+			// map firstgid to map name
+			mapTileset.addFirstGid(this.mapName, tileset.firstgid);
 		}
 	}
 

@@ -45,6 +45,12 @@ class TilesetStore {
             return ts.name == Tileset.name && ts.image == Tileset.image;
         }).length > 0;
     }
+
+    get(name) {
+        return _.find((ts) => {
+            return ts.name == name;
+        });
+    }
 };
 
 const instance = new TilesetStore();
