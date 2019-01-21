@@ -46,7 +46,29 @@ export default class GameMap {
 			// Clear previous render
 			ctx.clearRect(0,0, Globals.MAP_WIDTH * Globals.TILE_WIDTH, Globals.MAP_HEIGHT * Globals.TILE_HEIGHT);
 	
-			this.layers.forEach((layer) => {});
+			 this.layers.forEach((layer) => {
+				if (layer instanceof TileLayer) {
+					var cr = 'rgb('+
+							Math.floor(Math.random()*256)+','+
+							Math.floor(Math.random()*256)+','+
+							Math.floor(Math.random()*256)+')';
+					ctx.fillStyle = cr;
+
+							
+					for(var i = 0; i < layer.height; i++) {
+						for(var j = 0; j < layer.width; j++) {
+							
+							if (layer.tiles[i * Globals.MAP_WIDTH + j] !== 0) {
+								ctx.fillRect(
+									i * Globals.TILE_WIDTH,
+									j * Globals.TILE_HEIGHT,
+									Globals.TILE_WIDTH,
+									Globals.TILE_HEIGHT);
+							}
+						}
+					}
+				}
+			 });
 			// canvas.width = Globals.MAP_WIDTH * Globals.TILE_WIDTH;
 			// canvas.height = Globals.MAP_HEIGHT * Globals.TILE_HEIGHT;
 			// map.width = Globals.MAP_WIDTH;
