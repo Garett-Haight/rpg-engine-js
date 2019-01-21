@@ -3,6 +3,7 @@ import Controls from './Controls'
 import MapStore from './MapStore'
 import MapService from './services/MapService'
 import Events from './Events'
+import Viewport from './Viewport'
 import UI from './UI'
 import Console from './Console'
 
@@ -24,8 +25,8 @@ export default class Game {
 		
         // create dom elements for game sections
 		let top = UI.createPanel("top", this.container);
-		let mapElement = UI.createCanvas("map", top);
-		this.viewports.push(mapElement);
+		let mapViewport = new Viewport("map", top, 20, 20, this.map);
+		this.viewports.push(mapViewport);
 
 		let bottom = UI.createPanel("bottom", this.container);
 		this.console = new Console(bottom);
@@ -33,10 +34,13 @@ export default class Game {
 
 		// starting inventory
 		this.startingInventory = {potion: 1, mana: 1};
+
+		document.addEventListener('click', this.loop.bind(this));
+	//	this.loop();
 	}
 
 	loop() {
-		
+		this.render();
 	}
 
 	render() {

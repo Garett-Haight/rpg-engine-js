@@ -1,3 +1,4 @@
+import Globals from './Globals'
 export default class UI{
 	constructor(game) {
 		this.game = game;
@@ -60,9 +61,11 @@ export default class UI{
 
 	}
 
-    static createCanvas(id, parent) {
+    static createCanvas(id, parent, width, height) {
         let canvas = document.createElement("canvas");
         canvas.id = id;
+        canvas.width = width * Globals.TILE_WIDTH;
+        canvas.height = height * Globals.TILE_HEIGHT;
         parent.appendChild(canvas);
         return canvas;
     }

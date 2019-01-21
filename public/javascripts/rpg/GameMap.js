@@ -32,10 +32,44 @@ class ObjectLayer extends MapLayer {
 
 export default class GameMap {
 	constructor(map, drawMap=false, mapService) {
+		this.loaded = false;
 		this.mapService = mapService;
 		this.layers = [];
-        this.getMap(map, drawMap);
 		this.mapName = map;
+		this.drawMap = drawMap;
+		this.getMap(map, drawMap);
+
+		this.drawMap = (container, canvas) => {
+			var map = this.map;
+			var tiles = this.layers[0].tiles;
+			var ctx = canvas.getContext("2d");
+			// Clear previous render
+			ctx.clearRect(0,0, Globals.MAP_WIDTH * Globals.TILE_WIDTH, Globals.MAP_HEIGHT * Globals.TILE_HEIGHT);
+	
+			this.layers.forEach((layer) => {});
+			// canvas.width = Globals.MAP_WIDTH * Globals.TILE_WIDTH;
+			// canvas.height = Globals.MAP_HEIGHT * Globals.TILE_HEIGHT;
+			// map.width = Globals.MAP_WIDTH;
+			// map.height = Globals.MAP_HEIGHT;
+			
+			// for (let i = 0; i < map.height; i++) {
+			// 	for(let j = 0; j < map.width; j++) {
+			// 		var tileCoords = this.tilesets.getTileCoordsById(tiles[(i*Globals.MAP_WIDTH) + j] + 1);
+			// 		var image = this.tilesets.getTilesetImageById(tiles[(i*Globals.MAP_WIDTH) + j] + 1); // gids start at 1 for some reason
+			// 		ctx.drawImage(
+			// 			image, 
+			// 			tileCoords.x, 
+			// 			tileCoords.y, 
+			// 			Globals.TILE_WIDTH,
+			// 			Globals.TILE_HEIGHT,
+			// 			j * Globals.TILE_WIDTH, 
+			// 			i * Globals.TILE_HEIGHT, 
+			// 			Globals.TILE_WIDTH,
+			// 			Globals.TILE_HEIGHT);
+			// 	}
+			// 	this.tilesDrawn = true;
+			// }
+		}
 	}
 
 	getMap(mapId, drawMap) {
@@ -46,19 +80,17 @@ export default class GameMap {
         this.events = null;
 
 		// check if map has already been loaded to mapList
-		this.mapService.getMap('map' + mapId + '_new.json')
+		return this.mapService.getMap('map' + mapId + '_new.json')
 		.then((response) => {
 			this.mapName = mapId;
             if(!MapStore.exists(response.data)) {
-				// non-cached response returns JSON which needs to be parsed
-				//MapStore.add(response.data)
 				this.map = response.data;
-
 				this.parseLayers();
 				this.parseTilesets();
 				MapStore.add(this);
 				//this.parseEvents();
 				console.log(MapStore);
+				this.loaded = true;
             }
 		});
 	}
@@ -100,38 +132,6 @@ export default class GameMap {
            // this.placePlayer(entitiesContainer, args);
 		});
 
-	}
-
-	drawMap (container="#map") {
-		var map = this.map;
-		var tiles = map.layers[0].data;
-		var mapElement = document.querySelector(container);
-		var ctx = mapElement.getContext("2d");
-		// Clear previous render
-		ctx.clearRect(0,0, Globals.MAP_WIDTH * Globals.TILE_WIDTH, Globals.MAP_HEIGHT * Globals.TILE_HEIGHT);
-
-		mapElement.width = Globals.MAP_WIDTH * Globals.TILE_WIDTH;
-		mapElement.height = Globals.MAP_HEIGHT * Globals.TILE_HEIGHT;
-		map.width = Globals.MAP_WIDTH;
-		map.height = Globals.MAP_HEIGHT;
-		
-		for (let i = 0; i < map.height; i++) {
-			for(let j = 0; j < map.width; j++) {
-				var tileCoords = this.tilesets.getTileCoordsById(tiles[(i*Globals.MAP_WIDTH) + j] + 1);
-				var image = this.tilesets.getTilesetImageById(tiles[(i*Globals.MAP_WIDTH) + j] + 1); // gids start at 1 for some reason
-				ctx.drawImage(
-					image, 
-					tileCoords.x, 
-					tileCoords.y, 
-					Globals.TILE_WIDTH,
-					Globals.TILE_HEIGHT,
-					j * Globals.TILE_WIDTH, 
-					i * Globals.TILE_HEIGHT, 
-					Globals.TILE_WIDTH,
-					Globals.TILE_HEIGHT);
-			}
-			this.tilesDrawn = true;
-		}
 	}
 
 	parseCollisions() {
