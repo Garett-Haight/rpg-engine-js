@@ -11,16 +11,18 @@ export default class Tileset {
         this.name = tileset.name;
         this.tilesetImage = new Image();
         this.tilesetImage.src = Globals.IMG_PATH + tileset.image;
+        this.tilesetImageName = tileset.image;
         this.maps = [];
         // Width and Height in tiles... should probably add in support for tiles that can scale from the base image
-        this.tilesetWidth = tileset.width;
-        this.tilesetHeight = tileset.height;
+        this.tilesetWidth = tileset.imagewidth;
+        this.tilesetHeight = tileset.imageheight;
         // need to fix this in Tiled?
-        this.tileCount = null;
+        this.tileCount = tileset.tilecount;
 
 
-       this.getTileCoords = function(id) { // This should be cached
-            var x = ((id - this.firstgid) % (this.tilesetWidth) * Globals.TILE_WIDTH);
+       this.getTileCoords = function(firstGid, id) { // This should be cached
+            var localId = id - firstGid;
+            var x = ((localId - this.firstgid) % (this.tilesetWidth) * Globals.TILE_WIDTH);
             // Might be able to replace Math.floor with | 0 bitwise operation
             var y = Math.floor((id - this.firstgid) / (this.tilesetWidth))  * Globals.TILE_HEIGHT;
             return {x: x, y: y};
