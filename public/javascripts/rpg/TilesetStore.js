@@ -47,7 +47,7 @@ class TilesetStore {
     }
 
     get(name) {
-        return _.find((ts) => {
+        return this.tilesets.find((ts) => {
             return ts.name == name;
         });
     }

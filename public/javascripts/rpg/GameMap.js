@@ -36,35 +36,55 @@ export default class GameMap {
 		this.mapService = mapService;
 		this.layers = [];
 		this.mapName = map;
-		this.drawMap = drawMap;
 		this.getMap(map, drawMap);
 
 		this.drawMap = (container, canvas) => {
 			var map = this.map;
-			var tiles = this.layers[0].tiles;
 			var ctx = canvas.getContext("2d");
 			// Clear previous render
 			ctx.clearRect(0,0, Globals.MAP_WIDTH * Globals.TILE_WIDTH, Globals.MAP_HEIGHT * Globals.TILE_HEIGHT);
 	
 			 this.layers.forEach((layer) => {
-				if (layer instanceof TileLayer) {
-					var cr = 'rgb('+
-							Math.floor(Math.random()*256)+','+
-							Math.floor(Math.random()*256)+','+
-							Math.floor(Math.random()*256)+')';
-					ctx.fillStyle = cr;
-
-							
+				if (layer instanceof TileLayer) {	
+					let tiles = layer.tiles;									
 					for(var i = 0; i < layer.height; i++) {
 						for(var j = 0; j < layer.width; j++) {
 							
-							if (layer.tiles[i * Globals.MAP_WIDTH + j] !== 0) {
-								ctx.fillRect(
-									i * Globals.TILE_WIDTH,
-									j * Globals.TILE_HEIGHT,
-									Globals.TILE_WIDTH,
-									Globals.TILE_HEIGHT);
+							let tileset = null;
+							let id = tiles[(i * map.width) + j];
+							// which tileset in the map does this belong to?
+							let ts = this.map.tilesets.find(tileset => {
+								return  id > tileset.firstgid && id < tileset.tilecount + tileset.firstgid - 1;
+							});
+							if (ts && id != 0) {
+								let destination_x = i * ts.tilewidth;
+								let destination_y = j * ts.tileheight;
+								tileset = TilesetStore.get(ts.name);
+								if (tileset) {
+									let source = tileset.getTileCoords(id - ts.firstgid);
+									ctx.drawImage(
+										tileset.tilesetImage, 
+										source.x,
+										source.y,
+										tileset.tileWidth,
+										tileset.tileHeight,
+										destination_x, 
+										destination_y,
+										ts.tilewidth,
+										ts.tileheight
+									);
+								}
 							}
+							else {
+								// throw error
+							}
+							// if (layer.tiles[i * Globals.MAP_WIDTH + j] !== 0) {
+							// 	ctx.fillRect(
+							// 		i * Globals.TILE_WIDTH,
+							// 		j * Globals.TILE_HEIGHT,
+							// 		Globals.TILE_WIDTH,
+							// 		Globals.TILE_HEIGHT);
+							// }
 						}
 					}
 				}
@@ -139,7 +159,7 @@ export default class GameMap {
 				mapTileset = TilesetStore.get(tileset.name);
 			}
 			// map firstgid to map name
-			mapTileset.addFirstGid(this.mapName, tileset.firstgid);
+			//mapTileset.addFirstGid(this.mapName, tileset.firstgid);
 		}
 	}
 
