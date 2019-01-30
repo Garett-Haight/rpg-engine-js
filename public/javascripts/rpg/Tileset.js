@@ -1,11 +1,5 @@
 import Globals from './Globals'
 
-class Tile {
-    constructor() {
-
-    }
-
-}
 export default class Tileset {
     constructor(tileset) { 
         this.name = tileset.name;

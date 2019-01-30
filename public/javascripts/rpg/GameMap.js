@@ -78,13 +78,6 @@ export default class GameMap {
 							else {
 								// throw error
 							}
-							// if (layer.tiles[i * Globals.MAP_WIDTH + j] !== 0) {
-							// 	ctx.fillRect(
-							// 		i * Globals.TILE_WIDTH,
-							// 		j * Globals.TILE_HEIGHT,
-							// 		Globals.TILE_WIDTH,
-							// 		Globals.TILE_HEIGHT);
-							// }
 						}
 					}
 				}

@@ -36,6 +36,9 @@ export default class Game {
 		this.startingInventory = {potion: 1, mana: 1};
 
 		document.addEventListener('click', this.loop.bind(this));
+		// document.addEventListener('RequestAnimationFrame', (delta) => {
+		// 	this.loop(delta);
+		// });
 	//	this.loop();
 	}
 
