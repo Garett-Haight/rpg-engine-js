@@ -54,7 +54,7 @@ export default class GameMap {
 							let id = tiles[(j * map.width) + i];
 							// which tileset in the map does this belong to?
 							let ts = this.map.tilesets.find(tileset => {
-								return  id > tileset.firstgid && id < tileset.tilecount + tileset.firstgid - 1;
+								return  id >= tileset.firstgid && id < tileset.tilecount + tileset.firstgid - 1;
 							});
 							if (ts) {
 								let destination_x = i * ts.tilewidth;
