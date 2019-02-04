@@ -35,6 +35,8 @@ export default class GameMap {
 		this.loaded = false;
 		this.mapService = mapService;
 		this.layers = [];
+		this.entityLayer = null;
+		this.eventLayer = null;
 		this.mapName = map;
 		this.getMap(map, drawMap);
 
@@ -48,8 +50,7 @@ export default class GameMap {
 				if (layer instanceof TileLayer) {	
 					let tiles = layer.tiles;									
 					for(var i = 0; i < layer.height; i++) {
-						for(var j = 0; j < layer.width; j++) {
-							
+						for(var j = 0; j < layer.width; j++) {	
 							let tileset = null;
 							let id = tiles[(j * map.width) + i];
 							// which tileset in the map does this belong to?
@@ -81,29 +82,16 @@ export default class GameMap {
 						}
 					}
 				}
+				else if (layer instanceof ObjectLayer) {
+					if (layer.name.toLower() == 'entities' && this.entityLayer == null) {
+						this.entityLayer = layer;
+					}
+					this.entityLayer.objects.forEach((obj) => {
+						
+					});
+				}
 			 });
-			// canvas.width = Globals.MAP_WIDTH * Globals.TILE_WIDTH;
-			// canvas.height = Globals.MAP_HEIGHT * Globals.TILE_HEIGHT;
-			// map.width = Globals.MAP_WIDTH;
-			// map.height = Globals.MAP_HEIGHT;
 			
-			// for (let i = 0; i < map.height; i++) {
-			// 	for(let j = 0; j < map.width; j++) {
-			// 		var tileCoords = this.tilesets.getTileCoordsById(tiles[(i*Globals.MAP_WIDTH) + j] + 1);
-			// 		var image = this.tilesets.getTilesetImageById(tiles[(i*Globals.MAP_WIDTH) + j] + 1); // gids start at 1 for some reason
-			// 		ctx.drawImage(
-			// 			image, 
-			// 			tileCoords.x, 
-			// 			tileCoords.y, 
-			// 			Globals.TILE_WIDTH,
-			// 			Globals.TILE_HEIGHT,
-			// 			j * Globals.TILE_WIDTH, 
-			// 			i * Globals.TILE_HEIGHT, 
-			// 			Globals.TILE_WIDTH,
-			// 			Globals.TILE_HEIGHT);
-			// 	}
-			// 	this.tilesDrawn = true;
-			// }
 		}
 	}
 
@@ -151,8 +139,6 @@ export default class GameMap {
 			else {
 				mapTileset = TilesetStore.get(tileset.name);
 			}
-			// map firstgid to map name
-			//mapTileset.addFirstGid(this.mapName, tileset.firstgid);
 		}
 	}
 
@@ -188,20 +174,6 @@ export default class GameMap {
 			if (!TilesetStore.exists(mapTileset)) {		
 				TilesetStore.add(mapTileset);
 			}
-			// This might cause some resource bloating... need to find a way to cache images
-			// maybe embed them on the page and provide a dom reference?
-			// var isLoaded = !!_.find(tilesets, function(o) {
-			// 	return o.name == tileset.name;
-			// });
-			// if (!isLoaded) {
-			// 	tilesets.push(new Tileset({
-			// 		name: tileset.name,
-			// 		src: tileset.image.split('\\').pop().split('/').pop(), 
-			// 		height: tileset.tileheight,
-			// 		width: tileset.tilewidth,
-			// 		firstgid: tileset.firstgid
-			// 	}));
-			// }
 		}
 		console.log(TilesetStore);
 	}

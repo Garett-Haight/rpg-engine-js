@@ -1,5 +1,6 @@
 import GameMap from './GameMap'
 import Controls from './Controls'
+import Player from './Player'
 import MapStore from './MapStore'
 import MapService from './services/MapService'
 import Events from './Events'
@@ -10,7 +11,7 @@ import Console from './Console'
 export default class Game {
 	constructor(Config) {
         this.container = document.querySelector(Config.container);
-		this.player = null;
+		this.player = new Player();
 		this.viewports = [];
 		this.mapStore = MapStore;
 		//this.mapStore.add();

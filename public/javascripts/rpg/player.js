@@ -1,14 +1,19 @@
 import Globals from './Globals'
+import AnimatedSprite from './AnimatedSprite'
 
 export default class Player {
-	constructor(canvas, game, pos={x:0,y:0}) {
-		this.game = game;
-		this.canvas = canvas;
+	constructor() {
 		this.tilesDrawn = false;
 		this.playerSize = Globals.TILE_WIDTH;
+		this.animations = {
+			walkUp: null,
+			walkDown: null,
+			walkLeft: null,
+			walkRight: null
+		};
 		// player positioning
-		this.pos_x = pos.x;
-		this.pos_y = pos.y;
+		//this.pos_x = pos.x;
+		//this.pos_y = pos.y;
 
 		// elem.style.top = this.pos_y + "px";
 		// elem.style.left = this.pos_x + "px";
@@ -17,7 +22,10 @@ export default class Player {
 		this.hp = 100;
 		this.mp = 100;
 		this.inventory = game.startingInventory;
-		this.draw();
+		this.getPlayerSprite = function() {
+
+		}
+		//this.draw();
 	};
 
 	draw() {
@@ -29,7 +37,7 @@ export default class Player {
 	update() {
 		// this.elem.style.top = this.pos_y + "px";
 		// this.elem.style.left = this.pos_x + "px";
-		this.game.map.render();
-		this.draw();
+		//this.game.map.render();
+		//this.draw();
 	}
 }
