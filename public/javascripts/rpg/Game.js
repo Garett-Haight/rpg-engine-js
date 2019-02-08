@@ -11,7 +11,7 @@ import Console from './Console'
 export default class Game {
 	constructor(Config) {
         this.container = document.querySelector(Config.container);
-		this.player = new Player();
+		this.player = Player;
 		this.viewports = [];
 		this.mapStore = MapStore;
 		//this.mapStore.add();

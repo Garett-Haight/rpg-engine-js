@@ -1,5 +1,5 @@
 import Globals from './Globals'
-import Player from "./player";
+import Player from "./Player";
 import MapStore from './MapStore'
 import MapService from './services/MapService'
 import TilesetStore from "./TilesetStore"
@@ -26,7 +26,7 @@ class TileLayer extends MapLayer {
 class ObjectLayer extends MapLayer {
 	constructor(layer) {
 		super(layer);
-		this.objects = layer.data;
+		this.objects = layer.objects;
 	}
 }
 
@@ -83,12 +83,19 @@ export default class GameMap {
 					}
 				}
 				else if (layer instanceof ObjectLayer) {
-					if (layer.name.toLower() == 'entities' && this.entityLayer == null) {
-						this.entityLayer = layer;
+					if (layer.name.toLowerCase() == 'entities') {
+						if(this.entityLayer == null) {
+							this.entityLayer = layer;
+						}
+						this.entityLayer.objects.forEach((obj) => {
+							if (obj.type == 'player_start' && (Player.pos_x == null || Player.pos_y == null)) {
+								Player.setPosition(obj.x, obj.y);
+							}
+						});
+						if (Player.pos_x !== null && Player.post_y !== null) {
+							Player.render(ctx);
+						}
 					}
-					this.entityLayer.objects.forEach((obj) => {
-						
-					});
 				}
 			 });
 			
