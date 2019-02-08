@@ -8,6 +8,7 @@ class Player {
 			Player.instance = this;
 			this.tilesDrawn = false;
 			this.playerSize = Globals.TILE_WIDTH;
+			this.facing = Globals.FACING.DOWN;
 			this.animations = {
 				walkUp: null,
 				walkDown: null,

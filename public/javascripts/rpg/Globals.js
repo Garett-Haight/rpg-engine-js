@@ -4,5 +4,11 @@ export default {
     MAP_WIDTH: 20,
     MAP_HEIGHT: 20,
 	ITEM_LIMIT: 99,
-	IMG_PATH: "/images/"
+    IMG_PATH: "/images/",
+    FACING: {
+        UP: 'up',
+        DOWN: 'down',
+        LEFT: 'left',
+        RIGHT: 'right'
+    }
 }
