@@ -25,7 +25,15 @@ class Player {
 			this.inventory = {};
 
 			this.setPosition = function(x, y) {
+				this.setPositionX(x);
+				this.setPositionY(y);
+			}
+
+			this.setPositionX = function(x) {
 				this.pos_x = x;
+			}
+
+			this.setPositionY = function(y) {
 				this.pos_y = y;
 			}
 

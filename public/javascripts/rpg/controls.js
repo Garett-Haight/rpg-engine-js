@@ -1,4 +1,5 @@
 import Globals from './Globals'
+import Player from './Player'
 
 export default class Controls {
     constructor(game) {
@@ -11,22 +12,22 @@ export default class Controls {
             if (e.keyCode === 40) { // Arrow Down
                 // move down
                 e.preventDefault();
-                this.moveDown(game.player);
+                this.moveDown();
             } else if (e.keyCode === 39) { // Arrow Right
                 // move right
                 e.preventDefault();
-                this.moveRight(game.player);
+                this.moveRight();
             } else if (e.keyCode === 38) { // Arrow Up
                 // move up
                 e.preventDefault();
                 //moveUp(player);
-                this.moveUp(game.player);
+                this.moveUp();
             } else if (e.keyCode === 37) { // Arrow Left
                 // move left
                 e.preventDefault();
-                this.moveLeft(game.player);
+                this.moveLeft();
             } else if (e.keyCode === 32) { // spacebar
-            	this.interact(game.player, game.map);
+            	//this.interact(game.player, game.map);
             }
         });
 
@@ -35,77 +36,79 @@ export default class Controls {
 
 
 
-    moveUp(player) {
-        if (this.checkUp(player)) {
-            player.pos_y -= Globals.TILE_HEIGHT;
-            player.update();
-            this.checkForEvent(player, this.game.map);
+    moveUp() {
+        if (this.checkUp()) {
+            Player.setPositionY(Player.pos_y - Globals.TILE_HEIGHT);
+           // player.update();
+           // this.checkForEvent(player, this.game.map);
         }
     }
 
-    checkUp(player) {
+    checkUp() {
         return !this.checkCollision({
-            x: player.pos_x, 
-            y: player.pos_y - player.playerSize
+            x: Player.pos_x, 
+            y: Player.pos_y - Player.playerSize
         });
     }
 
-    moveDown(player) {
-        if (this.checkDown(player)) {
-            player.pos_y += Globals.TILE_HEIGHT;
-            player.update();
-            this.checkForEvent(player, this.game.map);
+    moveDown() {
+        if (this.checkDown()) {
+            Player.setPositionY(Player.pos_y + Globals.TILE_HEIGHT);
+            //player.update();
+           // this.checkForEvent(player, this.game.map);
         }
     }
 
-    checkDown(player) {
+    checkDown() {
         return !this.checkCollision({
-            x: player.pos_x, 
-            y: player.pos_y + (player.playerSize * 2) // check the point that you're moving TO
+            x: Player.pos_x, 
+            y: Player.pos_y + (Player.playerSize * 2) // check the point that you're moving TO
         });
     }
 
-    moveRight(player) {
-        if (this.checkRight(player)) {
-            player.pos_x += Globals.TILE_WIDTH;
-            player.update();
-            this.checkForEvent(player, this.game.map);
+    moveRight() {
+        if (this.checkRight()) {
+            Player.setPositionX(Player.pos_x + Globals.TILE_WIDTH);
+            // player.update();
+            // this.checkForEvent(player, this.game.map);
         }
     }
 
-    checkRight(player) {
+    checkRight() {
         return !this.checkCollision({
-            x: player.pos_x + (player.playerSize * 2), 
-            y: player.pos_y
+            x: Player.pos_x + (Player.playerSize * 2), 
+            y: Player.pos_y
         });
     }
 
 
-    moveLeft(player) {
-        if (this.checkLeft(player)) {
-            player.pos_x -= Globals.TILE_WIDTH;
-            player.update();
-            this.checkForEvent(player, this.game.map);
+    moveLeft() {
+        if (this.checkLeft()) {
+            Player.setPositionX(Player.pos_x - Globals.TILE_WIDTH);
+            // player.update();
+            // this.checkForEvent(player, this.game.map);
         }
     }
 
-    checkLeft(player) {
+    checkLeft() {
         return !this.checkCollision({
-            x: player.pos_x - player.playerSize,
-            y: player.pos_y
+            x: Player.pos_x - Player.playerSize,
+            y: Player.pos_y
         });
     }
 
     checkCollision(p) {
-        for (let collisions of this.game.map.collisions) {
-            // return true if collides with collision rect or falls outside map bounds
-            var collides =  this.isInBounds(p, collisions) || 
-            p.y < 0 || 
-            p.y > (Globals.MAP_HEIGHT * Globals.TILE_HEIGHT) ||
-            p.x < 0 ||
-            p.x > (Globals.MAP_WIDTH * Globals.TILE_WIDTH);
-            if(collides) { return true; }
-        }
+        return false;
+        // change to work with polygon collosion areas
+        // for (let collisions of this.game.map.collisions) {
+        //     // return true if collides with collision rect or falls outside map bounds
+        //     var collides =  this.isInBounds(p, collisions) || 
+        //     p.y < 0 || 
+        //     p.y > (Globals.MAP_HEIGHT * Globals.TILE_HEIGHT) ||
+        //     p.x < 0 ||
+        //     p.x > (Globals.MAP_WIDTH * Globals.TILE_WIDTH);
+        //     if(collides) { return true; }
+        // }
     }
 
     isInBounds(p, rect) { // returns true if p is within the bounds of rect

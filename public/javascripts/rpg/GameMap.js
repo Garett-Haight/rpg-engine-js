@@ -40,7 +40,7 @@ export default class GameMap {
 		this.mapName = map;
 		this.getMap(map, drawMap);
 
-		this.drawMap = (container, canvas) => {
+		this.drawMap = (canvas) => {
 			var map = this.map;
 			var ctx = canvas.getContext("2d");
 			// Clear previous render
@@ -92,7 +92,7 @@ export default class GameMap {
 								Player.setPosition(obj.x, obj.y);
 							}
 						});
-						if (Player.pos_x !== null && Player.post_y !== null) {
+						if (Player.pos_x !== null && Player.pos_y !== null) {
 							Player.render(ctx);
 						}
 					}

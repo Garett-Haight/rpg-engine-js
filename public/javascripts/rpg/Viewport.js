@@ -8,7 +8,7 @@ export default class Viewport {
 
     render() {
         if (this.activeMap.loaded) {
-            this.activeMap.drawMap(this.container, this.canvas);
+            this.activeMap.drawMap(this.canvas);
         }
     }
 }
