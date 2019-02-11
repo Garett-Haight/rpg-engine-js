@@ -35,6 +35,7 @@ export default class GameMap {
 		this.loaded = false;
 		this.mapService = mapService;
 		this.layers = [];
+		this.collisions = null;
 		this.entityLayer = null;
 		this.eventLayer = null;
 		this.mapName = map;
@@ -95,6 +96,9 @@ export default class GameMap {
 						if (Player.pos_x !== null && Player.pos_y !== null) {
 							Player.render(ctx);
 						}
+					}
+					else if (layer.name.toLowerCase() == 'collisions' && this.collisions == null) {
+						this.parseCollisions(layer);
 					}
 				}
 			 });
@@ -162,16 +166,24 @@ export default class GameMap {
 
 	}
 
-	parseCollisions() {
-		var collisions = [];
-		for ( let layer of this.map.layers ) {
-			if (layer.name == "Collisions") {
-				for (let i = 0; i < layer.objects.length; i++) {
-					collisions.push(layer.objects[i]);
-				}
+	parseCollisions(layer) {
+		layer.objects.forEach((obj) => {
+			if (obj.hasOwnProperty('ellipse') && obj.ellipse == true) {
+				// ellipse parsing
+				console.log('ellipse')
 			}
-		}
-		this.collisions = collisions;
+			else if(obj.hasOwnProperty('point') && object.point == true) {
+				// point rendering?
+				console.log('point')
+			}
+			else if (obj.hasOwnProperty('polygon')) {
+				console.log('polygon')
+			}
+			else {
+				console.log('rect')
+			}
+		});
+		this.collisions = layer;
 	}
 
 	getTilesets() {
