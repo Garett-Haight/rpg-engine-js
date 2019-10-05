@@ -98,17 +98,15 @@ export default class Controls {
     }
 
     checkCollision(p) {
-        return false;
-        // change to work with polygon collosion areas
-        // for (let collisions of this.game.map.collisions) {
-        //     // return true if collides with collision rect or falls outside map bounds
-        //     var collides =  this.isInBounds(p, collisions) || 
-        //     p.y < 0 || 
-        //     p.y > (Globals.MAP_HEIGHT * Globals.TILE_HEIGHT) ||
-        //     p.x < 0 ||
-        //     p.x > (Globals.MAP_WIDTH * Globals.TILE_WIDTH);
-        //     if(collides) { return true; }
-        // }
+        for (let collisions of this.game.map.collisions.objects) {
+            // return true if collides with collision rect or falls outside map bounds
+            var collides =  this.isInBounds(p, collisions) || 
+            p.y < 0 || 
+            p.y > (Globals.MAP_HEIGHT * Globals.TILE_HEIGHT) ||
+            p.x < 0 ||
+            p.x > (Globals.MAP_WIDTH * Globals.TILE_WIDTH);
+            if(collides) { return true; }
+        }
     }
 
     isInBounds(p, rect) { // returns true if p is within the bounds of rect

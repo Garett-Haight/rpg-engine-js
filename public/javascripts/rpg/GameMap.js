@@ -4,6 +4,7 @@ import MapStore from './MapStore'
 import MapService from './services/MapService'
 import TilesetStore from "./TilesetStore"
 import Tileset from "./Tileset"
+import Config from "./Config"
 import _ from "lodash"
 
 class MapLayer {
@@ -98,7 +99,13 @@ export default class GameMap {
 					}
 				}
 			 });
-			
+			 // render collisions for debugging
+			 if (this.collisions !== null && Config.renderCollisions === true) {
+				ctx.fillStyle = "rgba(255, 240, 40, 0.5)";
+				this.collisions.objects.forEach(obj => {
+					ctx.fillRect(obj.x, obj.y, obj.width, obj.height);
+				});
+			}
 		}
 	}
 
@@ -118,8 +125,6 @@ export default class GameMap {
 				this.parseLayers();
 				this.parseTilesets();
 				MapStore.add(this);
-				//this.parseEvents();
-				console.log(MapStore);
 				this.loaded = true;
             }
 		});
@@ -131,7 +136,11 @@ export default class GameMap {
 				this.layers.push(new TileLayer(layer));
 			}
 			else if(layer.type == 'objectgroup') {
-				this.layers.push(new ObjectLayer(layer));
+				let oLayer = new ObjectLayer(layer);
+				this.layers.push(oLayer);
+				if (layer.name.toLowerCase() === 'collisions') {
+					this.collisions = oLayer;
+				}
 			}
 		});
 	}
@@ -162,18 +171,6 @@ export default class GameMap {
 
 	}
 
-	parseCollisions() {
-		var collisions = [];
-		for ( let layer of this.map.layers ) {
-			if (layer.name == "Collisions") {
-				for (let i = 0; i < layer.objects.length; i++) {
-					collisions.push(layer.objects[i]);
-				}
-			}
-		}
-		this.collisions = collisions;
-	}
-
 	getTilesets() {
 		var tilesets = [];
 		for(let tileset of this.map.tilesets) {
@@ -182,7 +179,6 @@ export default class GameMap {
 				TilesetStore.add(mapTileset);
 			}
 		}
-		console.log(TilesetStore);
 	}
 
 	// Events are items, map teleports, etc.
@@ -267,18 +263,4 @@ export default class GameMap {
         	this.game.player.update();
 		}
 	}
-
-	render() {
-        this.drawMap();
-        if(!this.collisions) {
-            this.parseCollisions();
-        }
-
-        // no need to parse events twice
-        if (!this.events) {
-            this.parseEvents();
-        }
-        this.drawEvents();
-        this.drawEntities();
-    }
 }
