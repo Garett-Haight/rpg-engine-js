@@ -1,13 +1,18 @@
 import Globals from './Globals'
 import TilesetStore from './TilesetStore'
 import AnimatedSprite from './AnimatedSprite'
+import Rectangle from './Rectangle'
 
 class Player {
-	constructor() {
+	constructor(x, y) {
 		if(!Player.instance) {
 			Player.instance = this;
 			this.tilesDrawn = false;
 			this.playerSize = Globals.TILE_WIDTH;
+			this.playerWidth = Globals.TILE_WIDTH;
+			this.playerHeight = Globals.TILE_HEIGHT;
+			this.movementSpeed = Globals.TILE_WIDTH;
+
 			this.facing = Globals.FACING.DOWN;
 			this.animations = {
 				walkUp: null,
@@ -17,13 +22,17 @@ class Player {
 			};
 	
 			// player positioning
-			this.pos_x = null;
-			this.pos_y = null;
-	
+			this.bounds = new Rectangle(
+				x, 
+				y, 
+				this.playerSize, 
+				this.playerSize
+			);
+
 			// player attrs
 			this.hp = 100;
 			this.mp = 100;
-			this.inventory = {};
+			this.inventory = [];
 
 			this.setPosition = function(x, y) {
 				this.setPositionX(x);
@@ -32,10 +41,12 @@ class Player {
 
 			this.setPositionX = function(x) {
 				this.pos_x = x;
+				this.bounds.setX(x);
 			}
 
 			this.setPositionY = function(y) {
 				this.pos_y = y;
+				this.bounds.setY(y);
 			}
 
 			this.getPlayerSprite = function() {

@@ -1,5 +1,6 @@
 import Globals from './Globals'
 import Player from './Player'
+import Rectangle from './Rectangle'
 
 export default class Controls {
     constructor(game) {
@@ -38,81 +39,81 @@ export default class Controls {
 
     moveUp() {
         if (this.checkUp()) {
-            Player.setPositionY(Player.pos_y - Globals.TILE_HEIGHT);
+            Player.setPositionY(Player.bounds.getY() - Globals.TILE_HEIGHT);
            // player.update();
            // this.checkForEvent(player, this.game.map);
         }
     }
 
     checkUp() {
-        return !this.checkCollision({
-            x: Player.pos_x, 
-            y: Player.pos_y - Player.playerSize
-        });
+        let up = new Rectangle(
+            Player.bounds.getX(),
+            Player.bounds.getY() - Player.movementSpeed,
+            Globals.TILE_WIDTH,
+            Globals.TILE_HEIGHT
+        );
+        return !this.checkCollisions(up);
     }
 
     moveDown() {
         if (this.checkDown()) {
-            Player.setPositionY(Player.pos_y + Globals.TILE_HEIGHT);
+            Player.setPositionY(Player.bounds.getY() + Globals.TILE_HEIGHT);
             //player.update();
            // this.checkForEvent(player, this.game.map);
         }
     }
 
     checkDown() {
-        return !this.checkCollision({
-            x: Player.pos_x, 
-            y: Player.pos_y + (Player.playerSize * 2) // check the point that you're moving TO
-        });
+        let down = new Rectangle(
+            Player.bounds.getX(),
+            Player.bounds.getY() + Player.movementSpeed,
+            Globals.TILE_WIDTH,
+            Globals.TILE_HEIGHT
+        );
+        return !this.checkCollisions(down);
     }
 
     moveRight() {
         if (this.checkRight()) {
-            Player.setPositionX(Player.pos_x + Globals.TILE_WIDTH);
+            Player.setPositionX(Player.bounds.getX() + Globals.TILE_WIDTH);
             // player.update();
             // this.checkForEvent(player, this.game.map);
         }
     }
 
     checkRight() {
-        return !this.checkCollision({
-            x: Player.pos_x + (Player.playerSize * 2), 
-            y: Player.pos_y
-        });
+        let right = new Rectangle(
+            Player.bounds.getX() + Player.movementSpeed,
+            Player.bounds.getY(),
+            Globals.TILE_WIDTH,
+            Globals.TILE_HEIGHT
+        );
+        return !this.checkCollisions(right);
     }
 
 
     moveLeft() {
         if (this.checkLeft()) {
-            Player.setPositionX(Player.pos_x - Globals.TILE_WIDTH);
+            Player.setPositionX(Player.bounds.getX() - Globals.TILE_WIDTH);
             // player.update();
             // this.checkForEvent(player, this.game.map);
         }
     }
 
     checkLeft() {
-        return !this.checkCollision({
-            x: Player.pos_x - Player.playerSize,
-            y: Player.pos_y
-        });
+        let left = new Rectangle(
+            Player.bounds.getX() - Player.movementSpeed,
+            Player.bounds.getY(),
+            Globals.TILE_WIDTH,
+            Globals.TILE_HEIGHT
+        );
+        return !this.checkCollisions(left);
     }
 
-    checkCollision(p) {
-        for (let collisions of this.game.map.collisions.objects) {
-            // return true if collides with collision rect or falls outside map bounds
-            var collides =  this.isInBounds(p, collisions) || 
-            p.y < 0 || 
-            p.y > (Globals.MAP_HEIGHT * Globals.TILE_HEIGHT) ||
-            p.x < 0 ||
-            p.x > (Globals.MAP_WIDTH * Globals.TILE_WIDTH);
-            if(collides) { return true; }
-        }
-    }
-
-    isInBounds(p, rect) { // returns true if p is within the bounds of rect
-        return  (p.x <= rect.x + rect.width && p.x > rect.x) &&
-                (p.y <= rect.y + rect.height && p.y > rect.y);
-
+    checkCollisions(rect) {
+        let collisions = this.game.map.collisions;
+        let a = collisions.find(collision => rect.collidesWith(collision));
+        return a;
     }
 
     interact(player, map) {
@@ -127,7 +128,7 @@ export default class Controls {
     	this.events = [];
     	for (let e of map.events) {
             // events are positioned at bottom left in Tiled....
-    		if (e.x == player.pos_x && e.y == player.pos_y + Globals.TILE_HEIGHT) {
+    		if (e.x == player.bounds.getX() && e.y == player.bounds.getY() + Globals.TILE_HEIGHT) {
     			this.events.push(e);
     		}
     	}

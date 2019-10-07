@@ -6,6 +6,7 @@ import TilesetStore from "./TilesetStore"
 import Tileset from "./Tileset"
 import Config from "./Config"
 import _ from "lodash"
+import Rectangle from './Rectangle';
 
 class MapLayer {
 	constructor(layer) {
@@ -89,11 +90,11 @@ export default class GameMap {
 							this.entityLayer = layer;
 						}
 						this.entityLayer.objects.forEach((obj) => {
-							if (obj.type == 'player_start' && (Player.pos_x == null || Player.pos_y == null)) {
+							if (obj.type.toLowerCase() === 'player_start' && (Player.bounds.getX() == null || Player.bounds.getY() == null)) {
 								Player.setPosition(obj.x, obj.y);
 							}
 						});
-						if (Player.pos_x !== null && Player.pos_y !== null) {
+						if (Player.bounds.getX() !== null && Player.bounds.getY() !== null) {
 							Player.render(ctx);
 						}
 					}
@@ -102,7 +103,7 @@ export default class GameMap {
 			 // render collisions for debugging
 			 if (this.collisions !== null && Config.renderCollisions === true) {
 				ctx.fillStyle = "rgba(255, 240, 40, 0.5)";
-				this.collisions.objects.forEach(obj => {
+				this.collisions.forEach(obj => {
 					ctx.fillRect(obj.x, obj.y, obj.width, obj.height);
 				});
 			}
@@ -132,15 +133,18 @@ export default class GameMap {
 
 	parseLayers() {
 		this.map.layers.forEach(layer => {
-			if(layer.type == 'tilelayer') {
+			if(layer.type.toLowerCase() == 'tilelayer') {
 				this.layers.push(new TileLayer(layer));
 			}
-			else if(layer.type == 'objectgroup') {
-				let oLayer = new ObjectLayer(layer);
-				this.layers.push(oLayer);
+			else if(layer.type.toLowerCase() == 'objectgroup') {
+				this.layers.push(new ObjectLayer(layer));
 				if (layer.name.toLowerCase() === 'collisions') {
-					this.collisions = oLayer;
+					this.collisions = layer.objects.map((rect) => {
+						return new Rectangle(rect.x, rect.y, rect.width, rect.height)
+					});
+					
 				}
+
 			}
 		});
 	}
@@ -252,15 +256,4 @@ export default class GameMap {
 		}
 	}
 
-	placePlayer(container, args) {
-        if(!this.game.player) {
-            this.game.player = new Player(container, this.game, {x: args.x, y: args.y});
-        }
-        else {
-        	this.game.player.canvas = container;
-        	this.game.player.pos_x = args.x;
-        	this.game.player.pos_y = args.y;
-        	this.game.player.update();
-		}
-	}
 }
