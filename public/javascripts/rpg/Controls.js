@@ -39,7 +39,7 @@ export default class Controls {
 
     moveUp() {
         if (this.checkUp()) {
-            Player.setPositionY(Player.bounds.getY() - Globals.TILE_HEIGHT);
+            Player.setPositionY(Player.getBounds().getY() - Globals.TILE_HEIGHT);
            // player.update();
            // this.checkForEvent(player, this.game.map);
         }
@@ -47,8 +47,8 @@ export default class Controls {
 
     checkUp() {
         let up = new Rectangle(
-            Player.bounds.getX(),
-            Player.bounds.getY() - Player.movementSpeed,
+            Player.getBounds().getX(),
+            Player.getBounds().getY() - Player.getMovementSpeed(),
             Globals.TILE_WIDTH,
             Globals.TILE_HEIGHT
         );
@@ -57,7 +57,7 @@ export default class Controls {
 
     moveDown() {
         if (this.checkDown()) {
-            Player.setPositionY(Player.bounds.getY() + Globals.TILE_HEIGHT);
+            Player.setPositionY(Player.getBounds().getY() + Globals.TILE_HEIGHT);
             //player.update();
            // this.checkForEvent(player, this.game.map);
         }
@@ -65,8 +65,8 @@ export default class Controls {
 
     checkDown() {
         let down = new Rectangle(
-            Player.bounds.getX(),
-            Player.bounds.getY() + Player.movementSpeed,
+            Player.getBounds().getX(),
+            Player.getBounds().getY() + Player.getMovementSpeed(),
             Globals.TILE_WIDTH,
             Globals.TILE_HEIGHT
         );
@@ -75,7 +75,7 @@ export default class Controls {
 
     moveRight() {
         if (this.checkRight()) {
-            Player.setPositionX(Player.bounds.getX() + Globals.TILE_WIDTH);
+            Player.setPositionX(Player.getBounds().getX() + Globals.TILE_WIDTH);
             // player.update();
             // this.checkForEvent(player, this.game.map);
         }
@@ -83,8 +83,8 @@ export default class Controls {
 
     checkRight() {
         let right = new Rectangle(
-            Player.bounds.getX() + Player.movementSpeed,
-            Player.bounds.getY(),
+            Player.getBounds().getX() + Player.getMovementSpeed(),
+            Player.getBounds().getY(),
             Globals.TILE_WIDTH,
             Globals.TILE_HEIGHT
         );
@@ -94,7 +94,7 @@ export default class Controls {
 
     moveLeft() {
         if (this.checkLeft()) {
-            Player.setPositionX(Player.bounds.getX() - Globals.TILE_WIDTH);
+            Player.setPositionX(Player.getBounds().getX() - Globals.TILE_WIDTH);
             // player.update();
             // this.checkForEvent(player, this.game.map);
         }
@@ -102,8 +102,8 @@ export default class Controls {
 
     checkLeft() {
         let left = new Rectangle(
-            Player.bounds.getX() - Player.movementSpeed,
-            Player.bounds.getY(),
+            Player.getBounds().getX() - Player.getMovementSpeed(),
+            Player.getBounds().getY(),
             Globals.TILE_WIDTH,
             Globals.TILE_HEIGHT
         );
@@ -128,7 +128,7 @@ export default class Controls {
     	this.events = [];
     	for (let e of map.events) {
             // events are positioned at bottom left in Tiled....
-    		if (e.x == player.bounds.getX() && e.y == player.bounds.getY() + Globals.TILE_HEIGHT) {
+    		if (e.x == player.getBounds().getX() && e.y == player.getBounds().getY() + Globals.TILE_HEIGHT) {
     			this.events.push(e);
     		}
     	}

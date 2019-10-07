@@ -90,11 +90,11 @@ export default class GameMap {
 							this.entityLayer = layer;
 						}
 						this.entityLayer.objects.forEach((obj) => {
-							if (obj.type.toLowerCase() === 'player_start' && (Player.bounds.getX() == null || Player.bounds.getY() == null)) {
+							if (obj.type.toLowerCase() === 'player_start' && (Player.getBounds().getX() == null || Player.getBounds().getY() == null)) {
 								Player.setPosition(obj.x, obj.y);
 							}
 						});
-						if (Player.bounds.getX() !== null && Player.bounds.getY() !== null) {
+						if (Player.getBounds().getX() !== null && Player.getBounds().getY() !== null) {
 							Player.render(ctx);
 						}
 					}
