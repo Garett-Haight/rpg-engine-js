@@ -66,11 +66,11 @@ export default class GameMap {
 								if (tileset) {
 									let source = tileset.getTileCoords(id - ts.firstgid);
 									ctx.drawImage(
-										tileset.tilesetImage, 
+										tileset.getTilesetImage(), 
 										source.x,
 										source.y,
-										tileset.tileWidth,
-										tileset.tileHeight,
+										tileset.getTileWidth(),
+										tileset.getTileHeight(),
 										destination_x, 
 										destination_y,
 										ts.tilewidth,

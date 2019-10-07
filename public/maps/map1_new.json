@@ -170,7 +170,20 @@
          "tilecount":256,
          "tileheight":16,
          "tilewidth":16
-        }],
+        },
+        {
+              "columns":32,
+              "firstgid":513,
+              "image":"0x72_DungeonTilesetII_v1.3.png",
+              "imageheight":512,
+              "imagewidth":512,
+              "margin":0,
+              "name":"DungeonTileset2",
+              "spacing":0,
+              "tilecount":256,
+              "tileheight":16,
+              "tilewidth":16
+       }],
  "tilewidth":16,
  "type":"map",
  "version":1.2,

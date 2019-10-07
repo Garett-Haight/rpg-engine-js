@@ -1,27 +1,27 @@
 class TilesetStore {
     constructor() { 
         if (!TilesetStore.instance) {
-            this.tilesets = [];
+            this._tilesets = [];
             TilesetStore.instance = this;
         }
         return TilesetStore.instance;            
     }
 
     add(Tileset) {
-        Tileset.id = this.tilesets.length;
-        this.tilesets.push(Tileset);
+        Tileset.id = this._tilesets.length;
+        this._tilesets.push(Tileset);
         console.log(this);
     }
 
     exists(Tileset) {
-        return this.tilesets.filter((ts) => {
-            return ts.name == Tileset.name && ts.image == Tileset.image;
-        }).length > 0;
+        return this._tilesets.find((ts) => {
+            return ts.getName() == Tileset.getName() && ts.getImage() == Tileset.getImage();
+        });
     }
 
     get(name) {
-        return this.tilesets.find((ts) => {
-            return ts.name == name;
+        return this._tilesets.find((ts) => {
+            return ts.getName() == name;
         });
     }
 };

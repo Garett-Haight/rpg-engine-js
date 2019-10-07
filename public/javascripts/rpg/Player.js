@@ -45,23 +45,23 @@ class Player {
 			}
 
 			this.getPlayerSprite = function() {
-				let tileset = TilesetStore.get('DungeonEntities');
-				let coords = tileset.getTileCoords(250);
+				let tileset = TilesetStore.get('DungeonTileset2');
+				let coords = tileset.getTileCoords(107);
 				return {tileset, coords};
 			}
 
 			this.render = function(ctx) {
 				let sprite = this.getPlayerSprite();
 				ctx.drawImage(
-					sprite.tileset.tilesetImage, 
+					sprite.tileset.getTilesetImage(), 
 					sprite.coords.x,
 					sprite.coords.y,
-					sprite.tileset.tileWidth,
-					sprite.tileset.tileHeight,
+					sprite.tileset.getTileWidth(),
+					sprite.tileset.getTileHeight(),
 					this.getBounds().getX(), 
 					this.getBounds().getY(),
-					sprite.tileset.tileWidth,
-					sprite.tileset.tileHeight
+					sprite.tileset.getTileWidth(),
+					sprite.tileset.getTileHeight()
 				);
 			}
 		}
