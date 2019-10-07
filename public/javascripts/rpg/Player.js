@@ -1,5 +1,6 @@
 import Globals from './Globals'
 import TilesetStore from './TilesetStore'
+import Sprite from './Sprite'
 import AnimatedSprite from './AnimatedSprite'
 import Rectangle from './Rectangle'
 
@@ -52,13 +53,14 @@ class Player {
 
 			this.render = function(ctx) {
 				let sprite = this.getPlayerSprite();
+				// new Sprite(sprite.tileset, sprite.coords.x, sprite.coords.y, 16, 32, ctx);
 				ctx.drawImage(
 					sprite.tileset.getTilesetImage(), 
 					sprite.coords.x,
 					sprite.coords.y,
 					sprite.tileset.getTileWidth(),
 					sprite.tileset.getTileHeight(),
-					this.getBounds().getX(), 
+					this.getBounds().getX(),
 					this.getBounds().getY(),
 					sprite.tileset.getTileWidth(),
 					sprite.tileset.getTileHeight()
@@ -74,12 +76,6 @@ class Player {
 
 	getMovementSpeed() {
 		return this._movementSpeed;
-	}
-
-	draw() {
-		var ctx = this.canvas.getContext("2d");
-		ctx.fillStyle = "#ffa464";
-		ctx.fillRect(this.pos_x, this.pos_y, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
 	}
 
 	update() {
