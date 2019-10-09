@@ -23,14 +23,14 @@ class Player {
 			this._bounds = new Rectangle(
 				x, 
 				y, 
-				this._playerSize, 
-				this._playerSize
+				16, 
+				32
 			);
 
 			// player attrs
-			this.hp = 100;
-			this.mp = 100;
-			this.inventory = [];
+			this._hp = 100;
+			this._mp = 100;
+			this._inventory = [];
 
 			this.setPosition = function(x, y) {
 				this.setPositionX(x);
@@ -52,19 +52,38 @@ class Player {
 			}
 
 			this.render = function(ctx) {
-				let sprite = this.getPlayerSprite();
-				// new Sprite(sprite.tileset, sprite.coords.x, sprite.coords.y, 16, 32, ctx);
+				// let sprite = this.getPlayerSprite();
+				let sprite = new Sprite(
+					"DungeonTileset2", 
+					144,
+					32, 
+					16, 
+					32
+				);
+
 				ctx.drawImage(
-					sprite.tileset.getTilesetImage(), 
-					sprite.coords.x,
-					sprite.coords.y,
-					sprite.tileset.getTileWidth(),
-					sprite.tileset.getTileHeight(),
+					sprite.getTileset().getTilesetImage(),
+					sprite.getX(),
+					sprite.getY(),
+					16, 
+					32, 
 					this.getBounds().getX(),
 					this.getBounds().getY(),
-					sprite.tileset.getTileWidth(),
-					sprite.tileset.getTileHeight()
+					16,
+					32
 				);
+
+				// ctx.drawImage(
+				// 	sprite.getTileset().getTilesetImage(), 
+				// 	sprite.getX(),
+				// 	sprite.getY(),
+				// 	sprite.getTileset().getTileWidth(),
+				// 	sprite.getTileset().getTileHeight(),
+				// 	this.getBounds().getX(),
+				// 	this.getBounds().getY(),
+				// 	sprite.getTileset().getTileWidth(),
+				// 	sprite.getTileset().getTileHeight()
+				// );
 			}
 		}
 		return Player.instance;
