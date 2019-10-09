@@ -3,5 +3,6 @@ export default {
 	firstMap: 1,
 	height: '',
 	width: '',
-	renderCollisions: true
+	renderCollisions: true,
+	renderPlayerBounds: true,
 }

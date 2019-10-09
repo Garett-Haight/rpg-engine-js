@@ -39,7 +39,7 @@ export default class Controls {
 
     moveUp() {
         if (this.checkUp()) {
-            Player.setPositionY(Player.getBounds().getY() - Globals.TILE_HEIGHT);
+            Player.setPositionY(Player.getBounds().getY() - Player.getMovementSpeed());
            // player.update();
            // this.checkForEvent(player, this.game.map);
         }
@@ -57,7 +57,7 @@ export default class Controls {
 
     moveDown() {
         if (this.checkDown()) {
-            Player.setPositionY(Player.getBounds().getY() + Globals.TILE_HEIGHT);
+            Player.setPositionY(Player.getBounds().getY() + Player.getMovementSpeed());
             //player.update();
            // this.checkForEvent(player, this.game.map);
         }
@@ -75,7 +75,7 @@ export default class Controls {
 
     moveRight() {
         if (this.checkRight()) {
-            Player.setPositionX(Player.getBounds().getX() + Globals.TILE_WIDTH);
+            Player.setPositionX(Player.getBounds().getX() + Player.getMovementSpeed());
             // player.update();
             // this.checkForEvent(player, this.game.map);
         }
@@ -94,7 +94,7 @@ export default class Controls {
 
     moveLeft() {
         if (this.checkLeft()) {
-            Player.setPositionX(Player.getBounds().getX() - Globals.TILE_WIDTH);
+            Player.setPositionX(Player.getBounds().getX() - Player.getMovementSpeed());
             // player.update();
             // this.checkForEvent(player, this.game.map);
         }

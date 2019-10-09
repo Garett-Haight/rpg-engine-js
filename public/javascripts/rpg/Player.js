@@ -3,13 +3,14 @@ import TilesetStore from './TilesetStore'
 import Sprite from './Sprite'
 import AnimatedSprite from './AnimatedSprite'
 import Rectangle from './Rectangle'
+import Config from './Config'
 
 class Player {
 	constructor(x, y) {
 		if(!Player.instance) {
 			Player.instance = this;
 			this._playerSize = Globals.TILE_WIDTH;
-			this._movementSpeed = Globals.TILE_WIDTH;
+			this._movementSpeed = 5;
 
 			this._facing = Globals.FACING.DOWN;
 			this._animations = {
@@ -24,7 +25,7 @@ class Player {
 				x, 
 				y, 
 				16, 
-				32
+				20
 			);
 
 			// player attrs
@@ -52,13 +53,12 @@ class Player {
 			}
 
 			this.render = function(ctx) {
-				// let sprite = this.getPlayerSprite();
 				let sprite = new Sprite(
 					"DungeonTileset2", 
 					144,
-					32, 
+					44, 
 					16, 
-					32
+					20
 				);
 
 				ctx.drawImage(
@@ -66,12 +66,23 @@ class Player {
 					sprite.getX(),
 					sprite.getY(),
 					16, 
-					32, 
+					20, 
 					this.getBounds().getX(),
 					this.getBounds().getY(),
 					16,
-					32
+					20
 				);
+
+				// for collision debugging
+				if (Config.renderPlayerBounds) {
+					ctx.strokeStyle = "green";
+					ctx.strokeRect(
+						this.getBounds().getX(), 
+						this.getBounds().getY(), 
+						this.getBounds().getWidth(), 
+						this.getBounds().getHeight()
+					);
+				}
 
 				// ctx.drawImage(
 				// 	sprite.getTileset().getTilesetImage(), 
