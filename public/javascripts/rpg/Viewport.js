@@ -1,4 +1,6 @@
 import UI from './UI'
+import Renderer from './Renderer'
+
 export default class Viewport {
     constructor(id, container, width, height, defaultMap=null) {
         this.container = container;

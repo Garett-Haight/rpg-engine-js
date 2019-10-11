@@ -43,6 +43,7 @@ export default class Game {
 		this.loop(0);
 	}
 
+	
 	loop(delta) {
 		window.requestAnimationFrame(this.loop.bind(this));
 		this.render();
