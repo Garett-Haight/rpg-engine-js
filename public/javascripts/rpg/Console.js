@@ -11,6 +11,7 @@ export default class Console {
 		var messageWrapper = document.createElement("li");
 		messageWrapper.innerText = message;
 		// If console text is moved to canvas, be sure to avoid text rendering. Instead render images from bitmap fonts
+		// https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas
 		messageWrapper.className = "message";
 		if(type) {
 			messageWrapper.className += " " + type;

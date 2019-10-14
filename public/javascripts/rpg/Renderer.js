@@ -9,9 +9,14 @@ class Renderer {
 	constructor(ctx) {
 		if(!Renderer.instance) {
 			Renderer.instance = this;
+			this.ctx = ctx;
 		}
 		return Player.instance;
 	};
+
+	static render() {
+
+	}
 }
 
 const instance = new Renderer();
