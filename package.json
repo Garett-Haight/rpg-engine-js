@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start:dev": "webpack --env=dev --progress --profile --colors --watch",
-    "start:prod": "webpack --env=prod --progress --profile --colors --watch"
+    "start:prod": "webpack --env=prod --progress --profile --colors --watch",
+    "build": "webpack --env=prod --progress --profile --colors"
   },
   "dependencies": {
     "axios": "^0.18.0",
