@@ -5,7 +5,7 @@ console.log("DEV");
 module.exports = {
     context: path.resolve(__dirname, '.'+path.sep+'public'+path.sep+'javascripts'+path.sep+'rpg'),
     entry: {
-        app: '.'+path.sep+'main.js',
+        app: '.'+path.sep+'Main.js',
     },
     devtool: 'cheap-eval-source-map',
     output: {

@@ -8,7 +8,7 @@ module.exports = {
     },
     context: path.resolve(__dirname, '.'+path.sep+'public'+path.sep+'javascripts'+path.sep+'rpg'),
     entry: {
-        app: '.'+path.sep+'main.js',
+        app: '.'+path.sep+'Main.js',
     },
     output: {
         path: path.resolve(__dirname, '.'+path.sep+'public'+path.sep+'javascripts'),
