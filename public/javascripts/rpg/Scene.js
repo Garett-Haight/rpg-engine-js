@@ -2,9 +2,11 @@
 import Render from './Renderer'
 
 export default class Scene {
-    constructor() {
+    constructor(children) {
         // array of renderable game objects
-        this.children = [];
+        this.children = children;
+        //TODO: How do I determine the render order of scene elements?
+
     }
 
     // add game object to scene
@@ -18,7 +20,6 @@ export default class Scene {
     }
 
     render(ctx) {
-        
         this.children.forEach(child => child.render(ctx));
     }
 }

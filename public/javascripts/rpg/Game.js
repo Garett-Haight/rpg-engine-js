@@ -4,6 +4,7 @@ import Player from './Player'
 import MapStore from './MapStore'
 import MapService from './services/MapService'
 import Events from './Events'
+import Scene from './Scene'
 import Viewport from './Viewport'
 import UI from './UI'
 import Console from './Console'
@@ -26,7 +27,11 @@ export default class Game {
 		
         // create dom elements for game sections
 		let top = UI.createPanel("top", this.container);
-		let mapViewport = new Viewport("map", top, 20, 20, this.map);
+		//TODO: How would I handle this using Tiled?
+		let topScene = new Scene([
+			this.map
+		]);
+		let mapViewport = new Viewport("map", top, 20, 20, topScene);
 		this.viewports.push(mapViewport);
 
 		let bottom = UI.createPanel("bottom", this.container);

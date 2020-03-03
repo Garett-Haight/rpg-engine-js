@@ -42,9 +42,9 @@ export default class GameMap {
 		this.mapName = map;
 		this.getMap(map, drawMap);
 
-		this.drawMap = (canvas) => {
+		this.drawMap = (ctx) => {
 			var map = this.map;
-			var ctx = canvas.getContext("2d");
+			//var ctx = canvas.getContext("2d");
 			// Clear previous render
 			ctx.clearRect(0,0, Globals.MAP_WIDTH * Globals.TILE_WIDTH, Globals.MAP_HEIGHT * Globals.TILE_HEIGHT);
 	
@@ -256,4 +256,7 @@ export default class GameMap {
 		}
 	}
 
+	render(ctx) {
+		this.drawMap(ctx);
+	}
 }

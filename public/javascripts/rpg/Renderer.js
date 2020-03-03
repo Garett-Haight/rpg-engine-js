@@ -11,7 +11,7 @@ class Renderer {
 			Renderer.instance = this;
 			this.ctx = ctx;
 		}
-		return Player.instance;
+		return Renderer.instance;
 	};
 
 	static render() {
