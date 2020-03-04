@@ -16,12 +16,8 @@ export default class Viewport {
         this.activeScene = scene;
         this.render(this.ctx);
     }
-
+    
     render() {
-        // refactor. viewports shouldn't be specific to maps
-        // if (this.activeMap.loaded) {
-        //     this.activeMap.drawMap(this.canvas);
-        // }
         this.activeScene.render(this.ctx);
     }
 }

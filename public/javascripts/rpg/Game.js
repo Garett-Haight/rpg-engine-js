@@ -8,6 +8,7 @@ import Scene from './Scene'
 import Viewport from './Viewport'
 import UI from './UI'
 import Console from './Console'
+import Rectangle from './primitives/Rectangle'
 
 export default class Game {
 	constructor(Config) {
@@ -33,6 +34,13 @@ export default class Game {
 		]);
 		let mapViewport = new Viewport("map", top, 20, 20, topScene);
 		this.viewports.push(mapViewport);
+
+		let right = UI.createPanel("right", this.container);
+		let rightScene = new Scene([
+			new Rectangle({x1: 1, y1: 1, w: 100, h: 100})
+		]);
+		let menuViewport = new Viewport("menu", right, 20, 20, rightScene);
+		this.viewports.push(menuViewport);
 
 		let bottom = UI.createPanel("bottom", this.container);
 		this.console = new Console(bottom);

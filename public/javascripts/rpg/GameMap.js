@@ -41,73 +41,6 @@ export default class GameMap {
 		this.eventLayer = null;
 		this.mapName = map;
 		this.getMap(map, drawMap);
-
-		this.drawMap = (ctx) => {
-			var map = this.map;
-			//var ctx = canvas.getContext("2d");
-			// Clear previous render
-			ctx.clearRect(0,0, Globals.MAP_WIDTH * Globals.TILE_WIDTH, Globals.MAP_HEIGHT * Globals.TILE_HEIGHT);
-	
-			 this.layers.forEach((layer) => {
-				if (layer instanceof TileLayer) {	
-					let tiles = layer.tiles;									
-					for(var i = 0; i < layer.height; i++) {
-						for(var j = 0; j < layer.width; j++) {	
-							let tileset = null;
-							let id = tiles[(j * map.width) + i];
-							// which tileset in the map does this belong to?
-							let ts = this.map.tilesets.find(tileset => {
-								return  id >= tileset.firstgid && id < tileset.tilecount + tileset.firstgid - 1;
-							});
-							if (ts) {
-								let destination_x = i * ts.tilewidth;
-								let destination_y = j * ts.tileheight;
-								tileset = TilesetStore.get(ts.name);
-								if (tileset) {
-									let source = tileset.getTileCoords(id - ts.firstgid);
-									ctx.drawImage(
-										tileset.getTilesetImage(), 
-										source.x,
-										source.y,
-										tileset.getTileWidth(),
-										tileset.getTileHeight(),
-										destination_x, 
-										destination_y,
-										ts.tilewidth,
-										ts.tileheight
-									);
-								}
-							}
-							else {
-								// throw error
-							}
-						}
-					}
-				}
-				else if (layer instanceof ObjectLayer) {
-					if (layer.name.toLowerCase() == 'entities') {
-						if(this.entityLayer == null) {
-							this.entityLayer = layer;
-						}
-						this.entityLayer.objects.forEach((obj) => {
-							if (obj.type.toLowerCase() === 'player_start' && (Player.getBounds().getX() == null || Player.getBounds().getY() == null)) {
-								Player.setPosition(obj.x, obj.y);
-							}
-						});
-						if (Player.getBounds().getX() !== null && Player.getBounds().getY() !== null) {
-							Player.render(ctx);
-						}
-					}
-				}
-			 });
-			 // render collisions for debugging
-			 if (this.collisions !== null && Config.renderCollisions === true) {
-				ctx.fillStyle = "rgba(255, 240, 40, 0.5)";
-				this.collisions.forEach(obj => {
-					ctx.fillRect(obj.x, obj.y, obj.width, obj.height);
-				});
-			}
-		}
 	}
 
 	getMap(mapId, drawMap) {
@@ -253,6 +186,71 @@ export default class GameMap {
 					}
 				}
 			}
+		}
+	}
+
+	drawMap(ctx) {
+		var map = this.map;
+		// Clear previous render
+		ctx.clearRect(0,0, Globals.MAP_WIDTH * Globals.TILE_WIDTH, Globals.MAP_HEIGHT * Globals.TILE_HEIGHT);
+		this.layers.forEach((layer) => {
+			if (layer instanceof TileLayer) {	
+				let tiles = layer.tiles;									
+				for(var i = 0; i < layer.height; i++) {
+					for(var j = 0; j < layer.width; j++) {	
+						let tileset = null;
+						let id = tiles[(j * map.width) + i];
+						// which tileset in the map does this belong to?
+						let ts = this.map.tilesets.find(tileset => {
+							return  id >= tileset.firstgid && id < tileset.tilecount + tileset.firstgid - 1;
+						});
+						if (ts) {
+							let destination_x = i * ts.tilewidth;
+							let destination_y = j * ts.tileheight;
+							tileset = TilesetStore.get(ts.name);
+							if (tileset) {
+								let source = tileset.getTileCoords(id - ts.firstgid);
+								ctx.drawImage(
+									tileset.getTilesetImage(), 
+									source.x,
+									source.y,
+									tileset.getTileWidth(),
+									tileset.getTileHeight(),
+									destination_x, 
+									destination_y,
+									ts.tilewidth,
+									ts.tileheight
+								);
+							}
+						}
+						else {
+							// throw error
+						}
+					}
+				}
+			}
+			else if (layer instanceof ObjectLayer) {
+				if (layer.name.toLowerCase() == 'entities') {
+					if(this.entityLayer == null) {
+						this.entityLayer = layer;
+					}
+					this.entityLayer.objects.forEach((obj) => {
+						if (obj.type.toLowerCase() === 'player_start' && (Player.getBounds().getX() == null || Player.getBounds().getY() == null)) {
+							Player.setPosition(obj.x, obj.y);
+						}
+					});
+					if (Player.getBounds().getX() !== null && Player.getBounds().getY() !== null) {
+						Player.render(ctx);
+					}
+				}
+			}
+		});
+		// render collisions for debugging
+		if (this.collisions !== null && Config.renderCollisions === true) {
+			ctx.fillStyle = "rgba(255, 240, 40, 0.5)";
+			this.collisions.forEach(obj => {
+				ctx.fillRect(obj.x, obj.y, obj.width, obj.height);
+			});
 		}
 	}
 
