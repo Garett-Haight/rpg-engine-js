@@ -1,4 +1,4 @@
-import UI from './UI'
+import UI from './UI/index'
 import Scene from './Scene'
 import Renderer from './Renderer'
 
@@ -16,7 +16,7 @@ export default class Viewport {
         this.activeScene = scene;
         this.render(this.ctx);
     }
-    
+
     render() {
         this.activeScene.render(this.ctx);
     }

@@ -1,5 +1,6 @@
-import Globals from './Globals'
-export default class UI{
+import Globals from '../Globals'
+import DOM from '../DOM/index'
+export default class UI {
 	constructor(game) {
 		this.game = game;
         this.container = document.querySelector('#menu');
@@ -62,11 +63,12 @@ export default class UI{
 	}
 
     static createCanvas(id, parent, width, height) {
-        let canvas = document.createElement("canvas");
-        canvas.id = id;
-        canvas.width = width * Globals.TILE_WIDTH;
-        canvas.height = height * Globals.TILE_HEIGHT;
-        parent.appendChild(canvas);
+        let canvas = DOM.CanvasStore.create(
+            id,
+            parent,
+            width * Globals.TILE_WIDTH,
+            height * Globals.TILE_HEIGHT,
+        );
         return canvas;
     }
 
@@ -76,7 +78,6 @@ export default class UI{
         parent.appendChild(panel);
         return panel;
     }
-
     
 	createButton(text, id, appendTo=this.container, func) {
         var button = document.createElement("button");
