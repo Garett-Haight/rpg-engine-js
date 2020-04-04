@@ -1,5 +1,6 @@
 import Globals from './Globals';
 import TilesetStore from './TilesetStore';
+import SpriteStore from './SpriteStore';
 
 export default class Sprite {
     constructor(sheet, x, y, width, height) { 
@@ -10,7 +11,7 @@ export default class Sprite {
         this._height = height;
         this._tileset = TilesetStore.get(sheet);
         this._sprite = new Image(width, height);
-
+ 
         // var canvas = document.createElement("canvas");
         // canvas.width = width;
         // canvas.height = height;
@@ -19,7 +20,15 @@ export default class Sprite {
         // //this._tileset.getTileFromCoords(x, y, width, height);
         // console.log(this);
     }   
-    
+
+    get() {
+        return this;
+    }
+
+    getImage() {
+        return this._sprite;
+    }
+
     getSpritesheet() {
         return this._spriteSheet;
     }

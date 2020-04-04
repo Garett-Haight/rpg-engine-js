@@ -2,11 +2,15 @@ import Globals from './Globals'
 import Sprite from './Sprite'
 
 export default class AnimatedSprite {
-    constructor(sprite) { 
+    constructor(spriteArr) { 
         this.frames = [];
     }    
 
     buildAnimation() {
         
+    }
+
+    getNextFrame() {
+
     }
 }

@@ -6,14 +6,23 @@ class SpriteStore {
         }
 
         return SpriteStore.instance;
-        
     }
 
     add(sprite) {
-        this.sprites.push(map);
+        if(!this.exists(sprite)) {
+            this.sprites.push(map);
+            return true;
+        }
+        return this.get(sprite);
     }
 
     exists(sprite) {
+        return this.sprites.find((s) => {
+            return sprite.id == s.id;
+        });
+    }
+
+    get(sprite) {
         return this.sprites.find((s) => {
             return sprite.id == s.id;
         });
