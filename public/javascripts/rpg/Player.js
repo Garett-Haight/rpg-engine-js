@@ -1,5 +1,6 @@
 import Globals from './Globals'
 import TilesetStore from './TilesetStore'
+import SpriteStore from './SpriteStore'
 import Sprite from './Sprite'
 import AnimatedSprite from './AnimatedSprite'
 import Rectangle from './Rectangle'
@@ -7,12 +8,23 @@ import Config from './Config'
 
 class Player {
 	constructor(x, y) {
+		this.spriteStore = new SpriteStore();
 		if(!Player.instance) {
 			Player.instance = this;
 			this._playerSize = Globals.TILE_WIDTH;
 			this._movementSpeed = 5;
 
 			this._facing = Globals.FACING.DOWN;
+			let spriteArr = this.spriteStore.add(
+				[
+					new Sprite("DungeonTileset2", 144, 44, 16, 20, "playerIdle01"),
+					new Sprite("DungeonTileset2", 160, 44, 16, 20, "playerIdle02"),
+					new Sprite("DungeonTileset2", 176, 44, 16, 20, "playerIdle03"),
+					new Sprite("DungeonTileset2", 182, 44, 16, 20, "playerIdle04")
+				]
+			);
+
+			let animation = new AnimatedSprite(spriteArr);
 			this._animations = {
 				walkUp: null,
 				walkDown: null,
@@ -53,14 +65,8 @@ class Player {
 			}
 
 			this.render = function(ctx) {
-				let sprite = new Sprite(
-					"DungeonTileset2", 
-					144,
-					44, 
-					16, 
-					20
-				);
-
+				let sprite = new Sprite("DungeonTileset2", 144, 44, 16, 20);			
+				
 				ctx.drawImage(
 					sprite.getTileset().getTilesetImage(),
 					sprite.getX(),

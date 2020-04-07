@@ -16,8 +16,7 @@ export default class Game {
 		this.player = Player;
 		this.viewports = [];
 		this.mapStore = MapStore;
-		//this.mapStore.add();
-		
+
 		// should this be a singleton?
 		this.mapService = new MapService();
 		this.map = new GameMap(Config.firstMap, true, this.mapService);
@@ -49,10 +48,6 @@ export default class Game {
 		// starting inventory
 		this.startingInventory = {potion: 1, mana: 1};
 
-		//document.addEventListener('click', this.loop.bind(this));
-		// document.addEventListener('RequestAnimationFrame', (delta) => {
-		// 	this.loop(delta).bind(this);
-		// });
 		this.loop(0);
 	}
 

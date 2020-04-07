@@ -9,8 +9,19 @@ class SpriteStore {
     }
 
     add(sprite) {
-        if(!this.exists(sprite)) {
-            this.sprites.push(map);
+        if (Array.isArray(sprite)) {
+            let sprites = [];
+            sprite.forEach((s) => {
+                if(!this.sprites.exists(s)) {
+                    this.sprites.push(s);   
+                    sprites.push(this.get(s));  
+                }
+                sprites.push(s);
+            });
+            return sprites;
+        }
+        else if(!this.exists(sprite)) {
+            this.sprites.push(sprite);
             return true;
         }
         return this.get(sprite);

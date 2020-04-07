@@ -3,7 +3,8 @@ import TilesetStore from './TilesetStore';
 import SpriteStore from './SpriteStore';
 
 export default class Sprite {
-    constructor(sheet, x, y, width, height) { 
+    constructor(sheet, x, y, width, height, name) { 
+        this._name = name;
         this._spriteSheet = sheet;
         this._x = x;
         this._y = y;
@@ -11,18 +12,14 @@ export default class Sprite {
         this._height = height;
         this._tileset = TilesetStore.get(sheet);
         this._sprite = new Image(width, height);
- 
-        // var canvas = document.createElement("canvas");
-        // canvas.width = width;
-        // canvas.height = height;
-        // canvas.getContext("2d").drawImage(this._sprite, 0, 0);
-        // this._sprite.src = canvas.toDataURL('image/png');
-        // //this._tileset.getTileFromCoords(x, y, width, height);
-        // console.log(this);
     }   
 
     get() {
         return this;
+    }
+
+    getName() {
+        return this._name;
     }
 
     getImage() {
@@ -51,5 +48,21 @@ export default class Sprite {
 
     getTileset() {
         return this._tileset;
+    }
+
+    render(ctx) {
+        var destX = 1;
+        var destY = 1;
+        ctx.drawImage(
+            this.getTileset().getTilesetImage(),
+            this.getX(),
+            this.getY(),
+            this.getWidth(), 
+            this.getHeight(), 
+            destX,
+            destY,
+            16,
+            20
+        );
     }
 }
