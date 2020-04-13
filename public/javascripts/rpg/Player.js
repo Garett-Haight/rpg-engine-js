@@ -1,37 +1,22 @@
 import Globals from './Globals'
 import TilesetStore from './TilesetStore'
+import Tileset from './Tileset'
 import SpriteStore from './SpriteStore'
 import Sprite from './Sprite'
 import AnimatedSprite from './AnimatedSprite'
-import Rectangle from './Rectangle'
+import Rectangle from './primitives/Rectangle'
 import Config from './Config'
+import Tileset from './Tileset'
 
 class Player {
 	constructor(x, y) {
-		this.spriteStore = new SpriteStore();
+		this.spriteStore = SpriteStore;
+		this._builtGraphics = false;
 		if(!Player.instance) {
 			Player.instance = this;
 			this._playerSize = Globals.TILE_WIDTH;
 			this._movementSpeed = 5;
-
 			this._facing = Globals.FACING.DOWN;
-			let spriteArr = this.spriteStore.add(
-				[
-					new Sprite("DungeonTileset2", 144, 44, 16, 20, "playerIdle01"),
-					new Sprite("DungeonTileset2", 160, 44, 16, 20, "playerIdle02"),
-					new Sprite("DungeonTileset2", 176, 44, 16, 20, "playerIdle03"),
-					new Sprite("DungeonTileset2", 182, 44, 16, 20, "playerIdle04")
-				]
-			);
-
-			let animation = new AnimatedSprite(spriteArr);
-			this._animations = {
-				walkUp: null,
-				walkDown: null,
-				walkLeft: null,
-				walkRight: null
-			};
-	
 			// player positioning
 			this._bounds = new Rectangle(
 				x, 
@@ -63,48 +48,36 @@ class Player {
 				let coords = tileset.getTileCoords(107);
 				return {tileset, coords};
 			}
-
-			this.render = function(ctx) {
-				let sprite = new Sprite("DungeonTileset2", 144, 44, 16, 20);			
-				
-				ctx.drawImage(
-					sprite.getTileset().getTilesetImage(),
-					sprite.getX(),
-					sprite.getY(),
-					16, 
-					20, 
-					this.getBounds().getX(),
-					this.getBounds().getY(),
-					16,
-					20
-				);
-
-				// for collision debugging
-				if (Config.renderPlayerBounds) {
-					ctx.strokeStyle = "green";
-					ctx.strokeRect(
-						this.getBounds().getX(), 
-						this.getBounds().getY(), 
-						this.getBounds().getWidth(), 
-						this.getBounds().getHeight()
-					);
-				}
-
-				// ctx.drawImage(
-				// 	sprite.getTileset().getTilesetImage(), 
-				// 	sprite.getX(),
-				// 	sprite.getY(),
-				// 	sprite.getTileset().getTileWidth(),
-				// 	sprite.getTileset().getTileHeight(),
-				// 	this.getBounds().getX(),
-				// 	this.getBounds().getY(),
-				// 	sprite.getTileset().getTileWidth(),
-				// 	sprite.getTileset().getTileHeight()
-				// );
-			}
 		}
 		return Player.instance;
 	};
+
+	buildGraphics() {
+		let playerTileset = null;
+		if (TilesetStore.exists("DungeonTileset2")) {
+			playerTileset = TilesetStore.get("DungeonTileset2");
+		}
+		else {
+			playerTileset = TilesetStore.add(new Tileset("DungeonTileset2"));
+		}
+		let spriteArr = this.spriteStore.add(
+			[
+				new Sprite(playerTileset, 144, 44, 16, 20, "playerIdle01"),
+				new Sprite(playerTileset, 160, 44, 16, 20, "playerIdle02"),
+				new Sprite(playerTileset, 176, 44, 16, 20, "playerIdle03"),
+				new Sprite(playerTileset, 182, 44, 16, 20, "playerIdle04")
+			]
+		);
+
+		let animation = new AnimatedSprite(spriteArr);
+		this._animations = {
+			walkUp: animation,
+			walkDown: animation,
+			walkLeft: animation,
+			walkRight: animation
+		};
+		this._builtGraphics = true;
+	}
 
 	getBounds() {
 		return this._bounds;
@@ -116,6 +89,29 @@ class Player {
 
 	update() {
 		
+	}
+
+	render(ctx, time) {
+		this._animations.walkUp.render(
+			ctx, 
+			this.getBounds().getX(), 
+			this.getBounds().getY(),
+			this.getBounds().getWidth(),
+			this.getBounds().getHeight(),
+			1, 
+			time
+		);
+
+		// for collision debugging
+		if (Config.renderPlayerBounds) {
+			ctx.strokeStyle = "green";
+			ctx.strokeRect(
+				this.getBounds().getX(), 
+				this.getBounds().getY(), 
+				this.getBounds().getWidth(), 
+				this.getBounds().getHeight()
+			);
+		}
 	}
 }
 

@@ -6,7 +6,7 @@ import TilesetStore from "./TilesetStore"
 import Tileset from "./Tileset"
 import Config from "./Config"
 import _ from "lodash"
-import Rectangle from './Rectangle';
+import Rectangle from './primitives/Rectangle';
 
 class MapLayer {
 	constructor(layer) {
@@ -119,7 +119,7 @@ export default class GameMap {
 	}
 
 	// Events are items, map teleports, etc.
-	parseEvents() {
+	parseEvents() {a
 		var events;
 		for (let layer of this.map.layers ) {
 			if (layer.name == "Events") {
@@ -180,16 +180,13 @@ export default class GameMap {
 					for (let e of layer.objects) {
 						// Tiled positions objects at bottom left instead of top left
 						e.y = e.y - Globals.TILE_HEIGHT;
-						if (e.name == "Player" && !this.game.player) {
-							this.placePlayer(entitiesContainer, {x: e.x, y: e.y});
-						}
 					}
 				}
 			}
 		}
 	}
 
-	drawMap(ctx) {
+	drawMap(ctx, time) {
 		var map = this.map;
 		// Clear previous render
 		ctx.clearRect(0,0, Globals.MAP_WIDTH * Globals.TILE_WIDTH, Globals.MAP_HEIGHT * Globals.TILE_HEIGHT);
@@ -235,12 +232,13 @@ export default class GameMap {
 						this.entityLayer = layer;
 					}
 					this.entityLayer.objects.forEach((obj) => {
-						if (obj.type.toLowerCase() === 'player_start' && (Player.getBounds().getX() == null || Player.getBounds().getY() == null)) {
+						if (obj.type.toLowerCase() === 'player_start' && Player._builtGraphics == false) {
 							Player.setPosition(obj.x, obj.y);
+							Player.buildGraphics();
 						}
 					});
 					if (Player.getBounds().getX() !== null && Player.getBounds().getY() !== null) {
-						Player.render(ctx);
+						Player.render(ctx, time);
 					}
 				}
 			}
@@ -254,7 +252,7 @@ export default class GameMap {
 		}
 	}
 
-	render(ctx) {
-		this.drawMap(ctx);
+	render(ctx, time) {
+		this.drawMap(ctx, time);
 	}
 }

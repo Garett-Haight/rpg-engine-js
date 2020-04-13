@@ -1,6 +1,6 @@
 import GameMap from './GameMap'
 import Controls from './Controls'
-import Player from './Player'
+//import Player from './Player'
 import MapStore from './MapStore'
 import MapService from './services/MapService'
 import Events from './Events'
@@ -13,7 +13,7 @@ import Rectangle from './primitives/Rectangle'
 export default class Game {
 	constructor(Config) {
         this.container = document.querySelector(Config.container);
-		this.player = Player;
+		//this.player = Player;
 		this.viewports = [];
 		this.mapStore = MapStore;
 
@@ -34,13 +34,6 @@ export default class Game {
 		let mapViewport = new Viewport("map", top, 20, 20, topScene);
 		this.viewports.push(mapViewport);
 
-		let right = UI.createPanel("right", this.container);
-		let rightScene = new Scene([
-			new Rectangle({x1: 1, y1: 1, w: 100, h: 100})
-		]);
-		let menuViewport = new Viewport("menu", right, 20, 20, rightScene);
-		this.viewports.push(menuViewport);
-
 		let bottom = UI.createPanel("bottom", this.container);
 		this.console = new Console(bottom);
 		this.console.sendMessage("Ye find yeself in yon dungeon. Obvious exits are NORTH, SOUTH, and DENNIS");
@@ -52,14 +45,14 @@ export default class Game {
 	}
 
 	
-	loop(delta) {
+	loop(time) {
 		window.requestAnimationFrame(this.loop.bind(this));
-		this.render();
+		this.render(time);
 	}
 
-	render() {
+	render(time) {
 		this.viewports.forEach((vp) => {
-			vp.render();
+			vp.render(time);
 		});
 	}
 

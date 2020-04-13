@@ -12,7 +12,7 @@ class SpriteStore {
         if (Array.isArray(sprite)) {
             let sprites = [];
             sprite.forEach((s) => {
-                if(!this.sprites.exists(s)) {
+                if(!this.exists(s)) {
                     this.sprites.push(s);   
                     sprites.push(this.get(s));  
                 }

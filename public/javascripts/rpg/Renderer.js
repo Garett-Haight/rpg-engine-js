@@ -2,7 +2,7 @@ import Globals from './Globals'
 import TilesetStore from './TilesetStore'
 import Sprite from './Sprite'
 import AnimatedSprite from './AnimatedSprite'
-import Rectangle from './Rectangle'
+import Rectangle from './primitives/Rectangle'
 import Config from './Config'
 
 class Renderer {

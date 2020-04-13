@@ -1,6 +1,7 @@
-import Globals from './Globals';
-import TilesetStore from './TilesetStore';
-import SpriteStore from './SpriteStore';
+import Globals from './Globals'
+import TilesetStore from './TilesetStore'
+import Tileset from './Tileset'
+import SpriteStore from './SpriteStore'
 
 export default class Sprite {
     constructor(sheet, x, y, width, height, name) { 
@@ -10,7 +11,7 @@ export default class Sprite {
         this._y = y;
         this._width = width;
         this._height = height;
-        this._tileset = TilesetStore.get(sheet);
+        this._tileset = sheet instanceof Tileset ? sheet : TilesetStore.get(sheet);
         this._sprite = new Image(width, height);
     }   
 
@@ -50,19 +51,17 @@ export default class Sprite {
         return this._tileset;
     }
 
-    render(ctx) {
-        var destX = 1;
-        var destY = 1;
+    render(ctx, x, y, w, h, scale=1) {
         ctx.drawImage(
             this.getTileset().getTilesetImage(),
             this.getX(),
             this.getY(),
-            this.getWidth(), 
-            this.getHeight(), 
-            destX,
-            destY,
-            16,
-            20
+            this.getWidth(),
+            this.getHeight(),
+            x,
+            y,
+            w,
+            h
         );
     }
 }

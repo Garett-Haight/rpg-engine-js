@@ -7,15 +7,20 @@ class TilesetStore {
         return TilesetStore.instance;            
     }
 
-    add(Tileset) {
-        Tileset.id = this._tilesets.length;
-        this._tilesets.push(Tileset);
-        console.log(this);
+    add(tileset) {
+        tileset.id = this._tilesets.length;
+        this._tilesets.push(tileset);
+        return tileset;
     }
 
-    exists(Tileset) {
+    exists(tileset) {
         return this._tilesets.find((ts) => {
-            return ts.getName() == Tileset.getName() && ts.getImage() == Tileset.getImage();
+            if (typeof tileset == 'string') {
+                return ts.getName() == tileset;
+            }
+            else {
+                return ts.getName() == tileset.getName();
+            }
         });
     }
 

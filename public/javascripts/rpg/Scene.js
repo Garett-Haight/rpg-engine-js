@@ -19,7 +19,11 @@ export default class Scene {
         
     }
 
-    render(ctx) {
-        this.children.forEach(child => child.render(ctx));
+    render(ctx, time) {
+        this.children.forEach((child) => {
+            if (typeof child.render === 'function') {
+                child.render(ctx, time);
+            }
+        });
     }
 }

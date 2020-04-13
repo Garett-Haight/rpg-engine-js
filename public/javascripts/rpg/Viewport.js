@@ -17,7 +17,7 @@ export default class Viewport {
         this.render(this.ctx);
     }
 
-    render() {
-        this.activeScene.render(this.ctx);
+    render(time) {
+        this.activeScene.render(this.ctx, time);
     }
 }
