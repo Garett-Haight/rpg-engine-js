@@ -22,7 +22,7 @@ class Player {
 				x, 
 				y, 
 				16, 
-				20
+				32
 			);
 
 			// player attrs
@@ -62,10 +62,14 @@ class Player {
 		}
 		let spriteArr = this.spriteStore.add(
 			[
-				new Sprite(playerTileset, 144, 44, 16, 20, "playerIdle01"),
-				new Sprite(playerTileset, 160, 44, 16, 20, "playerIdle02"),
-				new Sprite(playerTileset, 176, 44, 16, 20, "playerIdle03"),
-				new Sprite(playerTileset, 182, 44, 16, 20, "playerIdle04")
+				new Sprite(playerTileset, 144, 32, 16, 32, "playerIdle01"),
+				new Sprite(playerTileset, 160, 32, 16, 32, "playerIdle02"),
+				new Sprite(playerTileset, 176, 32, 16, 32, "playerIdle03"),
+				new Sprite(playerTileset, 192, 32, 16, 32, "playerIdle04"),
+				new Sprite(playerTileset, 208, 32, 16, 32, "playerIdle05"),
+				new Sprite(playerTileset, 224, 32, 16, 32, "playerIdle06"),
+				new Sprite(playerTileset, 240, 32, 16, 32, "playerIdle07"),
+				new Sprite(playerTileset, 256, 32, 16, 32, "playerIdle08")
 			]
 		);
 

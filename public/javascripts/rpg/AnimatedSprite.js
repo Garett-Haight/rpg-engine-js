@@ -24,7 +24,7 @@ export default class AnimatedSprite {
 
     render(ctx, x, y, w, h, scale, time) {
         if(!this._firstRender) {
-            if (time - this._lastRenderTime > 60) {
+            if (time - this._lastRenderTime > 120) {
                 this.getNextFrame();
                 this._lastRenderTime = time;
             }
