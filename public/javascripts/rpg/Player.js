@@ -6,7 +6,6 @@ import Sprite from './Sprite'
 import AnimatedSprite from './AnimatedSprite'
 import Rectangle from './primitives/Rectangle'
 import Config from './Config'
-import Tileset from './Tileset'
 
 class Player {
 	constructor(x, y) {
