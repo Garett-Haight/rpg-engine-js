@@ -9,7 +9,6 @@ export default class Controls {
         // event listeners
         // TODO: Debounce input
         document.addEventListener('keydown', (e) => {
-        	//console.log(e);
             if (e.keyCode === 40) { // Arrow Down
                 // move down
                 e.preventDefault();
@@ -32,7 +31,9 @@ export default class Controls {
             }
         });
 
-        
+        document.addEventListener('keyup', (e) => {
+            Player.setCurrentAnimation('default');
+        })
     }
 
 
@@ -75,6 +76,9 @@ export default class Controls {
 
     moveRight() {
         if (this.checkRight()) {
+            if (Player.getCurrentAnimation() !== 'walkRight') {
+                Player.setCurrentAnimation('walkRight');
+            }
             Player.setPositionX(Player.getBounds().getX() + Player.getMovementSpeed());
             // player.update();
             // this.checkForEvent(player, this.game.map);

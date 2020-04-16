@@ -22,13 +22,13 @@ export default class AnimatedSprite {
         return this._currentFrame;
     }
 
-    render(ctx, x, y, w, h, scale, time) {
+    render(ctx, x, y, w, h, scale=2, time) {
         if(!this._firstRender) {
-            if (time - this._lastRenderTime > 120) {
+            if (time - this._lastRenderTime > 160) {
                 this.getNextFrame();
                 this._lastRenderTime = time;
             }
-            this._frames[this._currentFrame].render(ctx, x, y, w, h);
+            this._frames[this._currentFrame].render(ctx, x, y, w, h, scale);
         }
         else {
             this._lastRenderTime = time;

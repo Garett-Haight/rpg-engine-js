@@ -11,6 +11,7 @@ class Player {
 	constructor(x, y) {
 		this.spriteStore = SpriteStore;
 		this._builtGraphics = false;
+		this._currentAnimation = 'default';
 		if(!Player.instance) {
 			Player.instance = this;
 			this._playerSize = Globals.TILE_WIDTH;
@@ -59,27 +60,57 @@ class Player {
 		else {
 			playerTileset = TilesetStore.add(new Tileset("DungeonTileset2"));
 		}
-		let spriteArr = this.spriteStore.add(
-			[
-				new Sprite(playerTileset, 144, 32, 16, 32, "playerIdle01"),
-				new Sprite(playerTileset, 160, 32, 16, 32, "playerIdle02"),
-				new Sprite(playerTileset, 176, 32, 16, 32, "playerIdle03"),
-				new Sprite(playerTileset, 192, 32, 16, 32, "playerIdle04"),
-				new Sprite(playerTileset, 208, 32, 16, 32, "playerIdle05"),
-				new Sprite(playerTileset, 224, 32, 16, 32, "playerIdle06"),
-				new Sprite(playerTileset, 240, 32, 16, 32, "playerIdle07"),
-				new Sprite(playerTileset, 256, 32, 16, 32, "playerIdle08")
-			]
-		);
 
-		let animation = new AnimatedSprite(spriteArr);
+		let playerIdle01 = new Sprite(playerTileset, 128, 32, 16, 32, "playerIdle01");
+		let playerIdle02 = new Sprite(playerTileset, 144, 32, 16, 32, "playerIdle02");
+		let playerIdle03 = new Sprite(playerTileset, 160, 32, 16, 32, "playerIdle03");
+
+		this.spriteStore.add(playerIdle01);
+		this.spriteStore.add(playerIdle02);
+		this.spriteStore.add(playerIdle03);
+
+		let idleAnimation = new AnimatedSprite([
+			playerIdle01,
+			playerIdle02,
+			playerIdle03,
+			playerIdle02
+		]);
+
+		let playerStepRight01 = new Sprite(playerTileset, 192, 32, 16, 32, "playerStepRight01");
+		let playerStepRight02 = new Sprite(playerTileset, 224, 32, 16, 32, "playerStepRight02");
+		let playerStepRight03 = new Sprite(playerTileset, 240, 32, 16, 32, "playerStepRight03");
+
+		this.spriteStore.add(playerStepRight01);
+		this.spriteStore.add(playerStepRight02);
+		this.spriteStore.add(playerStepRight03);
+
+		let walkRightAnimation = new AnimatedSprite([
+			playerIdle01,
+			playerStepRight01,
+			playerStepRight02,
+			playerStepRight03
+		]);
+
 		this._animations = {
-			walkUp: animation,
-			walkDown: animation,
-			walkLeft: animation,
-			walkRight: animation
+			default: idleAnimation,
+			walkUp: idleAnimation,
+			walkDown: idleAnimation,
+			walkLeft: idleAnimation,
+			walkRight: walkRightAnimation
 		};
 		this._builtGraphics = true;
+	}
+
+	getCurrentAnimation() {
+		return this._currentAnimation;
+	}
+
+	getAnimations() {
+		return Object.keys(this._animations);
+	}
+
+	setCurrentAnimation(animation) {
+		this._currentAnimation = animation;
 	}
 
 	getBounds() {
@@ -95,8 +126,8 @@ class Player {
 	}
 
 	render(ctx, time) {
-		this._animations.walkUp.render(
-			ctx, 
+		this._animations[this._currentAnimation].render(
+			ctx,
 			this.getBounds().getX(), 
 			this.getBounds().getY(),
 			this.getBounds().getWidth(),

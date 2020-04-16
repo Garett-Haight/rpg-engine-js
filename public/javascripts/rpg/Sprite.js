@@ -51,7 +51,7 @@ export default class Sprite {
         return this._tileset;
     }
 
-    render(ctx, x, y, w, h, scale=1) {
+    render(ctx, x, y, w, h, scale) {
         ctx.drawImage(
             this.getTileset().getTilesetImage(),
             this.getX(),
@@ -60,8 +60,8 @@ export default class Sprite {
             this.getHeight(),
             x,
             y,
-            w,
-            h
+            w * scale,
+            h * scale
         );
     }
 }

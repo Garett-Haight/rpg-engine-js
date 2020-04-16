@@ -11,7 +11,7 @@ module.exports = {
         app: '.'+path.sep+'Main.js',
     },
     output: {
-        path: path.resolve(__dirname, '.'+path.sep+'public'+path.sep+'javascripts'),
+        path: path.resolve(__dirname, '.'+path.sep+'public'+path.sep+'javascripts'+path.sep+'dist'),
         filename: 'rpg.bundle.js',
     },
     module: {

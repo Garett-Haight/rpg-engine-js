@@ -1,3 +1,5 @@
+import Sprite from "./Sprite";
+
 class SpriteStore {
     constructor() { 
         if (!SpriteStore.instance) {
@@ -28,15 +30,27 @@ class SpriteStore {
     }
 
     exists(sprite) {
-        return this.sprites.find((s) => {
-            return sprite.id == s.id;
-        });
+        if (typeof sprite === 'string') {
+            return !!this.sprites.find(s => s.getName() === sprite);
+        }
+        else if (sprite instanceof Sprite) {
+            return !!this.sprites.find((s) => {
+                return sprite.getName() == s.getName();
+            });
+        }
+        
     }
 
     get(sprite) {
-        return this.sprites.find((s) => {
-            return sprite.id == s.id;
-        });
+        if (typeof sprite === 'string') {
+            return this.sprites.find(s => s.getName() === sprite);
+        }
+        else if (sprite instanceof Sprite) {
+            return this.sprites.find((s) => {
+                return sprite.getName() == s.getName();
+            });
+        } 
+        return false;
     }
 };
 
