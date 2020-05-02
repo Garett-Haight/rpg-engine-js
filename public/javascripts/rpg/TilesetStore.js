@@ -1,3 +1,5 @@
+import TilesetService from './services/TilesetService'
+
 class TilesetStore {
     constructor() { 
         if (!TilesetStore.instance) {

@@ -9,7 +9,7 @@ import Config from './Config'
 
 class Player {
 	constructor(x, y) {
-		this.spriteStore = SpriteStore;
+		this._spriteStore = SpriteStore;
 		this._builtGraphics = false;
 		this._currentAnimation = 'default';
 		if(!Player.instance) {
@@ -65,9 +65,9 @@ class Player {
 		let playerIdle02 = new Sprite(playerTileset, 144, 32, 16, 32, "playerIdle02");
 		let playerIdle03 = new Sprite(playerTileset, 160, 32, 16, 32, "playerIdle03");
 
-		this.spriteStore.add(playerIdle01);
-		this.spriteStore.add(playerIdle02);
-		this.spriteStore.add(playerIdle03);
+		this._spriteStore.add(playerIdle01);
+		this._spriteStore.add(playerIdle02);
+		this._spriteStore.add(playerIdle03);
 
 		let idleAnimation = new AnimatedSprite([
 			playerIdle01,
@@ -80,9 +80,9 @@ class Player {
 		let playerStepRight02 = new Sprite(playerTileset, 224, 32, 16, 32, "playerStepRight02");
 		let playerStepRight03 = new Sprite(playerTileset, 240, 32, 16, 32, "playerStepRight03");
 
-		this.spriteStore.add(playerStepRight01);
-		this.spriteStore.add(playerStepRight02);
-		this.spriteStore.add(playerStepRight03);
+		this._spriteStore.add(playerStepRight01);
+		this._spriteStore.add(playerStepRight02);
+		this._spriteStore.add(playerStepRight03);
 
 		let walkRightAnimation = new AnimatedSprite([
 			playerIdle01,

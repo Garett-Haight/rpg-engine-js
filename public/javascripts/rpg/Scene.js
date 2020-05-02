@@ -11,12 +11,20 @@ export default class Scene {
 
     // add game object to scene
     add(obj) {
-
+        
     }
 
     // remove game object from scene
     remove(id) {
         
+    }
+
+    handleEvent(eventName, eventObject) {
+        this.children.forEach((child) => {
+            if (typeof child.handleEvent === 'function') {
+                child.handleEvent(eventName, eventObject);
+            }
+        });
     }
 
     render(ctx, time) {

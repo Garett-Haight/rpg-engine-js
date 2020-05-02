@@ -1,7 +1,10 @@
 import Globals from './Globals'
+import TilesetService from './services/TilesetService'
 
 export default class Tileset {
     constructor(tileset) { 
+        this.tilesetService = new TilesetService();
+
         this._name = tileset.name;
 
         this._tilesetImage = new Image();
@@ -14,6 +17,12 @@ export default class Tileset {
         this._tilesetHeight = tileset.imageheight;
         this._tileCount = tileset.tilecount;
 
+        this.tilesetService.getTileset('tileset').then((t) => {
+            let data = t.data;
+            let imgPath = data.image.split('\/');
+            let img = imgPath[imgPath.length - 1];
+            
+        });
     }
     
     getTileCoords(id) { // This should be cached?

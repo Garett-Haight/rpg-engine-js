@@ -8,7 +8,9 @@ export default class Viewport {
         this.canvas = UI.createCanvas(id, container, width, height);
         this.ctx = this.canvas.getContext("2d");
         this.activeScene = defaultScene;
-
+        this.clickListener = this.canvas.addEventListener('click', (e) => {
+            this.activeScene.handleEvent('click', e);
+        });
         //TODO: impl viewport or scene stacking
     }
 

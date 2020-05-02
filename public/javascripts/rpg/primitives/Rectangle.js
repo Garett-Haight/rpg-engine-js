@@ -75,4 +75,9 @@ export default class Rectangle {
     isValidRectangle() {
         return (this._x >=0 && this._y >= 0 && this._width >= 0 && this._height >=0);
     }
+
+    render(ctx) {
+        ctx.fillstyle = "yellow";
+        ctx.strokeRect(this._x, this._y, this._width, this._height);
+    }
 }

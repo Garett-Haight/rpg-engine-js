@@ -41,6 +41,10 @@ export default class GameMap {
 		this.eventLayer = null;
 		this.mapName = map;
 		this.getMap(map, drawMap);
+		this.selection = {
+			x: null, 
+			y: null
+		};
 	}
 
 	getMap(mapId, drawMap) {
@@ -252,7 +256,30 @@ export default class GameMap {
 		}
 	}
 
+	registerEvent(eventName, fn) {
+		this._events[eventName].push(fn)
+	}
+
+	handleEvent(eventName, eventObject) {
+		switch(eventName) {
+			case 'click':
+				this.handleClick(eventName, eventObject);
+				break;
+		}
+	}
+
+	handleClick(eventName, eventObject) {
+		//check bounds
+		console.log(event);
+	}
+
+	drawHighlight(ctx, x, y) {
+		let highlight = new Rectangle(x, y, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
+
+	}
+
 	render(ctx, time) {
 		this.drawMap(ctx, time);
+		this.drawHighlight(ctx);
 	}
 }

@@ -3,6 +3,9 @@ import Controls from './Controls'
 //import Player from './Player'
 import MapStore from './MapStore'
 import MapService from './services/MapService'
+import Tileset from './Tileset'
+import TilesetStore from './TilesetStore'
+import TilesetService from './services/TilesetService'
 import Events from './Events'
 import Scene from './Scene'
 import Viewport from './Viewport'
@@ -19,6 +22,7 @@ export default class Game {
 
 		// should this be a singleton?
 		this.mapService = new MapService();
+		this.tilesetService = new TilesetService();
 		this.map = new GameMap(Config.firstMap, true, this.mapService);
 		
 		this.controls = new Controls(this);
@@ -41,6 +45,10 @@ export default class Game {
 		// starting inventory
 		this.startingInventory = {potion: 1, mana: 1};
 
+		this.tilesetService.getTileset('0x72_DungeonTilesetII_v1.3').then((t) => {
+			console.log(t);
+			
+		});
 		this.loop(0);
 	}
 
