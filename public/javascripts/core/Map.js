@@ -1,10 +1,10 @@
-import Globals from './Globals'
-import Player from "./Player";
+import Globals from '../rpg/Globals'
+import Player from "../rpg/Player";
 import MapStore from './MapStore'
 import MapService from './services/MapService'
 import TilesetStore from "./TilesetStore"
 import Tileset from "./Tileset"
-import Config from "./Config"
+import Config from "../rpg/Config"
 import _ from "lodash"
 import Rectangle from './primitives/Rectangle';
 
@@ -21,8 +21,6 @@ class TileLayer extends MapLayer {
 		super(layer);
 		this.tiles = layer.data;
 	}
-
-
 }
 
 class ObjectLayer extends MapLayer {
@@ -32,7 +30,7 @@ class ObjectLayer extends MapLayer {
 	}
 }
 
-export default class GameMap {
+export default class Map {
 	constructor(map, drawMap=false, mapService) {
 		this.loaded = false;
 		this.mapService = mapService;

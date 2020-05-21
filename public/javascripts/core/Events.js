@@ -1,4 +1,4 @@
-import Globals from './Globals'
+import Globals from '../rpg/Globals'
 
 export default class Events{
 	constructor() {

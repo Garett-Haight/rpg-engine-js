@@ -1,4 +1,4 @@
-import axiosWrapper from '../axiosWrapper.js'
+import axiosWrapper from '../AxiosWrapper'
 
 export default class TilesetService {
     constructor () {

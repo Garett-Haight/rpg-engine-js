@@ -1,17 +1,16 @@
-import GameMap from './GameMap'
+import Map from '../core/Map'
 import Controls from './Controls'
 //import Player from './Player'
-import MapStore from './MapStore'
-import MapService from './services/MapService'
-import Tileset from './Tileset'
-import TilesetStore from './TilesetStore'
-import TilesetService from './services/TilesetService'
-import Events from './Events'
-import Scene from './Scene'
-import Viewport from './Viewport'
-import UI from './UI'
+import MapStore from '../core/MapStore'
+import MapService from '../core/services/MapService'
+import Tileset from '../core/Tileset'
+import TilesetStore from '../core/TilesetStore'
+import TilesetService from '../core/services/TilesetService'
+import Events from '../core/Events'
+import Scene from '../core/Events'
+import Viewport from '../core/Viewport'
 import Console from './Console'
-import Rectangle from './primitives/Rectangle'
+import Rectangle from '../core/primitives/Rectangle'
 
 export default class Game {
 	constructor(Config) {
@@ -23,7 +22,7 @@ export default class Game {
 		// should this be a singleton?
 		this.mapService = new MapService();
 		this.tilesetService = new TilesetService();
-		this.map = new GameMap(Config.firstMap, true, this.mapService);
+		this.map = new Map(Config.firstMap, true, this.mapService);
 		
 		this.controls = new Controls(this);
 		this.events = new Events();

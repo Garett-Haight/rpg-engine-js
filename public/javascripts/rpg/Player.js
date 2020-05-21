@@ -1,10 +1,10 @@
 import Globals from './Globals'
-import TilesetStore from './TilesetStore'
-import Tileset from './Tileset'
-import SpriteStore from './SpriteStore'
-import Sprite from './Sprite'
-import AnimatedSprite from './AnimatedSprite'
-import Rectangle from './primitives/Rectangle'
+import TilesetStore from '../core/TilesetStore'
+import Tileset from '../core/Tileset'
+import SpriteStore from '../core/SpriteStore'
+import Sprite from '../core/Sprite'
+import AnimatedSprite from '../core/AnimatedSprite'
+import Rectangle from '../core/primitives/Rectangle'
 import Config from './Config'
 
 class Player {

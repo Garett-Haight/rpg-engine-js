@@ -1,4 +1,4 @@
-import Globals from './Globals'
+import Globals from '../rpg/Globals'
 import TilesetStore from './TilesetStore'
 import Tileset from './Tileset'
 import SpriteStore from './SpriteStore'

@@ -1,4 +1,4 @@
-import Globals from './Globals'
+import Globals from '../rpg/Globals'
 import Sprite from './Sprite'
 
 export default class AnimatedSprite {

@@ -1,4 +1,4 @@
-import UI from './UI/index'
+import UI from '../rpg/UI/index'
 import Scene from './Scene'
 import Renderer from './Renderer'
 

@@ -1,6 +1,6 @@
 import Globals from './Globals'
 import Player from './Player'
-import Rectangle from './primitives/Rectangle'
+import Rectangle from '../core/primitives/Rectangle'
 
 export default class Controls {
     constructor(game) {

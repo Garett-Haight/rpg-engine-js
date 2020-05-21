@@ -1,5 +1,5 @@
 import Globals from '../Globals'
-import DOM from '../DOM/index'
+import DOM from '../../core/dom/index'
 export default class UI {
 	constructor(game) {
 		this.game = game;
@@ -79,7 +79,7 @@ export default class UI {
         return panel;
     }
     
-	createButton(text, id, appendTo=this.container, func) {
+	static createButton(text, id, appendTo=this.container, func) {
         var button = document.createElement("button");
         button.innerText = text;
         button.id = id;
@@ -96,7 +96,7 @@ export default class UI {
         }
     }
 
-    viewInventory() {
+    static viewInventory() {
         // update the inventory list
         this.updateInventory();
 
@@ -108,7 +108,7 @@ export default class UI {
         document.getElementById("invButton").innerText = "Status";
     }
 
-    viewStatus() {
+    static viewStatus() {
         // show the status panel
         this.statusPanel.classList.remove("hide");
         // hide the inventory panel
