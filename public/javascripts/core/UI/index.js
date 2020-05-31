@@ -1,5 +1,5 @@
-import Globals from '../Globals'
-import DOM from '../../core/dom/index'
+import Globals from '../../rpg/Globals'
+import DOM from '../dom/index'
 export default class UI {
 	constructor(game) {
 		this.game = game;

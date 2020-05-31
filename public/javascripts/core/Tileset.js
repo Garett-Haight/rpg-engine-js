@@ -17,12 +17,12 @@ export default class Tileset {
         this._tilesetHeight = tileset.imageheight;
         this._tileCount = tileset.tilecount;
 
-        this.tilesetService.getTileset('tileset').then((t) => {
-            let data = t.data;
-            let imgPath = data.image.split('\/');
-            let img = imgPath[imgPath.length - 1];
+        // this.tilesetService.getTileset('tileset').then((t) => {
+        //     let data = t.data;
+        //     let imgPath = data.image.split('\/');
+        //     let img = imgPath[imgPath.length - 1];
             
-        });
+        // });
     }
     
     getTileCoords(id) { // This should be cached?
