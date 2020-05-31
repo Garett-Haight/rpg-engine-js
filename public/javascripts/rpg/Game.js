@@ -1,3 +1,6 @@
+import { ConfigMgr, GLOBALS, CONFIG } from '../core/ConfigMgr'
+import GlobalsFile from './Globals'
+import ConfigFile from './Config'
 import Map from '../core/Map'
 import UI from '../core/UI/index'
 import Controls from './Controls'
@@ -12,9 +15,14 @@ import Scene from '../core/Scene'
 import Viewport from '../core/Viewport'
 import Console from './Console'
 import Rectangle from '../core/primitives/Rectangle'
+import Config from './Config'
 
 export default class Game {
-	constructor(Config) {
+	constructor() {
+		ConfigMgr.addGlobals(GlobalsFile);
+		console.log(GLOBALS);
+		ConfigMgr.addConfigs(ConfigFile);
+		console.log(CONFIG);
         this.container = document.querySelector(Config.container);
 		//this.player = Player;
 		this.viewports = [];

@@ -2,11 +2,12 @@ import Globals from '../rpg/Globals'
 
 export default class Events{
 	constructor() {
+		//TODO: look at RPG maker events to get a good idea of what kind of events should be in event lib
 		this.eventList = {
 			event(args, game) {
 				return "events!";
 			},
-			teleport(args, game) {
+			teleport(args, game) { // TODO: update this to work with in-map teleportation
 				// load new map and move player to new map
 				game.map.loadMap(args.properties.map,
 					{
