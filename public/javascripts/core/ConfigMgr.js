@@ -7,7 +7,7 @@ class ConfigManager {
     addGlobal(name, value) {
         this.GLOBALS[name] = value;
     }
-    
+
     addGlobals(globals) {
         if (typeof globals == 'object') {
             for (let global in globals) {
@@ -37,7 +37,7 @@ class ConfigManager {
 
 const ConfigMgr = new ConfigManager();
 Object.freeze(ConfigMgr);
-const CONFIG = ConfigMgr.CONFIG;
-const GLOBALS = ConfigMgr.GLOBALS;
+const Config = ConfigMgr.CONFIG;
+const Globals = ConfigMgr.GLOBALS;
 
-export {CONFIG, GLOBALS, ConfigMgr};
+export { Config, Globals, ConfigMgr };

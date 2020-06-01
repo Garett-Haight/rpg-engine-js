@@ -1,9 +1,8 @@
-import Globals from '../rpg/Globals'
+import { Globals, Config } from './ConfigMgr'
 import TilesetStore from './TilesetStore'
 import Sprite from './Sprite'
 import AnimatedSprite from './AnimatedSprite'
 import Rectangle from './primitives/Rectangle'
-import Config from '../rpg/Globals'
 
 class Renderer {
 	constructor(ctx) {

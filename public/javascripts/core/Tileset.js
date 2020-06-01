@@ -1,4 +1,4 @@
-import Globals from '../rpg/Globals'
+import { Globals } from './ConfigMgr'
 import TilesetService from './services/TilesetService'
 
 export default class Tileset {

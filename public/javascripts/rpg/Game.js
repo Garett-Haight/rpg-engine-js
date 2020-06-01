@@ -1,4 +1,4 @@
-import { ConfigMgr, GLOBALS, CONFIG } from '../core/ConfigMgr'
+import { ConfigMgr, Globals, Config } from '../core/ConfigMgr'
 import GlobalsFile from './Globals'
 import ConfigFile from './Config'
 import Map from '../core/Map'
@@ -20,9 +20,8 @@ import Config from './Config'
 export default class Game {
 	constructor() {
 		ConfigMgr.addGlobals(GlobalsFile);
-		console.log(GLOBALS);
 		ConfigMgr.addConfigs(ConfigFile);
-		console.log(CONFIG);
+
         this.container = document.querySelector(Config.container);
 		//this.player = Player;
 		this.viewports = [];

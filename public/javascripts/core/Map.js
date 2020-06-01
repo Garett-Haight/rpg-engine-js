@@ -1,4 +1,4 @@
-import Globals from '../rpg/Globals'
+import { Globals } from './ConfigMgr'
 import Player from "../rpg/Player";
 import MapStore from './MapStore'
 import MapService from './services/MapService'
