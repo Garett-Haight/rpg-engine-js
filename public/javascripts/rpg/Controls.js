@@ -1,6 +1,10 @@
-import Globals from './Globals'
+import { Globals } from '../core/ConfigMgr'
 import Player from './Player'
 import Rectangle from '../core/primitives/Rectangle'
+import Events from '../core/events/Events'
+import EventLib from '../core/events/EventLibrary'
+import KeyboardInput from '../core/input/Keyboard'
+import MouseInput from '../core/input/Mouse'
 
 export default class Controls {
     constructor(game) {
@@ -27,7 +31,7 @@ export default class Controls {
                 e.preventDefault();
                 this.moveLeft();
             } else if (e.keyCode === 32) { // spacebar
-            	//this.interact(game.player, game.map);
+            	this.interact(game.map);
             }
         });
 
@@ -120,11 +124,11 @@ export default class Controls {
         return a;
     }
 
-    interact(player, map) {
-    	if(this.events.length > 0) {
-    		var event = this.events[0]['properties']['action'];
-	    	var result = this.game.events.eventList[event](this.events[0], this.game);
-	    	//this.game.console.sendMessage(result);
+    interact(map) {
+    	if(map.events.length > 0) {
+    		var action = map.events[0]['properties'].find(prop => prop.name === "action");
+	    	var result = EventLib.eventList[action.name](this.events[0], this.game);
+	    	this.game.console.sendMessage(result);
     	}
     }
 

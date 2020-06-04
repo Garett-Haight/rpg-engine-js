@@ -1,0 +1,19 @@
+{
+    "viewports": [
+        [
+            {
+                "name": "top",
+                "width": 20,
+                "height": 20,
+                "scenes": [
+                    {
+                        
+                        "type": "map",
+                        "data": []
+                    }
+                ]
+            }
+            
+        ]
+    ]
+}

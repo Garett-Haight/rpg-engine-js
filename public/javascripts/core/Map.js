@@ -53,7 +53,7 @@ export default class Map {
         this.events = null;
 
 		// check if map has already been loaded to mapList
-		return this.mapService.getMap('map' + mapId + '_new.json')
+		return this.mapService.getMap('map' + mapId + '.json')
 		.then((response) => {
 			this.mapName = mapId;
             if(!MapStore.exists(response.data)) {
@@ -78,6 +78,9 @@ export default class Map {
 						return new Rectangle(rect.x, rect.y, rect.width, rect.height)
 					});
 					
+				}
+				else if (layer.name.toLowerCase() == 'events') {
+					this.events = layer.objects;
 				}
 
 			}
@@ -118,17 +121,6 @@ export default class Map {
 				TilesetStore.add(mapTileset);
 			}
 		}
-	}
-
-	// Events are items, map teleports, etc.
-	parseEvents() {a
-		var events;
-		for (let layer of this.map.layers ) {
-			if (layer.name == "Events") {
-				events = layer.objects;
-			}
-		}
-		this.events = events;
 	}
 
 	drawEvents(container=".top") {
