@@ -1,4 +1,4 @@
-import Globals from '../../rpg/Globals'
+import { Globals } from '../ConfigMgr'
 import DOM from '../dom/index'
 export default class UI {
 	constructor(game) {
