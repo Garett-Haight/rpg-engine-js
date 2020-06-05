@@ -1,37 +1,43 @@
+import { Globals, Config, ConfigMgr } from '../ConfigMgr'
+import MapStore from '../MapStore'
+
 class EventLibrary {
      constructor() {
 		this.eventList = {
-			event(args, game) {
+			event(properties, game) {
 				return "events!";
 			},
-			teleport(args, game) { // TODO: update this to work with in-map teleportation
+			teleport(properties, game) { // TODO: update this to work with in-map teleportation
 				// load new map and move player to new map
-				game.map.loadMap(args.properties.map,
-					{
-						x: (args.properties.destination_x - 1) * Globals.TILE_WIDTH,
-						y: (args.properties.destination_y - 1) * Globals.TILE_HEIGHT
-					}
-				);
-				if(args.properties.eventMessage) {
-					return args.properties.eventMessage;
+				MapStore.get(properties.map).then((res) => {
+					game.map.changeMap(properties.map,
+						{
+							x: (properties.destination_x - 1) * Globals.TILE_WIDTH,
+							y: (properties.destination_y - 1) * Globals.TILE_HEIGHT
+						}
+					);
+				});
+				
+				if(properties.eventMessage) {
+					return properties.eventMessage;
 				}
 				else {
 					return "Moving to a new map";
 				}
 			},
-			door(args, game) {
+			door(properties, game) {
 				// if door is locked check if unlock condition is met, then unlock
-				console.log(args);
-				if (args.properties.locked) {
-					if (args.properties.unlock) {
-						var uCondition = JSON.parse(args.properties.unlock);
+				console.log(properties);
+				if (properties.locked) {
+					if (properties.unlock) {
+						var uCondition = JSON.parse(properties.unlock);
 						if (uCondition.item) {
 							if (game.player.inventory[uCondition.item] >= uCondition.qty) {
 								// unlock door permanently
-								args.properties.unlock = false;
+								properties.unlock = false;
 								// remove from inventory
 								game.player.inventory[uCondition.item] -= uCondition.qty;
-								return this.teleport(args, game);
+								return this.teleport(properties, game);
 							}
 							else {
 								// You don't meet the unlock condition
@@ -45,9 +51,9 @@ class EventLibrary {
 							return "This door cannot be opened.";
 						}
 					}
-					else if (args.properties.unlock === false) {
+					else if (properties.unlock === false) {
 						// Door has been unlocked
-                        return this.teleport(args, game);
+                        return this.teleport(properties, game);
                     }
                     else {
 						// no unlock condition found? Probably author error
@@ -56,12 +62,12 @@ class EventLibrary {
 				}
 				else {
 					// Door is not locked, never was. Carry on.
-					return this.teleport(args, game);
+					return this.teleport(properties, game);
 				}
 			},
-			item(args, game) {
+			item(properties, game) {
 				var itemCount = 0;
-				var props = args.properties;
+				var props = properties;
 				var inv = game.player.inventory;
 
 				// item name defaults to key value if no name is provided
@@ -86,13 +92,13 @@ class EventLibrary {
 
 						// remove item from game map
 						for(let e of document.getElementById("entities").children) {
-							if (e.id === "item_" + args.id) {
+							if (e.id === "item_" + properties.id) {
 								document.getElementById("entities").removeChild(e);
 							}
 						}
 
 						for (let [index, value] of game.map.events.entries()) {
-							if (value.id === args.id) {
+							if (value.id === properties.id) {
 								game.map.events.splice(index, 1);
 							}
 						}
@@ -115,8 +121,8 @@ class EventLibrary {
 					return `Can't carry anymore of ${itemName}!`;
 				}
 			},
-			message(args, game) {
-				var props = args.properties;
+			message(properties, game) {
+				var props = properties;
 				return props.message;
 			}
 		};

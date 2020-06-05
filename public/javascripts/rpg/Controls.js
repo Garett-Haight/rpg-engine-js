@@ -127,7 +127,11 @@ export default class Controls {
     interact(map) {
     	if(map.events.length > 0) {
     		var action = map.events[0]['properties'].find(prop => prop.name === "action");
-	    	var result = EventLib.eventList[action.name](this.events[0], this.game);
+            var properties = {};
+            map.events[0].properties.forEach(prop => {
+                properties[prop.name] = prop.value;
+            });
+            var result = EventLib.eventList[action.value](properties, this.game);
 	    	this.game.console.sendMessage(result);
     	}
     }

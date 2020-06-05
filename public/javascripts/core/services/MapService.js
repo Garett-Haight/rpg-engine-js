@@ -1,12 +1,16 @@
 import axiosWrapper from '../AxiosWrapper'
 
-export default class MapService {
+class MapService {
     constructor () {
         this.baseurl = '/maps/';
         this.ajax = new axiosWrapper(this.baseurl);
     }
 
     getMap(name) {
-        return this.ajax.request(this.baseurl + name, 'GET');
+        return this.ajax.request(this.baseurl + name + '.json', 'GET');
     }
 }
+
+const instance = new MapService();
+Object.freeze(instance);
+export default instance;

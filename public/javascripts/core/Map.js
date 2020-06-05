@@ -1,10 +1,9 @@
-import { Globals } from './ConfigMgr'
+import { Globals, Config } from './ConfigMgr'
 import Player from "../rpg/Player";
 import MapStore from './MapStore'
 import MapService from './services/MapService'
 import TilesetStore from "./TilesetStore"
 import Tileset from "./Tileset"
-import Config from "../rpg/Config"
 import _ from "lodash"
 import Rectangle from './primitives/Rectangle';
 
@@ -31,9 +30,8 @@ class ObjectLayer extends MapLayer {
 }
 
 export default class Map {
-	constructor(map, drawMap=false, mapService) {
+	constructor(map, drawMap=false) {
 		this.loaded = false;
-		this.mapService = mapService;
 		this.layers = [];
 		this.entityLayer = null;
 		this.eventLayer = null;
@@ -46,24 +44,33 @@ export default class Map {
 	}
 
 	getMap(mapId, drawMap) {
-
         // Clear current maps
         this.map = null;
         this.collisions = null;
         this.events = null;
 
 		// check if map has already been loaded to mapList
-		return this.mapService.getMap('map' + mapId + '.json')
-		.then((response) => {
+		return MapStore.get(mapId)
+		.then((map) => {
 			this.mapName = mapId;
-            if(!MapStore.exists(response.data)) {
-				this.map = response.data;
-				this.parseLayers();
-				this.parseTilesets();
-				MapStore.add(this);
-				this.loaded = true;
-            }
+			this.map = map;
+			this.parseLayers();
+			this.parseTilesets();
+			this.loaded = true;
 		});
+
+
+		// return MapService.getMap('map' + mapId + '.json')
+		// .then((response) => {
+		// 	this.mapName = mapId;
+        //     if(!MapStore.exists(response.data)) {
+		// 		this.map = response.data;
+		// 		this.parseLayers();
+		// 		this.parseTilesets();
+		// 		MapStore.add(this);
+		// 		this.loaded = true;
+        //     }
+		// });
 	}
 
 	parseLayers() {
@@ -82,7 +89,6 @@ export default class Map {
 				else if (layer.name.toLowerCase() == 'events') {
 					this.events = layer.objects;
 				}
-
 			}
 		});
 	}
@@ -100,17 +106,11 @@ export default class Map {
 		}
 	}
 
-	loadMap(mapId, args) { // bit of a misnomer... this seems to be more for teleporting to new maps
+	changeMap(mapId) {
 		// update mapList with current version of the map
-		MapStore.add(Object.assign(Object.create(this), this)); 
-
-		var mapPromise = this.getMap(mapId, true);
-
-		mapPromise.then(() => {
-           // var entitiesContainer = document.querySelector('#entities');
-           // this.placePlayer(entitiesContainer, args);
-		});
-
+		// is this necessary now that I'm using MapStore?
+		MapStore.replace(this.mapName, Object.assign(Object.create(this), this)); 
+		this.getMap(mapId);
 	}
 
 	getTilesets() {

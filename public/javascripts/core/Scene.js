@@ -19,6 +19,13 @@ export default class Scene {
         
     }
 
+    // replace obj in children array
+    replace(name, type) {
+        let replaceMe = this.children.find((c) => {
+            
+        });
+    }
+
     handleEvent(eventName, eventObject) {
         this.children.forEach((child) => {
             if (typeof child.handleEvent === 'function') {

@@ -27,14 +27,12 @@ export default class Game {
 		this.viewports = [];
 		this.mapStore = MapStore;
 
-		// should this be a singleton?
-		this.mapService = new MapService();
 		this.tilesetService = new TilesetService();
-		this.map = new Map(Config.firstMap, true, this.mapService);
+		this.map = new Map(Config.firstMap, true);
 		
 		this.controls = new Controls(this);
 		this.events = new Events();
-		this.ui = new UI(this);     
+		this.ui = new UI(this);
 		
         // create dom elements for game sections
 		let top = UI.createPanel("top", this.container);
