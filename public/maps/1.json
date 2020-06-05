@@ -111,12 +111,12 @@
                         {
                          "name":"destination_x",
                          "type":"int",
-                         "value":5
+                         "value":7
                         }, 
                         {
                          "name":"destination_y",
                          "type":"int",
-                         "value":5
+                         "value":7
                         }, 
                         {
                          "name":"map",

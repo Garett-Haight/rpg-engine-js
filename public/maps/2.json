@@ -191,7 +191,7 @@
         {
          "columns":16,
          "firstgid":1,
-         "image":"..\/..\/..\/Google Drive\/Game Development\/Maps\/0x72_16x16DungeonTileset.v4.png",
+         "image":"0x72_16x16DungeonTileset.v4.png",
          "imageheight":256,
          "imagewidth":256,
          "margin":0,
@@ -204,7 +204,7 @@
         {
          "columns":16,
          "firstgid":257,
-         "image":"..\/..\/..\/Google Drive\/Game Development\/Maps\/0x72_16x16DungeonTileset_walls.v1.png",
+         "image":"0x72_16x16DungeonTileset_walls.v1.png",
          "imageheight":256,
          "imagewidth":256,
          "margin":0,
@@ -217,7 +217,7 @@
         {
          "columns":36,
          "firstgid":513,
-         "image":"..\/..\/..\/Google Drive\/Game Development\/Maps\/sprite_sheet.png",
+         "image":"sprite_sheet.png",
          "imageheight":576,
          "imagewidth":576,
          "margin":0,
@@ -230,7 +230,7 @@
         {
          "columns":32,
          "firstgid":1809,
-         "image":"..\/..\/..\/Google Drive\/Game Development\/Maps\/0x72_DungeonTilesetII_v1.3.png",
+         "image":"0x72_DungeonTilesetII_v1.3.png",
          "imageheight":512,
          "imagewidth":512,
          "margin":0,

@@ -44,6 +44,7 @@ export default class Map {
 	}
 
 	getMap(mapId, drawMap) {
+		this.loaded = false;
         // Clear current maps
         this.map = null;
         this.collisions = null;
@@ -58,19 +59,6 @@ export default class Map {
 			this.parseTilesets();
 			this.loaded = true;
 		});
-
-
-		// return MapService.getMap('map' + mapId + '.json')
-		// .then((response) => {
-		// 	this.mapName = mapId;
-        //     if(!MapStore.exists(response.data)) {
-		// 		this.map = response.data;
-		// 		this.parseLayers();
-		// 		this.parseTilesets();
-		// 		MapStore.add(this);
-		// 		this.loaded = true;
-        //     }
-		// });
 	}
 
 	parseLayers() {
