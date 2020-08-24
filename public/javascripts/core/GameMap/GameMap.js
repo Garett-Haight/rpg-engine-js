@@ -1,52 +1,36 @@
-import { Globals, Config } from './ConfigMgr'
-import Player from "../rpg/Player";
-import MapStore from './MapStore'
-import MapService from './services/MapService'
-import TilesetStore from "./TilesetStore"
-import Tileset from "./Tileset"
-import _ from "lodash"
-import Rectangle from './primitives/Rectangle';
+import { Globals, Config } from '../ConfigMgr'
+import Player from "../../rpg/Player"
+import MapStore from '../MapStore'
+import MapService from '../services/MapService'
+import MapLayer from './Layers/MapLayer'
+import TileLayer from './Layers/TileLayer'
+import ObjectLayer from './Layers/ObjectLayer'
+import CollisionLayer from './Layers/CollisionLayer'
+import EventLayer from './Layers/EventLayer'
+import TilesetStore from "../TilesetStore"
+import Tileset from "../Tileset"
+import Rectangle from '../primitives/Rectangle'
 
-class MapLayer {
-	constructor(layer) {
-		this.name = layer.name;
-		this.width = layer.width;
-		this.height = layer.height;
-	}
-}
-
-class TileLayer extends MapLayer {
-	constructor(layer) {
-		super(layer);
-		this.tiles = layer.data;
-	}
-}
-
-class ObjectLayer extends MapLayer {
-	constructor(layer) {
-		super(layer);
-		this.objects = layer.objects;
-	}
-}
-
-export default class Map {
-	constructor(map, drawMap=false) {
+export default class GameMap {
+	constructor(map) {
 		this.loaded = false;
+		this.children = [];
 		this.layers = [];
 		this.entityLayer = null;
 		this.eventLayer = null;
-		this.mapName = map;
-		this.getMap(map, drawMap);
+		this.map = map;
+		this.parseTilesets(); // promise on completion, since they may rely on image downloads
+		this.parseLayers();
+		//this.getMap(map);
 		this.selection = {
-			x: null, 
+			x: null,
 			y: null
 		};
+		this.loaded = true;
 	}
 
-	getMap(mapId, drawMap) {
+	getMap(mapId) {
 		this.loaded = false;
-        // Clear current maps
-        this.map = null;
         this.collisions = null;
         this.events = null;
 
@@ -55,9 +39,8 @@ export default class Map {
 		.then((map) => {
 			this.mapName = mapId;
 			this.map = map;
-			this.parseLayers();
 			this.parseTilesets();
-			this.loaded = true;
+			this.parseLayers();
 		});
 	}
 
@@ -69,13 +52,12 @@ export default class Map {
 			else if(layer.type.toLowerCase() == 'objectgroup') {
 				this.layers.push(new ObjectLayer(layer));
 				if (layer.name.toLowerCase() === 'collisions') {
-					this.collisions = layer.objects.map((rect) => {
-						return new Rectangle(rect.x, rect.y, rect.width, rect.height)
-					});
-					
+					let collisions = new CollisionLayer(layer);	
+					this.layers.push(collisions);
 				}
 				else if (layer.name.toLowerCase() == 'events') {
-					this.events = layer.objects;
+					let events = new EventLayer(layer.objects);
+					this.layers.push(events);
 				}
 			}
 		});
@@ -84,7 +66,7 @@ export default class Map {
 	parseTilesets() {
 		for(let tileset of this.map.tilesets) {
 			var mapTileset;
-			mapTileset = new Tileset(tileset);
+			mapTileset = new Tileset(tileset, this.mapName);
 			if (!TilesetStore.exists(mapTileset)) {		
 				TilesetStore.add(mapTileset);
 			}
@@ -94,41 +76,8 @@ export default class Map {
 		}
 	}
 
-	changeMap(mapId) {
-		// update mapList with current version of the map
-		// is this necessary now that I'm using MapStore?
-		MapStore.replace(this.mapName, Object.assign(Object.create(this), this)); 
-		this.getMap(mapId);
-	}
-
-	getTilesets() {
-		var tilesets = [];
-		for(let tileset of this.map.tilesets) {
-			var mapTileset = new Tileset(tileset);
-			if (!TilesetStore.exists(mapTileset)) {		
-				TilesetStore.add(mapTileset);
-			}
-		}
-	}
-
-	drawEvents(container=".top") {
-		var eventsContainer;
-        var mapElement = document.querySelector(container);
-
-        if (!(eventsContainer = document.querySelector('#events'))) {
-			eventsContainer = document.createElement("canvas");
-			eventsContainer.id = "events";
-
-            eventsContainer.width = Globals.MAP_WIDTH * Globals.TILE_WIDTH;
-            eventsContainer.height = Globals.MAP_HEIGHT * Globals.TILE_HEIGHT;
-
-            mapElement.appendChild(eventsContainer);
-		}
-
-		var ctx = eventsContainer.getContext("2d");
+	drawEvents(ctx) {
 		ctx.clearRect(0,0, Globals.MAP_WIDTH * Globals.TILE_WIDTH, Globals.MAP_HEIGHT * Globals.TILE_HEIGHT);
-        ctx.fillStyle = TILESET[5];
-
 		if (this.events.length > 0) {
 			for(let e of this.events) {
 				if (e.visible) {
@@ -139,7 +88,7 @@ export default class Map {
 	}
 
 	// Entities are players, mobs, and NPCs
-	drawEntities (container=".top") {
+	drawEntities (ctx, time) {
 		var map = this.map;
 		var mapElement = document.querySelector(container);
 		for (let layer of map.layers) {
@@ -253,11 +202,15 @@ export default class Map {
 
 	drawHighlight(ctx, x, y) {
 		let highlight = new Rectangle(x, y, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
-
 	}
 
 	render(ctx, time) {
-		this.drawMap(ctx, time);
-		this.drawHighlight(ctx);
+		//this.drawMap(ctx, time);
+		//this.drawHighlight(ctx);
+		this.layers.forEach((layer) => {
+			if (typeof layer.render == 'function') {
+				layer.render(ctx, time);
+			}
+		});
 	}
 }

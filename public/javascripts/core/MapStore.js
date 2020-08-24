@@ -1,4 +1,5 @@
 import MapService from './services/MapService'
+import GameMap from './GameMap/GameMap'
 
 class MapStore {
     constructor() { 
@@ -19,8 +20,9 @@ class MapStore {
             let map = this.exists(id);
             if (!map) {
                 map = MapService.getMap(id).then(m => {
-                    this.add(m.data);
-                    return resolve(m.data);
+                    let newMap = new GameMap(m.data);
+                    this.add(newMap);
+                    return resolve(newMap);
                 });
             }
             else {

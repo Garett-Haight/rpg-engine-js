@@ -27,6 +27,7 @@ class TilesetStore {
     }
 
     get(name) {
+        // Fetch from service if not found
         return this._tilesets.find((ts) => {
             return ts.getName() == name;
         });

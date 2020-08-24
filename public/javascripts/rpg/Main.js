@@ -1,7 +1,9 @@
-import Config from './Config'
+import { ConfigMgr, Globals, Config } from '../core/ConfigMgr'
+import ConfigFile from './Config'
 import Game from "./Game"
 
 document.addEventListener('DOMContentLoaded', (e) => {
-	var gameObj = new Game(Config);
+	ConfigMgr.addConfigs(ConfigFile);
+	var gameObj = new Game(ConfigMgr.CONFIG);
 	console.log(gameObj);
 });

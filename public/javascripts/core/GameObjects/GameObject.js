@@ -1,5 +1,5 @@
 export default class GameObject {
-    constructor() {
+    constructor(args) {
         
     }
 }

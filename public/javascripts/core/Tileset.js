@@ -1,8 +1,9 @@
 import { Globals } from './ConfigMgr'
 import TilesetService from './services/TilesetService'
+import Tile from './Tile'
 
 export default class Tileset {
-    constructor(tileset) { 
+    constructor(tileset, mapName) { 
         this.tilesetService = new TilesetService();
 
         this._name = tileset.name;
@@ -11,6 +12,11 @@ export default class Tileset {
         this._tilesetImage.src = Globals.IMG_PATH + tileset.image;
         this._tilesetImageName = tileset.image;
 
+        this._tiles = [];
+        this._firstgid = {};
+        this._firstgid[mapName] = tileset.firstgid;
+        this._columns = tileset.columns;
+        this._rows = tileset.rows;
         this._tileWidth = tileset.tilewidth;
         this._tileHeight = tileset.tileheight;
         this._tilesetWidth = tileset.imagewidth;
@@ -25,12 +31,16 @@ export default class Tileset {
         // });
     }
     
+    buildTiles() {
+        
+    }
+
     getTileCoords(id) { // This should be cached?
          var x = (id * this._tileWidth) % this._tilesetWidth;
          // Might be able to replace Math.floor with | 0 bitwise operation
          var y = Math.floor((id * this._tileWidth) / this._tilesetWidth) * this._tileHeight;
          return {
-             x: x, 
+             x: x,
              y: y
          };
      }
