@@ -22,13 +22,15 @@ class TileLayer extends MapLayer {
 	}
 
 	parseTiles() {
-		// this._tilesRaw.forEach((tile, idx) => {
-			
-		// });
+		this._tilesRaw.forEach((tile, idx) => {
+			this._tiles.push(new Tile(tile));
+		});
 	}
 
 	render(ctx, time) { // should probably make a renderer object instead of duping really similar code between game objects
-
+		this._tilesRaw.forEach((tile) => {
+			tile.render(ctx);
+		});
 	}
 
 	drawMap(ctx, time) {

@@ -21,7 +21,7 @@ export default {
     Rectangle,
     MapService,
     TilesetService,
-    Map,
+    GameMap,
     MapStore,
     Events,
     Camera, 
