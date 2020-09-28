@@ -19,6 +19,7 @@ export default class GameMap {
 		this.entityLayer = null;
 		this.eventLayer = null;
 		this.map = map;
+		this.tilesets = [];
 		this.parseTilesets(); // promise on completion, since they may rely on image downloads
 		this.parseLayers();
 		//this.getMap(map);
@@ -47,7 +48,7 @@ export default class GameMap {
 	parseLayers() {
 		this.map.layers.forEach(layer => {
 			if(layer.type.toLowerCase() == 'tilelayer') {
-				this.layers.push(new TileLayer(layer));
+				this.layers.push(new TileLayer(layer, this.tilesets));
 			}
 			else if(layer.type.toLowerCase() == 'objectgroup') {
 				this.layers.push(new ObjectLayer(layer));
@@ -74,6 +75,7 @@ export default class GameMap {
 				mapTileset = TilesetStore.get(tileset.name);
 			}
 		}
+		this._tilesets.push(mapTileset);
 	}
 
 	drawEvents(ctx) {

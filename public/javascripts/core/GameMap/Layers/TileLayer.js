@@ -1,13 +1,15 @@
 import MapLayer from './MapLayer'
 import Tile from '../../Tile'
+import { Globals } from '../../ConfigMgr'
 
 class TileLayer extends MapLayer {
-	constructor(layer) {
+	constructor(layer, tilesets) {
 		if(layer.type.toLowerCase() === 'tilelayer') {
 			super(layer);
 			this._id = layer.id;
+			this._tilesets = tilesets;
 			this._tilesRaw = layer.data;
-			this.tiles = [];
+			this._tiles = [];
 			this._x = layer.x;
 			this._y = layer.y;
 			this._height = layer.height;
@@ -15,20 +17,28 @@ class TileLayer extends MapLayer {
 			this._name = layer.name;
 			this._opacity = layer.opacity;
 			this._visible = layer.visible;
+			// get tilesets
+
+			// if tileset not found, parse tilesets
+			this.parseTiles();
 		}
 		else {
 			throw "Layer is not of type: TileLayer";
 		}
 	}
-
+	// this should go in the tileset initialization
 	parseTiles() {
-		this._tilesRaw.forEach((tile, idx) => {
-			this._tiles.push(new Tile(tile));
-		});
+		// this._tilesRaw.forEach((tile, idx) => {
+		// 	this._tiles.push(new Tile(
+		// 		tile,
+		// 		Globas.TILE_WIDTH * idx,
+		// 		Globals.TILE_HEIGHT * ()
+		// 	));
+		// });
 	}
 
 	render(ctx, time) { // should probably make a renderer object instead of duping really similar code between game objects
-		this._tilesRaw.forEach((tile) => {
+		this._tiles.forEach((tile) => {
 			tile.render(ctx);
 		});
 	}

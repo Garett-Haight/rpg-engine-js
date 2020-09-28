@@ -6,7 +6,7 @@ class TilesetStore {
             this._tilesets = [];
             TilesetStore.instance = this;
         }
-        return TilesetStore.instance;            
+        return TilesetStore.instance;          
     }
 
     add(tileset) {
