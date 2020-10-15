@@ -8,18 +8,21 @@ class MapStore {
             MapStore.instance = this;
         }
         console.log(MapStore.instance);
-        return MapStore.instance;      
+        return MapStore.instance;
     }
 
     add(map) {
+        map.id = this.maps.length + 1;
         this.maps.push(map);
+        return map.id;
     }
 
-    get(id) {
+    get(fn) {
         return new Promise((resolve, reject) => {
-            let map = this.exists(id);
+            let map = this.exists(fn);
             if (!map) {
-                map = MapService.getMap(id).then(m => {
+                map = MapService.getMap(fn).then(m => {
+                    m.data.id = this.maps.length + 1;
                     let newMap = new GameMap(m.data);
                     this.add(newMap);
                     return resolve(newMap);

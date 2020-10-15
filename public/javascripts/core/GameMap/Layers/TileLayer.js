@@ -3,12 +3,15 @@ import Tile from '../../Tile'
 import { Globals } from '../../ConfigMgr'
 
 class TileLayer extends MapLayer {
-	constructor(layer, tilesets) {
+	constructor(layer, tilesets, map) {
 		if(layer.type.toLowerCase() === 'tilelayer') {
 			super(layer);
 			this._id = layer.id;
+			this._map = map;
+			this._mapId = map.id;
 			this._tilesets = tilesets;
 			this._tilesRaw = layer.data;
+			this._firstGidMap = [];
 			this._tiles = [];
 			this._x = layer.x;
 			this._y = layer.y;
@@ -37,10 +40,36 @@ class TileLayer extends MapLayer {
 		// });
 	}
 
-	render(ctx, time) { // should probably make a renderer object instead of duping really similar code between game objects
-		this._tiles.forEach((tile) => {
-			tile.render(ctx);
+	getTileset(localTileId) {
+		var layer = this;
+		return this._tilesets.find((ts) => { // cache this
+			return ts._firstgid[layer._mapId] <= localTileId && ts._firstgid[layer._mapId] + ts._tileCount >= localTileId;
 		});
+	}
+
+	render(ctx, time) { // should probably make a renderer object instead of duping really similar code between game objects
+		this._tilesRaw.forEach((tileId, idx) => {
+			let ts = this.getTileset(tileId);
+			if (ts) {
+				let destination_x = ((idx % this._map.width) * ts._tileWidth);
+				let destination_y = ts._tileHeight * Math.floor(idx / this._map.width);
+				let source = ts.getTileCoords(tileId - ts._firstgid[this._map.id]);
+				ctx.drawImage(
+					ts.getTilesetImage(), 
+					source.x,
+					source.y,
+					ts.getTileWidth(),
+					ts.getTileHeight(),
+					destination_x, 
+					destination_y,
+					ts.getTileWidth(),
+					ts.getTileHeight()
+				);
+			}
+		});
+		// this._tiles.forEach((tile) => {
+		// 	tile.render(ctx);
+		// });
 	}
 
 	drawMap(ctx, time) {
@@ -53,7 +82,7 @@ class TileLayer extends MapLayer {
 						let tileset = null;
 						let id = tiles[(j * map.width) + i];
 						// which tileset in the map does this belong to?
-						let ts = this.map.tilesets.find(tileset => {
+						let ts = this._map.tilesets.find(tileset => {
 							return  id >= tileset.firstgid && id < tileset.tilecount + tileset.firstgid - 1;
 						});
 						if (ts) {

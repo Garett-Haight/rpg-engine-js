@@ -16,10 +16,8 @@ export default class GameMap {
 		this.loaded = false;
 		this.children = [];
 		this.layers = [];
-		this.entityLayer = null;
-		this.eventLayer = null;
 		this.map = map;
-		this.tilesets = [];
+		this._tilesets = [];
 		this.parseTilesets(); // promise on completion, since they may rely on image downloads
 		this.parseLayers();
 		//this.getMap(map);
@@ -36,9 +34,9 @@ export default class GameMap {
         this.events = null;
 
 		// check if map has already been loaded to mapList
-		return MapStore.get(mapId)
+		return MapStore.get(fn)
 		.then((map) => {
-			this.mapName = mapId;
+			this.id = map.id;
 			this.map = map;
 			this.parseTilesets();
 			this.parseLayers();
@@ -48,7 +46,7 @@ export default class GameMap {
 	parseLayers() {
 		this.map.layers.forEach(layer => {
 			if(layer.type.toLowerCase() == 'tilelayer') {
-				this.layers.push(new TileLayer(layer, this.tilesets));
+				this.layers.push(new TileLayer(layer, this._tilesets, this.map));
 			}
 			else if(layer.type.toLowerCase() == 'objectgroup') {
 				this.layers.push(new ObjectLayer(layer));
@@ -67,15 +65,15 @@ export default class GameMap {
 	parseTilesets() {
 		for(let tileset of this.map.tilesets) {
 			var mapTileset;
-			mapTileset = new Tileset(tileset, this.mapName);
+			mapTileset = new Tileset(tileset, this.map.id);
 			if (!TilesetStore.exists(mapTileset)) {		
 				TilesetStore.add(mapTileset);
 			}
 			else {
 				mapTileset = TilesetStore.get(tileset.name);
 			}
+			this._tilesets.push(mapTileset);
 		}
-		this._tilesets.push(mapTileset);
 	}
 
 	drawEvents(ctx) {

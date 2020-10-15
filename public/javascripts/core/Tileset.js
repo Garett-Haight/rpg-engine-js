@@ -3,7 +3,7 @@ import TilesetService from './services/TilesetService'
 import Tile from './Tile'
 
 export default class Tileset {
-    constructor(tileset, mapName) { 
+    constructor(tileset, mapId) { 
         this.tilesetService = new TilesetService();
 
         this._name = tileset.name;
@@ -13,8 +13,8 @@ export default class Tileset {
         this._tilesetImageName = tileset.image;
 
         this._tiles = [];
-        this._firstgid = {};
-        this._firstgid[mapName] = tileset.firstgid;
+        this._firstgid = [];
+        this._firstgid[mapId] = tileset.firstgid;
         this._columns = tileset.columns;
         this._rows = tileset.rows;
         this._tileWidth = tileset.tilewidth;
@@ -44,6 +44,14 @@ export default class Tileset {
              y: y
          };
      }
+
+    getTile(localId, map) { // localId is the tile id relative to firstgid for the given map
+        // if tile object doesn't exist, generate it
+
+        // for now I'll just calc on the fly
+        let coords = this.getTileCoords(id - this._firstgid);
+
+    }
 
     getTileFromCoords(x, y, width, height) {
 
@@ -80,6 +88,4 @@ export default class Tileset {
     getTilesetHeight() {
         return this._tilesetHeight;
     }
-
- 
 }
