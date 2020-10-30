@@ -17,6 +17,10 @@ class Renderer {
 			// render queuing could be used for 'backface culling' to eliminate unnecessary render operations
 			// a compositing tree may be useful for determining visibility
 			// https://nothings.org/gamedev/compositing_tree/
+			// -OR-
+			// render tree objects <renderType> => { merge: fn, items: []}
+			// https://developer.ibm.com/tutorials/wa-canvashtml5layering/
+			
 		}
 		return Renderer.instance;
 	};
