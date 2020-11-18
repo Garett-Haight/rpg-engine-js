@@ -1,3 +1,6 @@
+/** Game Module
+ * @module Game 
+ */
 import { ConfigMgr, Globals, Config } from '../core/ConfigMgr'
 import GlobalsFile from './Globals'
 import UI from '../core/UI/index'
@@ -9,7 +12,12 @@ import Scene from '../core/Scene'
 import Viewport from '../core/Viewport'
 import Console from './Console'
 
-export default class Game {
+/** class representing the Game */
+class Game {
+	/**
+	 * Create Game
+	 * @param {Object} Config Contains configuration values for game
+	 */
 	constructor(Config) {
 		ConfigMgr.addGlobals(GlobalsFile);
 
@@ -25,7 +33,7 @@ export default class Game {
 			let topScene = new Scene([
 				map
 			]);
-			let mapViewport = new Viewport("map", top, 20, 20, topScene);
+			let mapViewport = new Viewport(top, 20, 20, topScene);
 			this.viewports.push(mapViewport);
 		});
 
@@ -38,18 +46,25 @@ export default class Game {
 		this.loop(0);
 	}
 
-	
+	/**
+	 * Game loop function 
+	 * @param {DOMHighResTimeStamp} time 
+	 */
 	loop(time) {
 		window.requestAnimationFrame(this.loop.bind(this));
 		this.render(time);
 	}
 
+	/**
+	 * Renders each Viewport object in Game
+	 * @param {DOMHighResTimeStamp} time 
+	 */
 	render(time) {
 		this.viewports.forEach((vp) => {
 			vp.render(time);
 		});
 	}
-
-
 }
+
+export default Game;
 

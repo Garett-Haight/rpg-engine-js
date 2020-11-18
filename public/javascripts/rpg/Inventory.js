@@ -1,10 +1,27 @@
-export default class Inventory
+/** 
+ * To be used for player inventory
+ * @module Inventory
+ */
+import Item from './Item'
+/** Class to be used for player inventory */
+class Inventory
 {
+    /**
+     * Items
+     * @param {Object} startingInventory 
+     */
     constructor(startingInventory) {
         this.inventory = startingInventory;
     }
 
-    addItem(){
+    /**
+     * 
+     * @param {Item} item 
+     * @param {number} qty 
+     */
+    addItem(item, qty) {
         
     }
 }
+
+export default Inventory;

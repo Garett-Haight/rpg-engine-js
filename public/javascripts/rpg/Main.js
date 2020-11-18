@@ -5,5 +5,4 @@ import Game from "./Game"
 document.addEventListener('DOMContentLoaded', (e) => {
 	ConfigMgr.addConfigs(ConfigFile);
 	var gameObj = new Game(ConfigMgr.CONFIG);
-	console.log(gameObj);
 });

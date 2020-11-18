@@ -1,36 +1,43 @@
 import TilesetService from "./services/TilesetService";
+import Tileset from "./Tileset";
 
 class TilesetStore {
   constructor() {
     if (!TilesetStore.instance) {
-      this._tilesets = [];
+      this._tilesets = {};
       this._gidMap = new Map();
       TilesetStore.instance = this;
     }
     return TilesetStore.instance;
   }
 
+/**
+ * 
+ * @param {string} tileset tileset name 
+ * @returns {Tileset}
+ */
   add(tileset) {
     tileset.id = this._tilesets.length;
     this._tilesets.push(tileset);
     return tileset;
   }
-
+  
+/**
+ * 
+ * @param {string} tileset tileset name
+ * @returns {boolean} 
+ */
   exists(tileset) {
-    return this._tilesets.find((ts) => {
-      if (typeof tileset == "string") {
-        return ts.getName() == tileset;
-      } else {
-        return ts.getName() == tileset.getName();
-      }
-    });
+    return this._tilesets.hasOwnProperty(tileset) && this._tilesets[tileset] instanceof Tileset;
   }
-
-  get(name) {
-    // Fetch from service if not found
-    return this._tilesets.find((ts) => {
-      return ts.getName() == name;
-    });
+  
+  /**
+   * 
+   * @param {string} tileset 
+   * @returns {Tileset} Tileset instance
+   */
+  get(tileset) {
+    return this._tilesets[tileset];
   }
 
   getGlobalGidMap() {

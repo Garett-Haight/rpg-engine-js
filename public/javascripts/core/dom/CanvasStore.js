@@ -6,7 +6,7 @@ class CanvasStore {
         return this;
     }
 
-    create(id, parent, width, height) {
+    create(parent, width, height) {
         if (!this.canvasStore.hasOwnProperty(id)) {
             return Canvas.create(id, width, height, parent);
         }

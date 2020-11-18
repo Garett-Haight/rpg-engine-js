@@ -4,5 +4,6 @@ export default {
 	height: '',
 	width: '',
 	renderCollisions: true,
-	renderPlayerBounds: false
+	renderPlayerBounds: false,
+	maxFrameRate: 60
 }
