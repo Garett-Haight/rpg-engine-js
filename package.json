@@ -9,7 +9,7 @@
     "jsdoc": "jsdoc -c jsdoc.json"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "body-parser": "~1.16.0",
     "cookie-parser": "~1.4.3",
     "express": "~4.14.1",
