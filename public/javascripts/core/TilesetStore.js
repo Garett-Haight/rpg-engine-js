@@ -18,7 +18,7 @@ class TilesetStore {
  */
   add(tileset) {
     tileset.id = this._tilesets.length;
-    this._tilesets.push(tileset);
+    this._tilesets[tileset._name] = tileset;
     return tileset;
   }
   

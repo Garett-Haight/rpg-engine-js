@@ -1,3 +1,8 @@
 module.exports = function(env) {
-    return require(`./webpack.${env}.js`)
+    console.log(env);
+    if (env.prod) {
+        require(`./webpack.prod.js`);
+    } else {
+        return require(`./webpack.dev.js`)
+    }
 }

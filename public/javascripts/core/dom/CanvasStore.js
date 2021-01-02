@@ -7,19 +7,13 @@ class CanvasStore {
     }
 
     create(parent, width, height) {
-        if (!this.canvasStore.hasOwnProperty(id)) {
-            return Canvas.create(id, width, height, parent);
-        }
-        else {
-            return Canvas.get(id);
-            // Canvas.clear(id);
-        }
-        // make new canvas is one is not in the store
-        // reuse canvas if one already exists
+        let c = new Canvas(width, height, parent);
+        this.canvasStore[Object.keys(this.canvasStore).length] = c;
+        return c;
     }
 
-    add(id, w, h, parent) {
-        return Canvas.create(id, w, h, parent);
+    add(w, h, parent) {
+        return Canvas.create(w, h, parent);
     }
 
     get() {

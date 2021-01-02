@@ -6,9 +6,10 @@
   * Class for Canvas abstraction
   */
  class Canvas {
-    constructor() {
+    constructor(w, h, parent) {
         this.document = window.document;
         this.window = window;
+        this.canvas = this.create(w, h, parent);
     }
 
     /**
@@ -22,7 +23,6 @@
         let canvas = document.createElement('canvas');
         canvas.width = w;
         canvas.height = h;
-
         if (parent) {
             parent.appendChild(canvas);
         }
