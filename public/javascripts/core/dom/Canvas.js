@@ -33,6 +33,14 @@
 
         return canvas;
     }
+
+    getCanvasElement() {
+        return this.canvas;
+    }
+
+    getCanvasContext() {
+        return this.canvas.getContext('2d');
+    }
 }
 
 export default Canvas;

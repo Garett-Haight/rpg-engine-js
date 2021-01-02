@@ -6,7 +6,7 @@ import Scene from './Scene'
 import Renderer from './Renderer'
 
 /**
- * Viewports are essentially canvas objects which contain a Scene element
+ * Viewports are essentially canvas objects which contain Scene element(s)
  */
 class Viewport {
     /**
@@ -19,7 +19,7 @@ class Viewport {
     constructor(parent, width, height, defaultScene) {
         this.container = parent;
         this.canvas = UI.createCanvas(parent, width, height);
-        this.ctx = this.canvas.getContext("2d");
+        this.ctx = this.canvas.getCanvasContext();
         this.activeScene = defaultScene;
         // this.clickListener = this.canvas.addEventListener('click', (e) => {
         //     //this.activeScene.handleEvent('click', e);
