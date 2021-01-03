@@ -6,9 +6,10 @@ class CanvasStore {
         return this;
     }
 
-    create(parent, width, height) {
-        let c = new Canvas(width, height, parent);
-        this.canvasStore[Object.keys(this.canvasStore).length] = c;
+    create(parent, width, height, name) {
+        let c = new Canvas(width, height, name, parent);
+        this.canvasStore[name] = c;
+        console.log(this.canvasStore);
         return c;
     }
 
@@ -16,8 +17,16 @@ class CanvasStore {
         return Canvas.create(w, h, parent);
     }
 
-    get() {
-        // get canvas by ???
+    getById(id) {
+        return Object.values(this.canvasStore).find((canvas) => {
+            return canvas.id == id;
+        });
+    }
+
+    getByName(name) {
+        if (this.canvasStore.hasOwnProperty(name)) {
+            return this.canvasStore[name];
+        }
     }
 }
 

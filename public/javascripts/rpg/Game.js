@@ -2,6 +2,7 @@
  * @module Game 
  */
 import { ConfigMgr, Globals, Config } from '../core/ConfigMgr'
+import buildGameObject from '../core/GameObjects/BuildGameObject'
 import GlobalsFile from './Globals'
 import UI from '../core/UI/index'
 import Controls from './Controls'
@@ -29,11 +30,16 @@ class Game {
 		this.viewports = [];
 		this.mapStore = MapStore;
 
+		var player = buildGameObject({
+			key: 'player_start',
+			type: 'player'
+		});
+
 		MapStore.get(Config.firstMap).then((map) => {
 			let topScene = new Scene([
 				map
-			]);
-			let mapViewport = new Viewport(top, 20, 20, topScene);
+			], 'topScene');
+			let mapViewport = new Viewport(top, 20, 20, topScene, 'topCanvas');
 			this.viewports.push(mapViewport);
 		});
 

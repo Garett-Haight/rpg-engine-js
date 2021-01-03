@@ -4,7 +4,7 @@ import SpriteStore from '../SpriteStore'
 
 export default class Player extends GameObject {
     constructor(args) {
-        super();
+        super(args);
         let defaults = {
             x: 0,
             y: 0,

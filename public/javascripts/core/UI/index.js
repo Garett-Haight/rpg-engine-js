@@ -66,11 +66,12 @@ export default class UI {
 
 	}
 
-    static createCanvas(parent, width, height) {
+    static createCanvas(parent, width, height, name) {
         let canvas = DOM.CanvasStore.create(
             parent,
             width * Globals.TILE_WIDTH,
             height * Globals.TILE_HEIGHT,
+            name
         );
         return canvas;
     }

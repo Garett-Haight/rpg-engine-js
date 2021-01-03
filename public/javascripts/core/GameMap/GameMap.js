@@ -51,7 +51,7 @@ export default class GameMap {
 			else if(layer.type.toLowerCase() == 'objectgroup') {
 				this.layers.push(new ObjectLayer(layer));
 				if (layer.name.toLowerCase() === 'collisions') {
-					let collisions = new CollisionLayer(layer);	
+					let collisions = new CollisionLayer(layer);
 					this.layers.push(collisions);
 				}
 				else if (layer.name.toLowerCase() == 'events') {
@@ -60,6 +60,7 @@ export default class GameMap {
 				}
 			}
 		});
+		console.log(this.layers);
 	}
 
 	parseTilesets() {
@@ -196,8 +197,7 @@ export default class GameMap {
 	}
 
 	handleClick(eventName, eventObject) {
-		//check bounds
-		console.log(event);
+
 	}
 
 	drawHighlight(ctx, x, y) {

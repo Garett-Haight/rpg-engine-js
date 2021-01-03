@@ -6,8 +6,10 @@ class ObjectLayer extends MapLayer {
 		this.objects = layer.objects;
 	}
 
-	render() {
-        
+	render(ctx, time) {
+        this.objects.array.forEach(obj => {
+			obj.render(ctx, time);
+		});
     }
 }
 

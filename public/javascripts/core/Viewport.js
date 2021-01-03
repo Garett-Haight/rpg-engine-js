@@ -12,13 +12,14 @@ class Viewport {
     /**
      * 
      * @param {Element} parent DOM Element for containing Viewport
-     * @param {number} width Width in pixels
-     * @param {number} height Height in pixels
+     * @param {number} width Width in tiles
+     * @param {number} height Height in tiles
      * @param {Scene} defaultScene Scene to be loaded on initialization
+     * @param {string} name name of viewport
      */
-    constructor(parent, width, height, defaultScene) {
+    constructor(parent, width, height, defaultScene, name) {
         this.container = parent;
-        this.canvas = UI.createCanvas(parent, width, height);
+        this.canvas = UI.createCanvas(parent, width, height, `${name}-default`);
         this.ctx = this.canvas.getCanvasContext();
         this.activeScene = defaultScene;
         // this.clickListener = this.canvas.addEventListener('click', (e) => {
