@@ -4,7 +4,8 @@ import GameMap from './GameMap/GameMap'
 class MapStore {
     constructor() { 
         if (!MapStore.instance) {
-            this.maps = [];
+            this.maps = {};
+            this.mapCount = 0;
             MapStore.instance = this;
         }
         console.log(MapStore.instance);
@@ -12,45 +13,38 @@ class MapStore {
     }
 
     add(map) {
-        map.id = this.maps.length + 1;
-        this.maps.push(map);
+        this.mapCount++;
+        map.id = this.mapCount;
+        this.maps[map.name] = map;
         return map.id;
     }
 
-    get(fn) {
+    get(name) {
         return new Promise((resolve, reject) => {
-            let map = this.exists(fn);
-            if (!map) {
-                map = MapService.getMap(fn).then(m => {
-                    m.data.id = this.maps.length + 1;
-                    let newMap = new GameMap(m.data);
-                    this.add(newMap);
-                    return resolve(newMap);
+            let map;
+            if (!this.exists(name)) {
+                MapService.getMap(name).then(m => {
+                    map = new GameMap(m.data);
+                    this.add(map);
+                    return resolve(map);
                 });
             }
             else {
+                map = this.get(name);
                 return resolve(map);
             }
         });   
     }
 
-    exists(id) {
-        return this.maps.find((m) => {
-            return id == m.id;
-        });
+    exists(name) {
+        return this.maps.hasOwnProperty(name);
     }
 
-    replace(id, newMap) {
-        return this.maps.find((map, idx, arr) => {
-            if (map.id === id) {
-                arr[idx] = newMap;
-                return true;
-            }
-        });
+    replace(name, newMap) {
+        this.maps[name] = newMap;
     }
 };
 
 const instance = new MapStore();
-Object.freeze(instance);
 
 export default instance;

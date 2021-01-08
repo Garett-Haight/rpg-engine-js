@@ -14,6 +14,7 @@ import Rectangle from '../primitives/Rectangle'
 export default class GameMap {
 	constructor(map) {
 		this.loaded = false;
+		this.name = map.name;
 		this.children = [];
 		this.layers = [];
 		this.map = map;
@@ -49,7 +50,7 @@ export default class GameMap {
 				this.layers.push(new TileLayer(layer, this._tilesets, this.map));
 			}
 			else if(layer.type.toLowerCase() == 'objectgroup') {
-				this.layers.push(new ObjectLayer(layer));
+				this.layers.push(new ObjectLayer(layer, this._tilesets));
 				if (layer.name.toLowerCase() === 'collisions') {
 					let collisions = new CollisionLayer(layer);
 					this.layers.push(collisions);
