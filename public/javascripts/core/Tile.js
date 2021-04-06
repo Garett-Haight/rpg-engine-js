@@ -1,23 +1,27 @@
 import { Globals } from './ConfigMgr'
 
 export default class Tile {
-    constructor(tileId, x, y) {
-        // this.tile = new Image();
+    constructor (tileset, tileId, x, y) {
+        this._tileset = tileset;
+        this._id = tileId;
         this._x = x;
         this._y = y;
-        // this._width = width;
-        // this._height = height;
-    }
-
-    build() {
-
+        this._ctx = ctx;
+        this._width = width;
+        this._height = height;
     }
 
     render(ctx, x, y) {
-        ctx.fillStyle = `rgb(
-            ${Math.floor(255 - (Math.random() * 100))},
-            ${Math.floor(255 - (Math.random() * 100))},
-            0)`;
-        ctx.fillRect(x, y, Globals.TILE_HEIGHT, Globals.TILE_WIDTH);
+        ctx.drawImage(
+            this._tileset.getTilesetImage(), 
+            this._x,
+            this._y,
+            this._tileset.getTileWidth(),
+            this._tileset.getTileHeight(),
+            x,
+            y,
+            this._tileset.getTileWidth(),
+            this._tileset.getTileHeight()
+        );
     }
 }

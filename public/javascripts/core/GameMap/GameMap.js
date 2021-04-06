@@ -67,7 +67,7 @@ export default class GameMap {
 	parseTilesets() {
 		for(let tileset of this.map.tilesets) {
 			var mapTileset;
-			mapTileset = new Tileset(tileset, this.map.id);
+			mapTileset = new Tileset(tileset);
 			if (!TilesetStore.exists(mapTileset)) {		
 				TilesetStore.add(mapTileset);
 			}

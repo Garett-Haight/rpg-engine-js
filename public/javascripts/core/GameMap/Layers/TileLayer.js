@@ -31,13 +31,13 @@ class TileLayer extends MapLayer {
 	}
 	// this should go in the tileset initialization
 	parseTiles() {
-		// this._tilesRaw.forEach((tile, idx) => {
-		// 	this._tiles.push(new Tile(
-		// 		tile,
-		// 		Globas.TILE_WIDTH * idx,
-		// 		Globals.TILE_HEIGHT * ()
-		// 	));
-		// });
+		this._tilesRaw.forEach((tile, idx) => {
+			this._tiles.push(new Tile(
+				tile,
+				Globas.TILE_WIDTH * idx,
+				Globals.TILE_HEIGHT * ()
+			));
+		});
 	}
 
 	getTileset(localTileId) {

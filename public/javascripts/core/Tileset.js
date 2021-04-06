@@ -3,7 +3,7 @@ import TilesetService from './services/TilesetService'
 import Tile from './Tile'
 
 export default class Tileset {
-    constructor(tileset, mapId) { 
+    constructor(tileset) { 
         this.tilesetService = new TilesetService();
 
         this._name = tileset.name;
@@ -14,7 +14,6 @@ export default class Tileset {
 
         this._tiles = [];
         this._firstgid = [];
-        this._firstgid[mapId] = tileset.firstgid;
         this._columns = tileset.columns;
         this._rows = tileset.rows;
         this._tileWidth = tileset.tilewidth;
@@ -32,7 +31,15 @@ export default class Tileset {
     }
     
     buildTiles() {
-        
+        for(let i = 0; i < this._rows; i++) {
+            this._tiles[i] = [];
+            for(let j = 0; j < this._columns; j++) {
+                let localId = i + j;
+                let localX = (j * this._tileWidth);
+                let localY = (i * this._tileHeight);
+                this._tiles[i][j] = new Tile(this, localId, localX, localY);
+            }
+        }
     }
 
     getTileCoords(id) { // This should be cached?
@@ -45,12 +52,12 @@ export default class Tileset {
          };
      }
 
-    getTile(localId, map) { // localId is the tile id relative to firstgid for the given map
+    getTile(localId) { // localId is the tile id relative to firstgid for the given map
         // if tile object doesn't exist, generate it
 
         // for now I'll just calc on the fly
         let coords = this.getTileCoords(id - this._firstgid);
-
+        
     }
 
     getTileFromCoords(x, y, width, height) {
