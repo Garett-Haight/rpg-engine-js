@@ -1,8 +1,17 @@
 import MapLayer from './MapLayer'
+import TilesetStore from '../../TilesetStore'
 import Tile from '../../Tile'
 import { Globals } from '../../ConfigMgr'
+import GameMap from '../GameMap';
+import Tileset from '../../Tileset';
 
 class TileLayer extends MapLayer {
+	
+	/**
+	 * @param  {String} layer
+	 * @param  {[Tileset]} tilesets
+	 * @param  {GameMap} map
+	 */
 	constructor(layer, tilesets, map) {
 		if(layer.type.toLowerCase() === 'tilelayer') {
 			super(layer);
@@ -20,10 +29,17 @@ class TileLayer extends MapLayer {
 			this._name = layer.name;
 			this._opacity = layer.opacity;
 			this._visible = layer.visible;
-			// get tilesets
 
-			// if tileset not found, parse tilesets
-			this.parseTiles();
+			this._tilesets.forEach((ts) => {
+				// get tilesets
+				if (!TilesetStore.exists(ts._name)) {
+					// if tileset not found, parse tilesets
+					TilesetStore.add(ts);
+				}
+				TilesetStore.get(ts.getName());
+			});
+
+			//this.parseTiles();
 		}
 		else {
 			throw "Layer is not of type: TileLayer";
@@ -31,13 +47,13 @@ class TileLayer extends MapLayer {
 	}
 	// this should go in the tileset initialization
 	parseTiles() {
-		this._tilesRaw.forEach((tile, idx) => {
-			this._tiles.push(new Tile(
-				tile,
-				Globas.TILE_WIDTH * idx,
-				Globals.TILE_HEIGHT * ()
-			));
-		});
+		// this._tilesRaw.forEach((tile, idx) => {
+		// 	this._tiles.push(new Tile(
+		// 		this,
+		// 		Globas.TILE_WIDTH * idx,
+		// 		Globals.TILE_HEIGHT * ()
+		// 	));
+		// });
 	}
 
 	getTileset(localTileId) {
@@ -45,6 +61,10 @@ class TileLayer extends MapLayer {
 		return this._tilesets.find((ts) => { // cache this
 			return ts._firstgid[layer._mapId] <= localTileId && ts._firstgid[layer._mapId] + ts._tileCount >= localTileId;
 		});
+	}
+
+	getTilesets() {
+
 	}
 
 	render(ctx, time) { // should probably make a renderer object instead of duping really similar code between game objects

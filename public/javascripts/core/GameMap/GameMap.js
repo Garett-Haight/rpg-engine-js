@@ -47,17 +47,18 @@ export default class GameMap {
 	parseLayers() {
 		this.map.layers.forEach(layer => {
 			if(layer.type.toLowerCase() == 'tilelayer') {
-				this.layers.push(new TileLayer(layer, this._tilesets, this.map));
+				this.layers.push(new TileLayer(layer, this._tilesets, this));
 			}
-			else if(layer.type.toLowerCase() == 'objectgroup') {
-				this.layers.push(new ObjectLayer(layer, this._tilesets));
+			else if(layer.type.toLowerCase() === 'objectgroup') {
 				if (layer.name.toLowerCase() === 'collisions') {
 					let collisions = new CollisionLayer(layer);
 					this.layers.push(collisions);
 				}
-				else if (layer.name.toLowerCase() == 'events') {
+				else if (layer.name.toLowerCase() === 'events') {
 					let events = new EventLayer(layer.objects);
 					this.layers.push(events);
+				} else {
+					this.layers.push(new ObjectLayer(layer, this, this._tilesets));
 				}
 			}
 		});

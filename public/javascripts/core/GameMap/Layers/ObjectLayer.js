@@ -1,9 +1,11 @@
 import MapLayer from './MapLayer'
+import GameObject from '../../GameObjects/GameObject'
 
 class ObjectLayer extends MapLayer {
-	constructor(layer, tilesets) {
-		super(layer);
+	constructor(layer, map, tilesets) {
+		super(layer, map);
 		this._tilesets = tilesets;
+		this._map = map;
 		this.objects = layer.objects;
 		this.initializedObjects = [];
 	}
@@ -14,13 +16,15 @@ class ObjectLayer extends MapLayer {
 
 	render(ctx, time) {
 		this.objects.forEach(obj => {
-			if(obj.visible && obj.gid) {
+			if(obj.visible && obj.gid && this._tilesets) {
 				let ts = this._tilesets.find((ts) => { // cache this
-					return ts._firstgid[this.layer._mapId] <= this._map.id && ts._firstgid[this.layer._mapId] + ts._tileCount >= this._map.id;
+					let mapId = this._map.name;
+					let firstGid = ts._firstgid[mapId];
+					return firstGid <= mapId && firstGid + ts._tileCount >= obj.gid;
 				});
 				if(ts) {
-					let destination_x = obj.properties.find(p => p.name === 'destination_x').value;
-					let destination_y = obj.properties.find(p => p.name === 'destination_y').value;
+					let destination_x = +obj.properties.find(p => p.name === 'destination_x').value;
+					let destination_y = +obj.properties.find(p => p.name === 'destination_y').value;
 					let relative_gid = tileId - ts._firstgid[this._map.id];
 					let source = ts.getTileCoords(relative_gid);
 					ctx.drawImage(
