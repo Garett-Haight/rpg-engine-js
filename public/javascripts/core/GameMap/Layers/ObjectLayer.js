@@ -14,33 +14,31 @@ class ObjectLayer extends MapLayer {
 
 	}
 
-	render() {
+	renderNew() {
 
 	}
 
-	renderNew(ctx, time) {
+	render(ctx, time) {
 		this.objects.forEach(obj => {
 			if(obj.visible && obj.gid && this._tilesets) {
 				let ts = this._tilesets.find((ts) => { // cache this
-					let mapId = this._map.name;
-					let firstGid = ts._firstgid[mapId];
-					return firstGid <= mapId && firstGid + ts._tileCount >= obj.gid;
+					let firstGid = ts.firstgid;
+					return ts.firstgid <= obj.gid && obj.gid < firstGid + ts.tileSet._tileCount;
 				});
 				if(ts) {
-					let destination_x = +obj.properties.find(p => p.name === 'destination_x').value;
-					let destination_y = +obj.properties.find(p => p.name === 'destination_y').value;
-					let relative_gid = tileId - ts._firstgid[this._map.id];
-					let source = ts.getTileCoords(relative_gid);
+					let destination_x = +obj.x;
+					let destination_y = +obj.y;
+					let source = ts.tileSet.getTileCoords(obj.gid - ts.firstgid);
 					ctx.drawImage(
-						ts.getTilesetImage(), 
+						ts.tileSet.getTilesetImage(), 
 						source.x,
 						source.y,
-						ts.getTileWidth(),
-						ts.getTileHeight(),
+						ts.tileSet.getTileWidth(),
+						ts.tileSet.getTileHeight(),
 						destination_x, 
 						destination_y,
-						ts.getTileWidth(),
-						ts.getTileHeight()
+						ts.tileSet.getTileWidth(),
+						ts.tileSet.getTileHeight()
 					);
 				}
 			}

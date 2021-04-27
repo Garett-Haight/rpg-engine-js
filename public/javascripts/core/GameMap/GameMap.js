@@ -54,10 +54,10 @@ export default class GameMap {
 					this.layers.push(collisions);
 				}
 				else if (layer.name.toLowerCase() === 'events') {
-					let events = new EventLayer(layer.objects);
+					let events = new EventLayer(layer, this._tilesets);
 					this.layers.push(events);
 				} else {
-					this.layers.push(new ObjectLayer(layer, this, this._tilesets));
+					this.layers.push(new ObjectLayer(layer, this._tilesets, this));
 				}
 			}
 		});
