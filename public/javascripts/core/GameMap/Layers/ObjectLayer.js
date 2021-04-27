@@ -2,7 +2,7 @@ import MapLayer from './MapLayer'
 import GameObject from '../../GameObjects/GameObject'
 
 class ObjectLayer extends MapLayer {
-	constructor(layer, map, tilesets) {
+	constructor(layer, tilesets, map) {
 		super(layer, map);
 		this._tilesets = tilesets;
 		this._map = map;
@@ -14,7 +14,11 @@ class ObjectLayer extends MapLayer {
 
 	}
 
-	render(ctx, time) {
+	render() {
+
+	}
+
+	renderNew(ctx, time) {
 		this.objects.forEach(obj => {
 			if(obj.visible && obj.gid && this._tilesets) {
 				let ts = this._tilesets.find((ts) => { // cache this
