@@ -2,6 +2,9 @@ import TilesetService from "./services/TilesetService";
 import Tileset from "./Tileset";
 
 class TilesetStore {
+  	/**
+	  * @return {TilesetStore}
+	 */
   constructor() {
     if (!TilesetStore.instance) {
       this._tilesets = {};
@@ -13,7 +16,7 @@ class TilesetStore {
 
 /**
  * 
- * @param {string} tileset tileset name 
+ * @param {Tileset} tileset tileset name 
  * @returns {Tileset}
  */
   add(tileset) {

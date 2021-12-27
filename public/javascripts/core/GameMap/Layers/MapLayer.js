@@ -4,6 +4,7 @@ class MapLayer {
 		this.name = layer.name;
 		this.width = layer.width;
 		this.height = layer.height;
+		// @type {GameMap}
 		this._map = map;
     }
     

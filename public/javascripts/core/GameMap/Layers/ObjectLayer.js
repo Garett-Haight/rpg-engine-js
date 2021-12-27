@@ -1,8 +1,19 @@
+// @ts-check
 import MapLayer from './MapLayer'
+import Tileset from "../../Tileset"
 import GameObject from '../../GameObjects/GameObject'
+import GameMap from '../GameMap';
 
 class ObjectLayer extends MapLayer {
-	constructor(layer, tilesets, map) {
+
+	/**
+	 * @param  {Object} layer
+	 * @param {GameMap} map
+	 * @param  {Object} tilesets
+	 * @param {Tileset} tilesets.tileSet
+	 * @param {number} tilesets.firstgid
+	 */
+	constructor(layer, map, tilesets) {
 		super(layer, map);
 		this._tilesets = tilesets;
 		this._map = map;
@@ -18,27 +29,42 @@ class ObjectLayer extends MapLayer {
 
 	}
 
+	/**
+	 * @param {number} localTileId
+	 * @return  {Tileset} Tileset for gid
+	 */
+	getTileset(localTileId) {
+		var layer = this;
+		let tilesetKeys = Object.keys(this._tilesets);
+		let ts = tilesetKeys.find((k) => { // cache this
+			return localTileId >= this._tilesets[k].firstgid && localTileId < this._tilesets[k].firstgid  + this._tilesets[k].tileSet._tileCount ;
+		});
+		let tilesetElement = this._tilesets[ts];
+		let tileset = tilesetElement.tileSet;
+		if (!ts) {
+			throw new Error("Tileset not found for gid: " + localTileId + " on map: " + this._map.name);
+		}
+		return tileset;
+	}
+
 	render(ctx, time) {
 		this.objects.forEach(obj => {
 			if(obj.visible && obj.gid && this._tilesets) {
-				let ts = this._tilesets.find((ts) => { // cache this
-					let firstGid = ts.firstgid;
-					return ts.firstgid <= obj.gid && obj.gid < firstGid + ts.tileSet._tileCount;
-				});
+				let ts = this.getTileset(obj.gid);
 				if(ts) {
 					let destination_x = +obj.x;
 					let destination_y = +obj.y;
-					let source = ts.tileSet.getTileCoords(obj.gid - ts.firstgid);
+					let source = ts.getTileCoords(obj.gid - ts._firstgid);
 					ctx.drawImage(
-						ts.tileSet.getTilesetImage(), 
+						ts.getTilesetImage(), 
 						source.x,
 						source.y,
-						ts.tileSet.getTileWidth(),
-						ts.tileSet.getTileHeight(),
+						ts.getTileWidth(),
+						ts.getTileHeight(),
 						destination_x, 
 						destination_y,
-						ts.tileSet.getTileWidth(),
-						ts.tileSet.getTileHeight()
+						ts.getTileWidth(),
+						ts.getTileHeight()
 					);
 				}
 			}

@@ -2,7 +2,12 @@ import { Globals } from './ConfigMgr'
 import TilesetService from './services/TilesetService'
 import Tile from './Tile'
 
+
 export default class Tileset {
+
+    /**
+	 * @param  {String} tileset
+	 */
     constructor(tileset) { 
         this.tilesetService = new TilesetService();
 
@@ -13,7 +18,8 @@ export default class Tileset {
         this._tilesetImageName = tileset.image;
 
         this._tiles = [];
-        this._firstgid = [];
+        // @type number
+        this._firstgid = tileset.firstgid;
         this._columns = tileset.columns;
         this._rows = tileset.rows;
         this._tileWidth = tileset.tilewidth;

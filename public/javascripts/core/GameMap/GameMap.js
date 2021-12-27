@@ -1,3 +1,4 @@
+// @ts-check
 import { Globals, Config } from '../ConfigMgr'
 import Player from "../../rpg/Player"
 import MapStore from '../MapStore'
@@ -11,16 +12,19 @@ import Tileset from "../Tileset"
 import Rectangle from '../primitives/Rectangle'
 
 export default class GameMap {
+	/**
+	 * @param  {Object} map - map JSON
+	 */
 	constructor(map) {
 		this.loaded = false;
 		this.name = map.name;
 		this.children = [];
 		this.layers = [];
-		this.map = map;
-		this._tilesets = [];
-		this.parseTilesets(); // promise on completion, since they may rely on image downloads
+		this.rawMap = map;
+		this._events = {};
+		this._tilesets = this.parseTilesets(); // promise on completion, since they may rely on image downloads
 		this.parseLayers();
-		//this.getMap(map);
+		// mouse selection coords
 		this.selection = {
 			x: null,
 			y: null
@@ -28,23 +32,8 @@ export default class GameMap {
 		this.loaded = true;
 	}
 
-	getMap(mapId) {
-		this.loaded = false;
-        this.collisions = null;
-        this.events = null;
-
-		// check if map has already been loaded to mapList
-		return MapStore.get(fn)
-		.then((map) => {
-			this.id = map.id;
-			this.map = map;
-			this.parseTilesets();
-			this.parseLayers();
-		});
-	}
-
 	parseLayers() {
-		this.map.layers.forEach(layer => {
+		this.rawMap.layers.forEach(layer => {
 			if(layer.type.toLowerCase() == 'tilelayer') {
 				this.layers.push(new TileLayer(layer, this, this._tilesets));
 			}
@@ -54,32 +43,44 @@ export default class GameMap {
 					this.layers.push(collisions);
 				}
 				else if (layer.name.toLowerCase() === 'events') {
-					let events = new EventLayer(layer, this._tilesets);
+					let events = new EventLayer(layer);
 					this.layers.push(events);
 				} else {
-					this.layers.push(new ObjectLayer(layer, this._tilesets, this));
+					this.layers.push(new ObjectLayer(layer, this, this._tilesets));
 				}
 			}
 		});
 		console.log(this.layers);
 	}
 
+	/**
+	 * @typedef {Object} Tilesets
+	 * @property {Tileset} tileset
+	 * @property {number} firstgid
+	 * @return  {Tilesets | Object} tilesets
+	 * 
+	 */
 	parseTilesets() {
-		for(let tileset of this.map.tilesets) {
+		let tilesets = {};
+		if (!this.rawMap.tilesets.length) {
+			throw new Error("No tilesets present in map data");
+		}
+		for(let tileset of this.rawMap.tilesets) {
 			var mapTileset;
-			if (!TilesetStore.exists(mapTileset)) {		
+			if (!TilesetStore.exists(tileset.name)) {		
 				mapTileset = new Tileset(tileset);
 				TilesetStore.add(mapTileset);
 			}
 			else {
 				mapTileset = TilesetStore.get(tileset.name);
 			}
-			this._tilesets.push({tileSet: mapTileset, firstgid: tileset.firstgid});
+			tilesets[tileset.name] = { tileSet: mapTileset, firstgid: mapTileset._firstgid };
 		}
+		return tilesets;
 	}
 
 	registerEvent(eventName, fn) {
-		this._events[eventName].push(fn)
+		this._events[eventName] = fn;
 	}
 
 	handleEvent(eventName, eventObject) {
