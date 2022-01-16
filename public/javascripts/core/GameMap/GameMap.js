@@ -10,6 +10,7 @@ import EventLayer from './Layers/EventLayer'
 import TilesetStore from "../TilesetStore"
 import Tileset from "../Tileset"
 import Rectangle from '../primitives/Rectangle'
+import AnimatedSprite from '../AnimatedSprite'
 
 export default class GameMap {
 	/**
@@ -77,6 +78,16 @@ export default class GameMap {
 			tilesets[tileset.name] = { tileSet: mapTileset, firstgid: mapTileset._firstgid };
 		}
 		return tilesets;
+	}
+
+	parseAnimations(tiles) {
+		let animations = tiles.filter((t) => t.hasOwnProperty("animation"));
+		let renderedAnimations = [];
+		animations.forEach((a) => {
+			let animation = new AnimatedSprite(a, a.id);
+			renderedAnimations.push(animation);
+		});
+		return renderedAnimations;
 	}
 
 	registerEvent(eventName, fn) {
