@@ -3,11 +3,13 @@ import axiosWrapper from '../AxiosWrapper'
 class MapService {
     constructor () {
         this.baseurl = '/maps/';
-        this.ajax = new axiosWrapper(this.baseurl);
+        this.ajax = new axiosWrapper({ 
+            "baseURL": this.baseurl 
+        });
     }
 
     getMap(name) {
-        return this.ajax.request(this.baseurl + name + '.json', 'GET');
+        return this.ajax.request( name + '.json', 'GET');
     }
 }
 

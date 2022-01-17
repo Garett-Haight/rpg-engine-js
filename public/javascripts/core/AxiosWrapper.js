@@ -32,9 +32,9 @@ export default function (config = null) {
 
 		this.request = (endpoint, method, data) => {
 			return this.instance({ 
-				method: method,
-				url: endpoint,
-				data: data
+				"method": method,
+				"url": endpoint,
+				"data": data
 			});
 		}
 
