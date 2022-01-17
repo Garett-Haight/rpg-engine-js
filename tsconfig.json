@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+      "outDir": "./public/javascripts/dist",
+      "allowJs": true,
+      "target": "es5"
+    },
+    "include": [
+        "./public/javascripts/core/**/*",
+        "./public/javascripts/rpg/**/*",
+    ],
+    "exclude": [
+        "./public/javascripts/dist"
+    ]
+}
