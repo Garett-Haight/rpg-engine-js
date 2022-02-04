@@ -1,5 +1,10 @@
 export default class Rectangle {
-    constructor(x, y, width, height) {
+    _x: number;
+    _y: number;
+    _width: number;
+    _height: number;
+    renderable: boolean;
+    constructor(x:number, y:number, width:number, height:number) {
         this._x = x;
         this._y = y;
         this._width = width;
@@ -23,19 +28,19 @@ export default class Rectangle {
         return this._height;
     }
 
-    setX(x) {
+    setX(x: number) {
         this._x = x;
     }
 
-    setY(y) {
+    setY(y: number) {
         this._y = y;
     }
 
-    setWidth(width) {
+    setWidth(width: number) {
         this._width = width;
     }
 
-    setHeight(height) {
+    setHeight(height: number) {
         this._height = height;
     }
 
@@ -63,7 +68,7 @@ export default class Rectangle {
         return this._y + this._height;
     }
 
-    collidesWith(other) {
+    collidesWith(other:Rectangle) {
         return (
             this.getRight() > other.getLeft() &&
             this.getLeft() < other.getRight() &&
@@ -76,7 +81,7 @@ export default class Rectangle {
         return (this._x >=0 && this._y >= 0 && this._width >= 0 && this._height >=0);
     }
 
-    render(ctx) {
+    render(ctx: { fillstyle: string; strokeRect: (arg0: number, arg1: number, arg2: number, arg3: number) => void; }) {
         ctx.fillstyle = "yellow";
         ctx.strokeRect(this._x, this._y, this._width, this._height);
     }

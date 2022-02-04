@@ -1,9 +1,11 @@
 import Sprite from "./Sprite";
 
 class SpriteStore {
+    static instance: any;
+    sprites: Sprite[];
+
     constructor() { 
         if (!SpriteStore.instance) {
-            this.sprites = [];
             SpriteStore.instance = this;
         }
 

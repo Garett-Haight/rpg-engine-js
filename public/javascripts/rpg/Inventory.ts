@@ -6,6 +6,7 @@ import Item from './Item'
 /** Class to be used for player inventory */
 class Inventory
 {
+    inventory: Object;
     /**
      * Items
      * @param {Object} startingInventory 

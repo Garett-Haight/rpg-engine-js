@@ -1,14 +1,19 @@
 /**
  * @module Viewport
  */
-import UI from './UI/index'
-import Scene from './Scene'
-import Renderer from './Renderer'
+import UI from './UI/index';
+import Scene from './Scene';
+import Canvas from './dom/Canvas';
 
 /**
  * Viewports are essentially canvas objects which contain Scene element(s)
  */
 class Viewport {
+    container: HTMLElement;
+    canvas: Canvas;
+    ctx: CanvasRenderingContext2D | WebGLRenderingContext;
+    activeScene: Scene;
+
     /**
      * 
      * @param {Element} parent DOM Element for containing Viewport
@@ -17,7 +22,7 @@ class Viewport {
      * @param {Scene} defaultScene Scene to be loaded on initialization
      * @param {string} name name of viewport
      */
-    constructor(parent, width, height, defaultScene, name) {
+    constructor(parent: HTMLElement, width, height, defaultScene, name) {
         this.container = parent;
         this.canvas = UI.createCanvas(parent, width, height, `${name}-default`);
         this.ctx = this.canvas.getCanvasContext();

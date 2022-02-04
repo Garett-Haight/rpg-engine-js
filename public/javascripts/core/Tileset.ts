@@ -1,9 +1,23 @@
-import { Globals } from './ConfigMgr'
+import ConfigMgr from './ConfigMgr'
 import TilesetService from './services/TilesetService'
 import Tile from './Tile'
 
 
 export default class Tileset {
+    tilesetService: TilesetService;
+    _name: string;
+    _tilesetImage: HTMLImageElement;
+    _tilesetImageName: string;
+    _tiles: any[];
+    _firstgid: number;
+    _columns: number;
+    _rows: number;
+    _tileWidth: number;
+    _tileHeight: number;
+    _tilesetWidth: number;
+    _tilesetHeight: number;
+    _tileCount: number;
+    _tilesetImageSrc: any;
 
     /**
 	 * @param  {String} tileset
@@ -14,7 +28,7 @@ export default class Tileset {
         this._name = tileset.name;
 
         this._tilesetImage = new Image();
-        this._tilesetImage.src = Globals.IMG_PATH + tileset.image;
+        this._tilesetImage.src = ConfigMgr.getGlobal('IMG_PATH') + tileset.image;
         this._tilesetImageName = tileset.image;
 
         this._tiles = [];
@@ -62,7 +76,7 @@ export default class Tileset {
         // if tile object doesn't exist, generate it
 
         // for now I'll just calc on the fly
-        let coords = this.getTileCoords(id - this._firstgid);
+        let coords = this.getTileCoords(localId - this._firstgid);
         
     }
 

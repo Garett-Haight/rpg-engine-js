@@ -1,7 +1,13 @@
-import { Globals }  from './ConfigMgr'
+import ConfigMgr  from './ConfigMgr'
 import Sprite from './Sprite'
 
 export default class AnimatedSprite {
+    private _frames: any[];
+    private _currentFrame: number;
+    private _animationName: any;
+    private _firstRender: boolean;
+    private _lastRenderTime: number;
+
     constructor(spriteArr, animationName) { 
         this._frames = spriteArr;
         this._currentFrame = 0;

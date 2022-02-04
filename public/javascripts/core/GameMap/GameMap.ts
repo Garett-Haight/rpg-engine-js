@@ -1,5 +1,5 @@
 // @ts-check
-import { Globals, Config } from '../ConfigMgr'
+import ConfigMgr from '../ConfigMgr'
 import Player from "../../rpg/Player"
 import MapStore from '../MapStore'
 import MapService from '../services/MapService'
@@ -11,8 +11,22 @@ import TilesetStore from "../TilesetStore"
 import Tileset from "../Tileset"
 import Rectangle from '../primitives/Rectangle'
 import AnimatedSprite from '../AnimatedSprite'
+import Events from '../events/Events'
+import MapLayer from './Layers/MapLayer'
 
 export default class GameMap {
+	loaded: boolean;
+	name: string;
+	children: any[];
+	layers: MapLayer[];
+	rawMap: any;
+	_events: {
+		string: Events;
+	};
+	_tilesets: {};
+	selection: { x: any; y: any };
+	_collisions: CollisionLayer;
+
 	/**
 	 * @param  {Object} map - map JSON
 	 */
@@ -22,7 +36,8 @@ export default class GameMap {
 		this.children = [];
 		this.layers = [];
 		this.rawMap = map;
-		this._events = {};
+		this._events;
+		this._collisions;
 		this._tilesets = this.parseTilesets(); // promise on completion, since they may rely on image downloads
 		this.parseLayers();
 		// mouse selection coords
@@ -40,11 +55,11 @@ export default class GameMap {
 			}
 			else if(layer.type.toLowerCase() === 'objectgroup') {
 				if (layer.name.toLowerCase() === 'collisions') {
-					let collisions = new CollisionLayer(layer);
+					let collisions = new CollisionLayer(layer, this);
 					this.layers.push(collisions);
 				}
 				else if (layer.name.toLowerCase() === 'events') {
-					let events = new EventLayer(layer);
+					let events = new EventLayer(layer, this, this._tilesets);
 					this.layers.push(events);
 				} else {
 					this.layers.push(new ObjectLayer(layer, this, this._tilesets));
@@ -107,7 +122,7 @@ export default class GameMap {
 	}
 
 	drawHighlight(ctx, x, y) {
-		let highlight = new Rectangle(x, y, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
+		let highlight = new Rectangle(x, y, ConfigMgr.getGlobal('TILE_WIDTH'), ConfigMgr.getGlobal('TILE_HEIGHT'));
 	}
 
 	render(ctx, time) {

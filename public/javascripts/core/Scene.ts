@@ -1,7 +1,10 @@
-// Viewport >> Scene >> Children
-import Render from './Renderer'
+// // Viewport >> Scene >> Children
+// import Render from './Renderer'
 
 export default class Scene {
+    children: any[];
+    name: any;
+
     constructor(children, name) {
         // array of renderable game objects
         this.children = children;

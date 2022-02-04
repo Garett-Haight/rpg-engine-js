@@ -1,10 +1,19 @@
-import { Globals } from './ConfigMgr'
+import ConfigMgr from './ConfigMgr'
 import TilesetStore from './TilesetStore'
 import Tileset from './Tileset'
 import SpriteStore from './SpriteStore'
 
 export default class Sprite {
-    constructor(sheet, x, y, width, height, name) { 
+    _name: string;
+    _spriteSheet: any;
+    _x: number;
+    _y: number;
+    _width: number;
+    _height: number;
+    _tileset: Tileset;
+    _sprite: HTMLImageElement;
+
+    constructor(sheet: Tileset, x: number, y:number, width:number, height:number, name:string) { 
         this._name = name;
         this._spriteSheet = sheet;
         this._x = x;

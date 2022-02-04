@@ -2,6 +2,9 @@ import MapService from './services/MapService'
 import GameMap from './GameMap/GameMap'
 
 class MapStore {
+    static instance: any;
+    maps: {};
+    mapCount: number;
     constructor() { 
         if (!MapStore.instance) {
             this.maps = {};

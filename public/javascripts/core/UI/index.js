@@ -5,9 +5,16 @@
 import { Globals } from '../ConfigMgr'
 import DOM from '../dom/index'
 export default class UI {
+    viewInventory() {
+        throw new Error('Method not implemented.');
+    }
+    viewStatus() {
+        throw new Error('Method not implemented.');
+    }
 	constructor(game) {
 		this.game = game;
         this.container = document.querySelector('#menu');
+        this.inventoryOpen = undefined;
         // if (this.container === null) {
         //     this.container = document.createElement('div');
         //     this.container.id = "menu";

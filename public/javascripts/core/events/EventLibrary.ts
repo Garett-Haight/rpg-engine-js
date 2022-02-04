@@ -1,7 +1,9 @@
-import { Globals, Config, ConfigMgr } from '../ConfigMgr'
+import ConfigMgr from '../ConfigMgr'
 import MapStore from '../MapStore'
 
 class EventLibrary {
+	public eventList: any;
+
      constructor() {
 		this.eventList = {
 			event(properties, game) {
@@ -12,8 +14,8 @@ class EventLibrary {
 				MapStore.get(properties.map).then((res) => {
 					game.map.changeMap(properties.map,
 						{
-							x: (properties.destination_x - 1) * Globals.TILE_WIDTH,
-							y: (properties.destination_y - 1) * Globals.TILE_HEIGHT
+							x: (properties.destination_x - 1) * ConfigMgr.getGlobal('TILE_WIDTH'),
+							y: (properties.destination_y - 1) * ConfigMgr.getGlobal('TILE_HEIGHT')
 						}
 					);
 				});
@@ -76,10 +78,10 @@ class EventLibrary {
 					inv[props.item] = 0;
 				}
 
-				if(inv[props.item] < Globals.ITEM_LIMIT) {
+				if(inv[props.item] < ConfigMgr.getGlobal('ITEM_LIMIT')) {
 					// add item to inventory
 					// TODO: This would be more efficient if you just subtract the overage from the item amt and add it
-					while(inv[props.item] < Globals.ITEM_LIMIT && props.qty > 0) { // while inventory isn't full and there are items left to be picked up
+					while(inv[props.item] < ConfigMgr.getGlobal('ITEM_LIMIT') && props.qty > 0) { // while inventory isn't full and there are items left to be picked up
 						// We should probably have a class for inventory with some get/set methods
 						inv[props.item]++;
 						itemCount++;
@@ -91,11 +93,11 @@ class EventLibrary {
 						game.controls.events = [];
 
 						// remove item from game map
-						for(let e of document.getElementById("entities").children) {
-							if (e.id === "item_" + properties.id) {
-								document.getElementById("entities").removeChild(e);
-							}
-						}
+						// for(let e of document.getElementById("entities").children) {
+						// 	if (e.id === "item_" + properties.id) {
+						// 		document.getElementById("entities").removeChild(e);
+						// 	}
+						// }
 
 						for (let [index, value] of game.map.events.entries()) {
 							if (value.id === properties.id) {

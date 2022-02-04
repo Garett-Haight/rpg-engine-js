@@ -3,8 +3,25 @@ import MapLayer from './MapLayer'
 import Tileset from "../../Tileset"
 import GameObject from '../../GameObjects/GameObject'
 import GameMap from '../GameMap';
+import Tile from '../../Tile';
+
+interface ObjectLayerJSON {
+	name: string;
+	type: string;
+	width: number;
+	height: number;
+	objects: any[];
+}
+
+interface Tilesets {
+	tileSet: Tileset;
+	firstgid: number;
+}
 
 class ObjectLayer extends MapLayer {
+	tilesets: Record<string, Tilesets>;
+	objects: any;
+	initializedObjects: any[];
 
 	/**
 	 * @param  {Object} layer
@@ -13,9 +30,9 @@ class ObjectLayer extends MapLayer {
 	 * @param {Tileset} tilesets.tileSet
 	 * @param {number} tilesets.firstgid
 	 */
-	constructor(layer, map, tilesets) {
+	constructor(layer: ObjectLayerJSON, map: GameMap, tilesets: Record<string, Tilesets>) {
 		super(layer, map);
-		this._tilesets = tilesets;
+		this.tilesets = tilesets;
 		this._map = map;
 		this.objects = layer.objects;
 		this.initializedObjects = [];
@@ -35,11 +52,11 @@ class ObjectLayer extends MapLayer {
 	 */
 	getTileset(localTileId) {
 		var layer = this;
-		let tilesetKeys = Object.keys(this._tilesets);
+		let tilesetKeys = Object.keys(this.tilesets);
 		let ts = tilesetKeys.find((k) => { // cache this
-			return localTileId >= this._tilesets[k].firstgid && localTileId < this._tilesets[k].firstgid  + this._tilesets[k].tileSet._tileCount ;
+			return localTileId >= this.tilesets[k].firstgid && localTileId < this.tilesets[k].firstgid  + this.tilesets[k].tileSet._tileCount ;
 		});
-		let tilesetElement = this._tilesets[ts];
+		let tilesetElement = this.tilesets[ts];
 		let tileset = tilesetElement.tileSet;
 		if (!ts) {
 			throw new Error("Tileset not found for gid: " + localTileId + " on map: " + this._map.name);
@@ -49,7 +66,7 @@ class ObjectLayer extends MapLayer {
 
 	render(ctx, time) {
 		this.objects.forEach(obj => {
-			if(obj.visible && obj.gid && this._tilesets) {
+			if(obj.visible && obj.gid && this.tilesets) {
 				let ts = this.getTileset(obj.gid);
 				if(ts) {
 					let destination_x = +obj.x;

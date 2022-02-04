@@ -1,12 +1,23 @@
 // @ts-check
 import MapLayer from './MapLayer'
-import TilesetStore from '../../TilesetStore'
 import Tile from '../../Tile'
-import { Globals } from '../../ConfigMgr'
+import ConfigMgr from '../../ConfigMgr'
 import GameMap from '../GameMap';
 import Tileset from '../../Tileset';
 
 class TileLayer extends MapLayer {
+	_id: any;
+	_mapId: any;
+	_tilesets: any;
+	_tilesRaw: any;
+	_tiles: any[];
+	_x: any;
+	_y: any;
+	_height: any;
+	_width: any;
+	_name: any;
+	_opacity: any;
+	_visible: any;
 	
 	/**
 	 * @param  {Object} layer
@@ -17,7 +28,7 @@ class TileLayer extends MapLayer {
 	 */
 	constructor(layer, map, tilesets) {
 		if(layer.type.toLowerCase() === 'tilelayer') {
-			super(layer);
+			super(layer, map);
 			this._id = layer.id;
 			this._map = map;
 			this._mapId = map.name;

@@ -1,8 +1,8 @@
-import { ConfigMgr, Globals, Config } from '../core/ConfigMgr'
+import ConfigMgr from '../core/ConfigMgr'
 import ConfigFile from './Config'
 import Game from "./Game"
 
 document.addEventListener('DOMContentLoaded', (e) => {
 	ConfigMgr.addConfigs(ConfigFile);
-	var gameObj = new Game(ConfigMgr.CONFIG);
+	const gameObj = new Game(ConfigMgr.getConfigs());
 });

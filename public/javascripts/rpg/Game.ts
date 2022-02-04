@@ -1,7 +1,7 @@
 /** Game Module
  * @module Game 
  */
-import { ConfigMgr, Globals, Config } from '../core/ConfigMgr'
+import ConfigMgr from '../core/ConfigMgr'
 import buildGameObject from '../core/GameObjects/BuildGameObject'
 import GlobalsFile from './Globals'
 import UI from '../core/UI/index'
@@ -12,9 +12,18 @@ import Events from '../core/events/Events'
 import Scene from '../core/Scene'
 import Viewport from '../core/Viewport'
 import Console from './Console'
+import GameMap from '../core/GameMap/GameMap'
 
 /** class representing the Game */
 class Game {
+	container: any
+	controls: Controls
+	events: Events
+	ui: UI
+	viewports: any[]
+	mapStore: typeof MapStore
+	console: Console
+    map: GameMap
 	/**
 	 * Create Game
 	 * @param {Object} Config Contains configuration values for game
