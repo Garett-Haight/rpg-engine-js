@@ -22,7 +22,7 @@ class Viewport {
      * @param {Scene} defaultScene Scene to be loaded on initialization
      * @param {string} name name of viewport
      */
-    constructor(parent: HTMLElement, width, height, defaultScene, name) {
+    constructor(parent: HTMLElement, width: number, height: number, defaultScene: Scene, name: string) {
         this.container = parent;
         this.canvas = UI.createCanvas(parent, width, height, `${name}-default`);
         this.ctx = this.canvas.getCanvasContext();
@@ -37,16 +37,15 @@ class Viewport {
      * 
      * @param {Scene} scene 
      */
-    setScene(scene) {
+    setScene(scene: Scene) {
         this.activeScene = scene;
-        this.render(this.ctx);
     }
 
     /**
      * 
      * @param {number} time 
      */
-    render(time) {
+    render(time: number) {
         if(this.activeScene && this.activeScene instanceof Scene) {
             this.activeScene.render(this.ctx, time);
         }

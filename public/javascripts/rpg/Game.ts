@@ -24,6 +24,7 @@ class Game {
 	mapStore: typeof MapStore
 	console: Console
     map: GameMap
+	protected player:Game;
 	/**
 	 * Create Game
 	 * @param {Object} Config Contains configuration values for game
@@ -32,7 +33,6 @@ class Game {
 		ConfigMgr.addGlobals(GlobalsFile);
 
         this.container = document.querySelector(Config.container);
-		this.controls = new Controls(this);
 		this.events = new Events();
 		this.ui = new UI(this);
 
@@ -44,13 +44,14 @@ class Game {
 			type: 'player'
 		});
 
-		MapStore.get(Config.firstMap).then((map) => {
+		MapStore.get(Config.firstMap).then((map:GameMap) => {
 			let topScene = new Scene([
 				map
 			], 'topScene');
 			let mapViewport = new Viewport(top, 20, 20, topScene, 'topCanvas');
 			this.viewports.push(mapViewport);
 		});
+		this.controls = new Controls(this.map);
 
         // create dom elements for game sections
 		let top = UI.createPanel("top", this.container);

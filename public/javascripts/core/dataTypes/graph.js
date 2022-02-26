@@ -1,4 +1,4 @@
-class Node {
+class GraphNode {
     constructor() {
         this.edges = [];
     }

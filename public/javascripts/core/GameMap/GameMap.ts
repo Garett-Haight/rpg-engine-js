@@ -25,7 +25,7 @@ export default class GameMap {
 	};
 	_tilesets: {};
 	selection: { x: any; y: any };
-	_collisions: CollisionLayer;
+	collisions: CollisionLayer;
 
 	/**
 	 * @param  {Object} map - map JSON
@@ -37,7 +37,7 @@ export default class GameMap {
 		this.layers = [];
 		this.rawMap = map;
 		this._events;
-		this._collisions;
+		this.collisions;
 		this._tilesets = this.parseTilesets(); // promise on completion, since they may rely on image downloads
 		this.parseLayers();
 		// mouse selection coords

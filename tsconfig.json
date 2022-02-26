@@ -2,13 +2,16 @@
     "compilerOptions": {
       "outDir": "./public/javascripts/dist",
       "allowJs": true,
-      "target": "es5"
+      "module": "commonjs",
+      "moduleResolution": "node",
+      "sourceMap": true
     },
     "include": [
         "./public/javascripts/core/**/*",
         "./public/javascripts/rpg/**/*",
     ],
     "exclude": [
-        "./public/javascripts/dist"
+        "./public/javascripts/dist",
+        "./node_modules"
     ]
 }

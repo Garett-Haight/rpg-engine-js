@@ -5,36 +5,36 @@ import Events from '../core/events/Events'
 import EventLib from '../core/events/EventLibrary'
 import KeyboardInput from '../core/input/Keyboard'
 import MouseInput from '../core/input/Mouse'
-import Game from './Game'
+import GameMap from '../core/GameMap/GameMap'
 
 export default class Controls {
-    game: Game;
+    map: GameMap;
     events: Events[];
     
-    constructor(game) {
-        this.game = game;
+    constructor(map:GameMap) {
+        this.map = map;
         // event listeners
         // TODO: Debounce input
         document.addEventListener('keydown', (e) => {
-            if (e.keyCode === 40) { // Arrow Down
+            if (e.key === 'ArrowDown') { // Arrow Down
                 // move down
                 e.preventDefault();
                 this.moveDown();
-            } else if (e.keyCode === 39) { // Arrow Right
+            } else if (e.key === 'ArrowRight') { // Arrow Right
                 // move right
                 e.preventDefault();
                 this.moveRight();
-            } else if (e.keyCode === 38) { // Arrow Up
+            } else if (e.key === 'ArrowUp') { // Arrow Up
                 // move up
                 e.preventDefault();
                 //moveUp(player);
                 this.moveUp();
-            } else if (e.keyCode === 37) { // Arrow Left
+            } else if (e.key === 'ArrowLeft') { // Arrow Left
                 // move left
                 e.preventDefault();
                 this.moveLeft();
-            } else if (e.keyCode === 32) { // spacebar
-            	this.interact(game.map);
+            } else if (e.key === ' ') { // spacebar
+            	this.interact(map);
             }
         });
 
@@ -49,7 +49,7 @@ export default class Controls {
         if (this.checkUp()) {
             Player.setPositionY(Player.getBounds().getY() - Player.getMovementSpeed());
            // player.update();
-           // this.checkForEvent(player, this.game.map);
+           // this.checkForEvent(player, this.map);
         }
     }
 
@@ -67,7 +67,7 @@ export default class Controls {
         if (this.checkDown()) {
             Player.setPositionY(Player.getBounds().getY() + Player.getMovementSpeed());
             //player.update();
-           // this.checkForEvent(player, this.game.map);
+           // this.checkForEvent(player, this.map);
         }
     }
 
@@ -88,7 +88,7 @@ export default class Controls {
             }
             Player.setPositionX(Player.getBounds().getX() + Player.getMovementSpeed());
             // player.update();
-            // this.checkForEvent(player, this.game.map);
+            // this.checkForEvent(player, this.map);
         }
     }
 
@@ -107,7 +107,7 @@ export default class Controls {
         if (this.checkLeft()) {
             Player.setPositionX(Player.getBounds().getX() - Player.getMovementSpeed());
             // player.update();
-            // this.checkForEvent(player, this.game.map);
+            // this.checkForEvent(player, this.map);
         }
     }
 
@@ -122,7 +122,7 @@ export default class Controls {
     }
 
     checkCollisions(rect: Rectangle) {
-        let collisions = this.game.map._collisions;
+        let collisions = this.map.collisions;
         let a = collisions.checkCollision(rect);
         return a;
     }
@@ -134,8 +134,8 @@ export default class Controls {
             map.events[0].properties.forEach(prop => {
                 properties[prop.name] = prop.value;
             });
-            var result = EventLib.eventList[action.value](properties, this.game);
-	    	this.game.console.sendMessage(result);
+            var result = EventLib.eventList[action.value](properties, this.map);
+	    	// this.map.console.sendMessage(result);
     	}
     }
 
@@ -149,12 +149,12 @@ export default class Controls {
     }
 
     toggleInventoryStatusPanel() {
-        var ui = this.game.ui;
-        if(!ui.inventoryOpen) {
-            ui.viewInventory();
-        }
-        else {
-            ui.viewStatus();
-        } 
+        // var ui = this.game.ui;
+        // if(!ui.isInventoryOpen) {
+        //     ui.viewInventory();
+        // }
+        // else {
+        //     ui.viewStatus();
+        // } 
     }
 }
