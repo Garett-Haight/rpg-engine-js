@@ -1,8 +1,21 @@
-module.exports = function(env) {
-    console.log(env);
-    if (env.prod) {
-        return require(`./webpack.prod.js`);
-    } else {
-        return require(`./webpack.dev.js`)
-    }
-}
+module.exports = {
+    entry: "./src/rpg/index.ts",
+    mode: "development",
+    output: {
+      filename: "../public/dist/bundle.js",
+    },
+    // Enable sourcemaps for debugging webpack's output.
+    devtool: "source-map",
+    resolve: {
+      // Add '.ts' and '.tsx' as resolvable extensions.
+      extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"],
+    },
+    module: {
+      rules: [
+        // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
+        { test: /\.tsx?$/, loader: "ts-loader" },
+        // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
+        { test: /\.js$/, loader: "source-map-loader" },
+      ],
+    },
+  };

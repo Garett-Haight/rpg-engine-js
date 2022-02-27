@@ -1,17 +1,16 @@
 {
     "compilerOptions": {
-      "outDir": "./public/javascripts/dist",
+      "outDir": "./public/dist",
       "allowJs": true,
       "module": "commonjs",
       "moduleResolution": "node",
       "sourceMap": true
     },
     "include": [
-        "./public/javascripts/core/**/*",
-        "./public/javascripts/rpg/**/*",
+        "./src/**/*.ts",
     ],
     "exclude": [
-        "./public/javascripts/dist",
+        "./public/dist",
         "./node_modules"
     ]
 }
