@@ -36,6 +36,7 @@ class ObjectLayer extends MapLayer {
 		this._map = map;
 		this.objects = layer.objects;
 		this.initializedObjects = [];
+		let player = this.objects.find(o => o.name === 'Player');
 	}
 
 	init() {
@@ -64,7 +65,7 @@ class ObjectLayer extends MapLayer {
 		return tileset;
 	}
 
-	render(ctx, time) {
+	render(ctx: CanvasRenderingContext2D, time) {
 		this.objects.forEach(obj => {
 			if(obj.visible && obj.gid && this.tilesets) {
 				let ts = this.getTileset(obj.gid);

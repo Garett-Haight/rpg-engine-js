@@ -56,6 +56,7 @@ export default class GameMap {
 			else if(layer.type.toLowerCase() === 'objectgroup') {
 				if (layer.name.toLowerCase() === 'collisions') {
 					let collisions = new CollisionLayer(layer, this);
+					this.collisions = collisions;
 					this.layers.push(collisions);
 				}
 				else if (layer.name.toLowerCase() === 'events') {

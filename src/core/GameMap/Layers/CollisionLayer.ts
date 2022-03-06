@@ -8,11 +8,12 @@ export default class CollisionLayer extends MapLayer {
         this.collisions = layer.objects.map((rect) => {
             return new Rectangle(rect.x, rect.y, rect.width, rect.height);
         });
-        return this.collisions;
+        return this;
     }
 
-    checkCollision(rectangle) {
-        return this.collisions.find(col => col.collidesWith(rectangle));
+    checkCollision(rectangle: Rectangle) {
+        console.log(rectangle);
+        return !!this.collisions.find(col => col.collidesWith(rectangle));
     }
 
     render(ctx, time) {

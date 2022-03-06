@@ -142,18 +142,6 @@
          "name":"Entities",
          "objects":[
                 {
-                 "gid":251,
-                 "height":16,
-                 "id":30,
-                 "name":"Player",
-                 "rotation":0,
-                 "type":"player_start",
-                 "visible":true,
-                 "width":16,
-                 "x":144,
-                 "y":144
-                }, 
-                {
                  "gid":1913,
                  "height":16,
                  "id":31,

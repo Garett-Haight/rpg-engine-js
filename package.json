@@ -3,23 +3,21 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "serve": "webpack-dev-server",
+    "start": "webpack --color --progress --watch",
     "build": "webpack --color --progress",
     "jsdoc": "jsdoc -c jsdoc.json"
   },
   "dependencies": {
     "axios": "^0.26.0",
     "commonjs": "^0.0.1",
-    "express": "^4.17.2",
-    "pug": "^3.0.2",
-    "serve-favicon": "^2.5.0",
     "source-map-loader": "^3.0.1",
     "ts-loader": "^9.2.6"
   },
   "devDependencies": {
-    "body-parser": "^1.19.1",
-    "cookie-parser": "^1.4.6",
     "typescript": "^4.5.4",
     "webpack": "^5.69.1",
-    "webpack-cli": "^4.9.2"
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.4"
   }
 }

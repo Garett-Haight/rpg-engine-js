@@ -4,7 +4,7 @@ export default {
 	height: '',
 	width: '',
 	renderCollisions: true,
-	renderPlayerBounds: false,
+	renderPlayerBounds: true,
 	maxFrameRate: 60,
 	constants: {
 		tileLayer: 'tilelayer'

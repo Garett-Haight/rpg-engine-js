@@ -3,6 +3,7 @@ import Tileset from "./Tileset";
 
 class TilesetStore {
   static instance: TilesetStore;
+  private _tilesetsSet:Set<Tileset>;
   private _tilesets:
     | {
         string: Tileset;
@@ -47,11 +48,15 @@ class TilesetStore {
 
   /**
    *
-   * @param {string} tileset
+   * @param {Tileset | string} tileset
    * @returns {Tileset} Tileset instance
    */
-  get(tileset: Tileset) {
-    return this._tilesets[tileset._name];
+  get(tileset: Tileset | string) {
+    if (tileset instanceof Tileset) {
+      return this._tilesets[tileset._name];
+    } else {
+      return this._tilesets[tileset];
+    }
   }
 
   getGlobalGidMap() {
