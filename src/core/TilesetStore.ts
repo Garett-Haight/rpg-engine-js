@@ -20,6 +20,7 @@ class TilesetStore {
       this._gidMap = new Map();
       TilesetStore.instance = this;
     }
+    console.log(TilesetStore.instance);
     return TilesetStore.instance;
   }
 
@@ -28,8 +29,7 @@ class TilesetStore {
    * @param {Tileset} tileset tileset name
    * @returns {Tileset}
    */
-  add(tileset) {
-    tileset.id = tileset.name;
+  add(tileset: Tileset): Tileset {
     this._tilesets[tileset._name] = tileset;
     return tileset;
   }
@@ -43,6 +43,7 @@ class TilesetStore {
     return (
       this._tilesets.hasOwnProperty(tileset) &&
       this._tilesets[tileset] instanceof Tileset
+      && this._tilesets[tileset].firstgid !== undefined // first gid doesn't exist, if loaded for sprites
     );
   }
 

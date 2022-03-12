@@ -14,12 +14,14 @@ interface ObjectLayerJSON {
 }
 
 interface Tilesets {
-	tileSet: Tileset;
-	firstgid: number;
+	[key: string]: {
+		tileSet: Tileset;
+		firstgid: number;
+	}
 }
 
 class ObjectLayer extends MapLayer {
-	tilesets: Record<string, Tilesets>;
+	tilesets: Tilesets;
 	objects: any;
 	initializedObjects: any[];
 
@@ -30,7 +32,7 @@ class ObjectLayer extends MapLayer {
 	 * @param {Tileset} tilesets.tileSet
 	 * @param {number} tilesets.firstgid
 	 */
-	constructor(layer: ObjectLayerJSON, map: GameMap, tilesets: Record<string, Tilesets>) {
+	constructor(layer: ObjectLayerJSON, map: GameMap, tilesets: Tilesets) {
 		super(layer, map);
 		this.tilesets = tilesets;
 		this._map = map;
@@ -72,7 +74,7 @@ class ObjectLayer extends MapLayer {
 				if(ts) {
 					let destination_x = +obj.x;
 					let destination_y = +obj.y;
-					let source = ts.getTileCoords(obj.gid - ts._firstgid);
+					let source = ts.getTileCoords(obj.gid - this.tilesets[ts._name].firstgid);
 					ctx.drawImage(
 						ts.getTilesetImage(), 
 						source.x,

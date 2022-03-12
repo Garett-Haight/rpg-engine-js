@@ -115,7 +115,7 @@
                  "name":"Player",
                  "rotation":0,
                  "type":"player_start",
-                 "visible":true,
+                 "visible":false,
                  "width":16,
                  "x":144,
                  "y":144

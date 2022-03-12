@@ -89,7 +89,7 @@ class TileLayer extends MapLayer {
 					let ts = tileset;
 					let destination_x = ((idx % this._map.rawMap.width) * ts._tileWidth);
 					let destination_y = ts._tileHeight * Math.floor(idx / this._map.rawMap.width);
-					let source = ts.getTileCoords(tileId - ts._firstgid);
+					let source = ts.getTileCoords(tileId - ts.getLocalfirstGid(this._map));
 					ctx.drawImage(
 						ts.getTilesetImage(), 
 						source.x,

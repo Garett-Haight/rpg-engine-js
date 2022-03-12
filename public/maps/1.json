@@ -103,7 +103,7 @@
                  "id":34,
                  "name":"Door_event",
                  "properties":[
-                        {
+                     {
                          "name":"action",
                          "type":"string",
                          "value":"door"

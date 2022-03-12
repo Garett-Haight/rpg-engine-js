@@ -1,4 +1,5 @@
 import Globals from './Globals'
+import TilesetService from '../core/services/TilesetService'
 import TilesetStore from '../core/TilesetStore'
 import Tileset from '../core/Tileset'
 import SpriteStore from '../core/SpriteStore'
@@ -35,52 +36,53 @@ class Player {
 	constructor(x, y) {
 		console.log("player constructor called");
 		if(!Player.instance) {
-			console.log("building players....");
-			this._spriteStore = SpriteStore;
-			this._builtGraphics = false;
-			// this.buildGraphics();
-			this._currentAnimation = 'default';
-			let controlsMap = {
-
-			};
-			this.game = Game;
-			this._controls = new Controls(this);
-			this._controls.on('ArrowDown', (e: Event) => {
-				e.preventDefault();
-				this.moveDown();
-			});
-			this._controls.on('ArrowUp', (e: Event) => {
-				e.preventDefault();
-				this.moveUp();
-			});
-			this._controls.on('ArrowRight', (e: Event) => {
-				e.preventDefault();
-				this.moveRight();
-			});
-			this._controls.on('ArrowLeft', (e: Event) => {
-				e.preventDefault();
-				this.moveLeft();
-			});
-
-			Player.instance = this;
-			this._playerSize = ConfigMgr.getGlobal('TILE_WIDTH');
-			this._movementSpeed = 5;
-			this._facing = Globals.FACING.DOWN;
-			// player positioning
-			this._bounds = new Rectangle(
-				x, 
-				y, 
-				16, 
-				32
-			);
-
-			// player attrs
-			this._hp = 100;
-			this._mp = 100;
-			this._inventory = [];
+			this.init(x, y);
 		}
 		return Player.instance;
 	};
+
+	init(x, y) {
+		console.log("building players....");
+		this._spriteStore = SpriteStore;
+		this._builtGraphics = false;
+		this.loadTileset();
+		this._currentAnimation = 'default';
+		this.game = Game;
+		this._controls = new Controls(this);
+		this._controls.on('ArrowDown', (e: Event) => {
+			e.preventDefault();
+			this.moveDown();
+		});
+		this._controls.on('ArrowUp', (e: Event) => {
+			e.preventDefault();
+			this.moveUp();
+		});
+		this._controls.on('ArrowRight', (e: Event) => {
+			e.preventDefault();
+			this.moveRight();
+		});
+		this._controls.on('ArrowLeft', (e: Event) => {
+			e.preventDefault();
+			this.moveLeft();
+		});
+
+		Player.instance = this;
+		this._playerSize = ConfigMgr.getGlobal('TILE_WIDTH');
+		this._movementSpeed = 5;
+		this._facing = Globals.FACING.DOWN;
+		// player positioning
+		this._bounds = new Rectangle(
+			x, 
+			y, 
+			16, 
+			32
+		);
+
+		// player attrs
+		this._hp = 100;
+		this._mp = 100;
+		this._inventory = [];
+	}
 
 	setPosition(x, y) {
 		this.setPositionX(x);
@@ -98,7 +100,7 @@ class Player {
 	
 
 	getPlayerSprite() {
-		let tileset = TilesetStore.get('DungeonTileset2');
+		let tileset = TilesetStore.get('hero');
 		let coords = tileset.getTileCoords(107);
 		return {tileset, coords};
 	}
@@ -141,7 +143,6 @@ class Player {
                 this.setCurrentAnimation('walkRight');
             }
             this.setPositionX(this.getBounds().getX() + this.getMovementSpeed());
-			console.log(this);
         }
     }
 
@@ -157,6 +158,9 @@ class Player {
 
 	moveLeft() {
         if (this.checkLeft()) {
+			if (this.getCurrentAnimation() !== 'walkLeft') {
+                this.setCurrentAnimation('walkLeft');
+            }
             this.setPositionX(this.getBounds().getX() - this.getMovementSpeed());
         }
     }
@@ -179,18 +183,29 @@ class Player {
 		this.setPosition(e.x, e.y);
 	}
 
-	buildGraphics():void {
+	loadTileset() {
 		let playerTileset = null;
-		if (TilesetStore.exists("DungeonTileset2")) {
-			playerTileset = TilesetStore.get("DungeonTileset2");
+		if (TilesetStore.exists("hero")) {
+			playerTileset = TilesetStore.get("hero");
+			this.buildGraphics(playerTileset);
 		}
 		else {
-			playerTileset = TilesetStore.add(new Tileset("DungeonTileset2"));
-		}
+			// playerTileset = TilesetStore.add(new Tileset("DungeonTileset2")).then(() => {
 
-		let playerIdle01 = new Sprite(playerTileset, 128, 32, 16, 32, "playerIdle01");
-		let playerIdle02 = new Sprite(playerTileset, 144, 32, 16, 32, "playerIdle02");
-		let playerIdle03 = new Sprite(playerTileset, 160, 32, 16, 32, "playerIdle03");
+			// });
+			TilesetService.getTileset("hero").then((res) => {
+				playerTileset = TilesetStore.add(new Tileset(res.data));
+				this.buildGraphics(playerTileset);
+			})
+		}
+	}
+
+	buildGraphics(playerTileset: Tileset):void {
+
+
+		let playerIdle01 = new Sprite(playerTileset, 0, 0, 16, 32, "playerIdle01");
+		let playerIdle02 = new Sprite(playerTileset, 16, 0, 16, 32, "playerIdle02");
+		let playerIdle03 = new Sprite(playerTileset, 32, 0, 16, 32, "playerIdle03");
 
 		this._spriteStore.add(playerIdle01);
 		this._spriteStore.add(playerIdle02);
@@ -201,28 +216,52 @@ class Player {
 			playerIdle02,
 			playerIdle03,
 			playerIdle02
-		], "player-idle");
+		], "default");
 
-		let playerStepRight01 = new Sprite(playerTileset, 192, 32, 16, 32, "playerStepRight01");
-		let playerStepRight02 = new Sprite(playerTileset, 224, 32, 16, 32, "playerStepRight02");
-		let playerStepRight03 = new Sprite(playerTileset, 240, 32, 16, 32, "playerStepRight03");
+		let playerStepRight01 = new Sprite(playerTileset, 48, 0, 16, 32, "playerStepRight01");
+		let playerStepRight02 = new Sprite(playerTileset, 64, 0, 16, 32, "playerStepRight02");
+		let playerStepRight03 = new Sprite(playerTileset, 80, 0, 16, 32, "playerStepRight03");
+		let playerStepRight04 = new Sprite(playerTileset, 96, 0, 16, 32, "playerStepRight04");
+		let playerStepRight05 = new Sprite(playerTileset, 112, 0, 16, 32, "playerStepRight05");
 
 		this._spriteStore.add(playerStepRight01);
 		this._spriteStore.add(playerStepRight02);
 		this._spriteStore.add(playerStepRight03);
+		this._spriteStore.add(playerStepRight04);
+		this._spriteStore.add(playerStepRight05);
 
 		let walkRightAnimation = new AnimatedSprite([
-			playerIdle01,
 			playerStepRight01,
 			playerStepRight02,
-			playerStepRight03
-		], "player-walk-right");
+			playerStepRight03,
+			playerStepRight04,
+			playerStepRight05
+		], "walkRight");
+
+		let playerStepLeft01 = new Sprite(playerTileset, 48, 32, 16, 32, "playerStepLeft01");
+		let playerStepLeft02 = new Sprite(playerTileset, 64, 32, 16, 32, "playerStepLeft02");
+		let playerStepLeft03 = new Sprite(playerTileset, 80, 32, 16, 32, "playerStepLeft03");
+		let playerStepLeft04 = new Sprite(playerTileset, 96, 32, 16, 32, "playerStepLeft04");
+		let playerStepLeft05 = new Sprite(playerTileset, 112, 32, 16, 32, "playerStepLeft05");
+		this._spriteStore.add(playerStepLeft01);
+		this._spriteStore.add(playerStepLeft02);
+		this._spriteStore.add(playerStepLeft03);
+		this._spriteStore.add(playerStepLeft04);
+		this._spriteStore.add(playerStepLeft05);
+
+		let walkLeftAnimation = new AnimatedSprite([
+			playerStepLeft01,
+			playerStepLeft02,
+			playerStepLeft03,
+			playerStepLeft04,
+			playerStepLeft05,
+		], "walkLeft");
 
 		this._animations = {
 			default: idleAnimation,
 			walkUp: idleAnimation,
 			walkDown: idleAnimation,
-			walkLeft: idleAnimation,
+			walkLeft: walkLeftAnimation,
 			walkRight: walkRightAnimation
 		};
 		this._builtGraphics = true;
@@ -259,7 +298,6 @@ class Player {
 			this.getBounds().getY(),
 			this.getBounds().getWidth(),
 			this.getBounds().getHeight(),
-			1, 
 			time
 		);
 
@@ -276,6 +314,4 @@ class Player {
 	}
 }
 
-const instance = new Player(144, 144);
-console.log(instance);
-export default instance;
+export default Player;

@@ -23,7 +23,12 @@ export default class GameMap {
 	_events: {
 		string: Events;
 	};
-	_tilesets: {};
+	_tilesets: {
+		[key: string]: {
+			tileSet:Tileset,
+			firstgid:number
+		}
+	};
 	selection: { x: any; y: any };
 	collisions: CollisionLayer;
 
@@ -91,7 +96,7 @@ export default class GameMap {
 			else {
 				mapTileset = TilesetStore.get(tileset.name);
 			}
-			tilesets[tileset.name] = { tileSet: mapTileset, firstgid: mapTileset._firstgid };
+			tilesets[tileset.name] = { tileSet: mapTileset, firstgid: tileset.firstgid };
 		}
 		return tilesets;
 	}

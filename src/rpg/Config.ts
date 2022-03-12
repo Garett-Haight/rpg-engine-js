@@ -1,6 +1,6 @@
 export default {
 	container: "#gameContainer",
-	firstMap: 1,
+	firstMap: 2,
 	height: '',
 	width: '',
 	renderCollisions: true,

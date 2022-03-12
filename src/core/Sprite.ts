@@ -12,14 +12,20 @@ export default class Sprite {
     _height: number;
     _tileset: Tileset;
     _sprite: HTMLImageElement;
+    _scale: number;
 
-    constructor(sheet: Tileset, x: number, y:number, width:number, height:number, name:string) { 
+    constructor(sheet: Tileset, x: number, y:number, width:number, height:number, name:string, scale:number = 1) { 
         this._name = name;
+        console.log(scale);
+        // if (!TilesetStore.exists(sheet)) {
+        //     TilesetStore.add(sheet);
+        // }
         this._spriteSheet = sheet;
         this._x = x;
         this._y = y;
         this._width = width;
         this._height = height;
+        this._scale = scale; 
         this._tileset = sheet instanceof Tileset ? sheet : TilesetStore.get(sheet);
         this._sprite = new Image(width, height);
     }   
@@ -60,7 +66,10 @@ export default class Sprite {
         return this._tileset;
     }
 
-    render(ctx, x, y, w, h, scale) {
+    render(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number) {
+        if (this._scale == -1) {
+            console.log(this);
+        }
         ctx.drawImage(
             this.getTileset().getTilesetImage(),
             this.getX(),
@@ -69,8 +78,8 @@ export default class Sprite {
             this.getHeight(),
             x,
             y,
-            w * scale,
-            h * scale
+            w * this._scale,
+            h * this._scale
         );
     }
 }

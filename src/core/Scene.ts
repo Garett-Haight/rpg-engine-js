@@ -15,7 +15,7 @@ export default class Scene {
 
     // add game object to scene
     add(obj) {
-        
+        this.children.push(obj);
     }
 
     // remove game object from scene
