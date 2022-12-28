@@ -2,10 +2,13 @@
 // import Render from './Renderer'
 // build renderer interface
 
+import Transition from "./Transition";
+
 export default class Scene {
     children: any[];
     name: any;
-
+    transitionIn: Transition;
+    transitionOut: Transition;
     constructor(children, name) {
         // array of renderable game objects
         this.children = children;
