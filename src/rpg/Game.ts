@@ -33,7 +33,7 @@ class Game {
 	textBox: Console
 	protected player: Player;
 	static activeViewport:Viewport;
-	static activeScene:Scene;
+	static activeScene:Scene<Event>;
 	static instance: Game;
 	static activeMap: GameMap
 	/**

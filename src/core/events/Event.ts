@@ -1,6 +1,5 @@
 
 
-export default class Event {
-    private collision: boolean;
-
+export default interface Event {
+    // collision: boolean;
 }

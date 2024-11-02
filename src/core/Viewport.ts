@@ -12,7 +12,7 @@ class Viewport {
     container: HTMLElement;
     canvas: Canvas;
     ctx: CanvasRenderingContext2D | WebGLRenderingContext;
-    activeScene: Scene;
+    activeScene: Scene<Event>;
 
     /**
      * 
@@ -22,7 +22,7 @@ class Viewport {
      * @param {Scene} defaultScene Scene to be loaded on initialization
      * @param {string} name name of viewport
      */
-    constructor(parent: HTMLElement, width: number, height: number, defaultScene: Scene, name: string) {
+    constructor(parent: HTMLElement, width: number, height: number, defaultScene: Scene<Event>, name: string) {
         this.container = parent;
         this.canvas = UI.createCanvas(parent, width, height, `${name}-default`);
         this.ctx = this.canvas.getCanvasContext();
@@ -37,7 +37,7 @@ class Viewport {
      * 
      * @param {Scene} scene 
      */
-    setScene(scene: Scene) {
+    setScene(scene: Scene<Event>) {
         this.activeScene = scene;
     }
 
