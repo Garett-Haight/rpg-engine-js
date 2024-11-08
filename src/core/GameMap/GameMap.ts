@@ -131,12 +131,12 @@ export default class GameMap {
 		let highlight = new Rectangle(x, y, ConfigMgr.getGlobal('TILE_WIDTH'), ConfigMgr.getGlobal('TILE_HEIGHT'));
 	}
 
-	render(ctx, time) {
-		//this.drawMap(ctx, time);
+	render(time, ctx) {
+		//this.drawMap(time, ctx);
 		//this.drawHighlight(ctx);
 		this.layers.forEach((layer) => {
 			if (typeof layer.render == 'function') {
-				layer.render(ctx, time);
+				layer.render(time, ctx);
 			}
 		});
 	}

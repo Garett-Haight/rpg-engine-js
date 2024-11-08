@@ -81,7 +81,7 @@ class TileLayer extends MapLayer {
 		// getTileset above should use this method to reduce number of tilesets searched
 	}
 
-	render(ctx, time) { // should probably make a renderer object instead of duping really similar code between game objects
+	render(time, ctx) { // should probably make a renderer object instead of duping really similar code between game objects
 		this._tilesRaw.forEach((tileId, idx) => {
 			if (tileId > 0) { // empty space
 				let tileset = this.getTileset(tileId);

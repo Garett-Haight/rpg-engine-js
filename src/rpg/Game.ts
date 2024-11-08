@@ -73,7 +73,7 @@ class Game {
 					Game.activeMap = map;
 					let loadingScene = new Scene([map], 'loading');
 					mapViewport = new Viewport(top, 20, 20, loadingScene, 'topCanvas');
-					this.viewports.push(loadingScene);
+					this.viewports.push(mapViewport);
 				});
 			});
 

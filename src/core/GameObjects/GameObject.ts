@@ -14,7 +14,7 @@ export default class GameObject {
     
     
 
-    render(ctx, time) {
+    render(time, ctx) {
         
     }
 }

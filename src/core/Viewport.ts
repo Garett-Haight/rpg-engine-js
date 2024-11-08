@@ -47,7 +47,7 @@ class Viewport {
      */
     render(time: number) {
         if(this.activeScene && this.activeScene instanceof Scene) {
-            this.activeScene.render(this.ctx, time);
+            this.activeScene.render(time, this.ctx);
         }
     }
 }

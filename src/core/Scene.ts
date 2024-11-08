@@ -52,7 +52,7 @@ export default class Scene<Event> implements Renderable<Event> {
     render(ctx: RenderingContext, time: DOMHighResTimeStamp) {
         this.children.forEach((child) => {
             if (typeof child.render === 'function') {
-                child.render(ctx, time);
+                child.render(time, ctx);
             }
         });
     }

@@ -31,7 +31,7 @@ export default class Player extends GameObject {
         return this._y;
     }
 
-    render(ctx, time) {
+    render(time, ctx) {
 
     }
 }

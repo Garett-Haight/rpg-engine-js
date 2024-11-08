@@ -16,7 +16,7 @@ export default class CollisionLayer extends MapLayer {
         return !!this.collisions.find(col => col.collidesWith(rectangle));
     }
 
-    render(ctx, time) {
+    render(time, ctx) {
 
     }
 }
