@@ -1,5 +1,5 @@
 import ConfigMgr from '../ConfigMgr'
-import MapStore from '../MapStore'
+import MapRepository from '../MapRepository'
 
 class EventLibrary {
 	public eventList: any;
@@ -11,7 +11,7 @@ class EventLibrary {
 			},
 			teleport(properties, game) { // TODO: update this to work with in-map teleportation
 				// load new map and move player to new map
-				MapStore.get(properties.map).then((res) => {
+				MapRepository.get(properties.map).then((res) => {
 					game.map.changeMap(properties.map,
 						{
 							x: (properties.destination_x - 1) * ConfigMgr.getGlobal('TILE_WIDTH'),

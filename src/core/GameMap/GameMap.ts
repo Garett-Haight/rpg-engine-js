@@ -1,7 +1,7 @@
 // @ts-check
 import ConfigMgr from '../ConfigMgr'
 import Player from "../../rpg/Player"
-import MapStore from '../MapStore'
+import MapRepository from '../MapRepository'
 import MapService from '../services/MapService'
 import TileLayer from './Layers/TileLayer'
 import ObjectLayer from './Layers/ObjectLayer'

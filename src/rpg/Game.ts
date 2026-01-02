@@ -8,7 +8,7 @@ import Controls from './Controls'
 ConfigMgr.addGlobals(GlobalsFile);
 
 import Player from './Player'
-import MapStore from '../core/MapStore'
+import MapRepository from '../core/MapRepository'
 import Events from '../core/events/Events'
 import Scene from '../core/Scene'
 import Viewport from '../core/Viewport'
@@ -29,11 +29,11 @@ class Game {
 	events: Events
 	ui: UI
 	viewports: any[]
-	mapStore: typeof MapStore
+	MapRepository: typeof MapRepository
 	textBox: Console
 	protected player: Player;
 	static activeViewport:Viewport;
-	static activeScene:Scene<Event>;
+	static activeScene:Scene;
 	static instance: Game;
 	static activeMap: GameMap
 	/**
@@ -48,7 +48,7 @@ class Game {
 			this.events = new Events();
 			this.ui = new UI(this);
 			this.viewports = [];
-			this.mapStore = MapStore;
+			this.MapRepository = MapRepository;
 			this.player = new Player(144, 144);
 			
 			// create dom elements for game sections
@@ -68,16 +68,19 @@ class Game {
 					playerIdle03,
 					playerIdle02
 				], "default");
-				MapStore.get('loading').then((map:GameMap) => {
+				MapRepository.get('loading').then((map:GameMap) => {
 					
 					Game.activeMap = map;
 					let loadingScene = new Scene([map], 'loading');
 					mapViewport = new Viewport(top, 20, 20, loadingScene, 'topCanvas');
 					this.viewports.push(mapViewport);
+				})
+				.catch((e) => {
+					console.error(e);
 				});
 			});
 
-			// MapStore.get(Config.firstMap).then((map:GameMap) => {
+			// MapRepository.get(Config.firstMap).then((map:GameMap) => {
 			// 	let topScene = new Scene([
 			// 		map
 			// 	], 'topScene');

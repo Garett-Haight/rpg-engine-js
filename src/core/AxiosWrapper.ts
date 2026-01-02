@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios'
+// TODO: Replace with fetch API
 
 /**
   * @summary Axios wrapper utility 
@@ -15,27 +15,19 @@ import axios, { AxiosInstance } from 'axios'
   * ajax.request('/endpoint', 'GET').then((response) => { // response logic }).catch((e) => { // error logic });
 */
 class AxiosWrapper {
-	instance: AxiosInstance | null;
 	
 	constructor(config=null) {
-		this.instance = null;
 		this.initialize(config);
 	}
 
 
 	request (endpoint, method, data) {
-		return this.instance({ 
-			"method": method,
-			"url": endpoint,
-			"data": data
-		});
+
 	}
 
 	// for a custom configured instance i.e. custom headers, static base url
 	initialize (config) {
-		if (this.instance == null) {
-			this.instance = axios.create(config);
-		}
+
 	}
 }
 

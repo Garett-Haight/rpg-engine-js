@@ -3,7 +3,7 @@
 // import { Rectangle } from './primitives/index'
 // import { MapService, TilesetService } from './services/index'
 import GameMap from './GameMap/GameMap'
-import MapStore from './MapStore'
+import MapRepository from './MapRepository'
 import Events from './events/Events'
 import Camera from './Camera'
 import Sprite from './Sprite'
@@ -21,7 +21,7 @@ export default {
     // MapService,
     // TilesetService,
     GameMap,
-    MapStore,
+    MapRepository,
     Events,
     Camera, 
     Sprite,

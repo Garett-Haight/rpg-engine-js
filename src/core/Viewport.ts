@@ -11,8 +11,8 @@ import Canvas from './dom/Canvas';
 class Viewport {
     container: HTMLElement;
     canvas: Canvas;
-    ctx: CanvasRenderingContext2D | WebGLRenderingContext;
-    activeScene: Scene<Event>;
+    ctx: RenderingContext;
+    activeScene: Scene;
 
     /**
      * 
@@ -22,7 +22,7 @@ class Viewport {
      * @param {Scene} defaultScene Scene to be loaded on initialization
      * @param {string} name name of viewport
      */
-    constructor(parent: HTMLElement, width: number, height: number, defaultScene: Scene<Event>, name: string) {
+    constructor(parent: HTMLElement, width: number, height: number, defaultScene: Scene, name: string) {
         this.container = parent;
         this.canvas = UI.createCanvas(parent, width, height, `${name}-default`);
         this.ctx = this.canvas.getCanvasContext();
@@ -37,7 +37,7 @@ class Viewport {
      * 
      * @param {Scene} scene 
      */
-    setScene(scene: Scene<Event>) {
+    setScene(scene: Scene) {
         this.activeScene = scene;
     }
 
@@ -47,7 +47,7 @@ class Viewport {
      */
     render(time: number) {
         if(this.activeScene && this.activeScene instanceof Scene) {
-            this.activeScene.render(time, this.ctx);
+            this.activeScene.render(this.ctx, time);
         }
     }
 }

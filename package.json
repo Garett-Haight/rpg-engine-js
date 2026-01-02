@@ -9,7 +9,6 @@
     "jsdoc": "jsdoc -c jsdoc.json"
   },
   "dependencies": {
-    "axios": "^0.26.1",
     "commonjs": "^0.0.1",
     "source-map-loader": "^3.0.2",
     "ts-loader": "^9.5.1"

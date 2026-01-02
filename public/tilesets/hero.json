@@ -1,1 +1,15 @@
-{"columns":9,"image":"hero.png","imageheight":64,"imagewidth":144,"margin":0,"name":"hero","spacing":0,"tilecount":36,"tiledversion":"1.8.2","tileheight":16,"tilewidth":16,"type":"tileset","version":"1.8"}
+{
+  "columns": 9,
+  "image": "hero.png",
+  "imageheight": 64,
+  "imagewidth": 144,
+  "margin": 0,
+  "name": "hero",
+  "spacing": 0,
+  "tilecount": 36,
+  "tiledversion": "1.8.2",
+  "tileheight": 16,
+  "tilewidth": 16,
+  "type": "tileset",
+  "version": "1.8"
+}

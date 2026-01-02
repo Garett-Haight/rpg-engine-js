@@ -1,0 +1,38 @@
+{
+    "activeFile": "",
+    "expandedProjectPaths": [
+        "images",
+        "maps",
+        "tilesets",
+        "."
+    ],
+    "fileStates": {
+        "maps/hero.tsx": {
+            "scaleInDock": 1
+        },
+        "maps/loading.tmx": {
+            "scale": 1.13109375,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 155.60160243127504,
+                "y": 327.1170051112032
+            }
+        },
+        "tilesets/hero.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.exportedFilePath": "C:/Users/garet/projects/rpg-engine-js/public/maps",
+    "last.externalTilesetPath": "C:/Users/garet/projects/rpg-engine-js/assets/tilesets",
+    "last.imagePath": "C:/Users/garet/projects/rpg-engine-js/assets/images",
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
+    "openFiles": [
+    ],
+    "project": "rpg.tiled-project",
+    "recentFiles": [
+        "tilesets/hero.tsx",
+        "maps/loading.tmx"
+    ],
+    "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)"
+}

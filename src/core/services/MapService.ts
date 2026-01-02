@@ -13,6 +13,10 @@ class MapService {
     getMap(name) {
         return this.ajax.request( name + '.json', 'GET');
     }
+
+    fetchMap(name) {
+        return fetch(name + '.json');
+    }
 }
 
 

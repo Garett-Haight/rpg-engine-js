@@ -8,7 +8,7 @@ export default class EventLayer extends ObjectLayer {
         console.log(this.events);
     }
 
-    render(ctx: CanvasRenderingContext2D, time: number) {
+    render(ctx: RenderingContext, time: number) {
         
     }
 }
