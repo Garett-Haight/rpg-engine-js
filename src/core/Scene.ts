@@ -13,7 +13,7 @@ export default class Scene {
     name: any;
     transitionIn: Transition;
     transitionOut: Transition;
-    constructor(children, name) {
+    constructor(children: any[], name: string) {
         // array of renderable game objects
         this.children = children;
         this.name = name;
@@ -45,10 +45,10 @@ export default class Scene {
         });
     }
 
-    render(ctx: RenderingContext, time: DOMHighResTimeStamp) {
+    render(ctx: CanvasRenderingContext2D, time: DOMHighResTimeStamp) {
         this.children.forEach((child) => {
             if (typeof child.render === 'function') {
-                child.render(time, ctx);
+                child.render(ctx, time);
             }
         });
     }

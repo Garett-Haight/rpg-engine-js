@@ -11,7 +11,7 @@ import Canvas from './dom/Canvas';
 class Viewport {
     container: HTMLElement;
     canvas: Canvas;
-    ctx: RenderingContext;
+    ctx: CanvasRenderingContext2D;
     activeScene: Scene;
 
     /**
@@ -45,7 +45,7 @@ class Viewport {
      * 
      * @param {number} time 
      */
-    render(time: number) {
+    render(time: DOMHighResTimeStamp) {
         if(this.activeScene && this.activeScene instanceof Scene) {
             this.activeScene.render(this.ctx, time);
         }

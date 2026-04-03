@@ -14,7 +14,7 @@ export default class GameObject {
     
     
 
-    render(time, ctx) {
+    render(ctx: CanvasRenderingContext2D, time: DOMHighResTimeStamp) {
         
     }
 }

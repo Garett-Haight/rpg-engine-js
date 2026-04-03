@@ -1,3 +1,3 @@
 import Sprite from "../Sprite";
-import SpriteStore from '../SpriteStore'
+import SpriteStore from '../SpriteRepository'
 

@@ -6,18 +6,18 @@ import GameMap from '../GameMap';
 import Tileset from '../../Tileset';
 
 class TileLayer extends MapLayer {
-	_id: any;
-	_mapId: any;
-	_tilesets: any;
-	_tilesRaw: any;
-	_tiles: any[];
-	_x: any;
-	_y: any;
-	_height: any;
-	_width: any;
-	_name: any;
-	_opacity: any;
-	_visible: any;
+	id: any;
+	mapId: any;
+	tilesets: any;
+	tilesRaw: any;
+	tiles: any[];
+	x: any;
+	y: any;
+	height: any;
+	width: any;
+	name: any;
+	opacity: any;
+	visible: any;
 	
 	/**
 	 * @param  {Object} layer
@@ -29,19 +29,19 @@ class TileLayer extends MapLayer {
 	constructor(layer, map, tilesets) {
 		if(layer.type.toLowerCase() === 'tilelayer') {
 			super(layer, map);
-			this._id = layer.id;
-			this._map = map;
-			this._mapId = map.name;
-			this._tilesets = tilesets;
-			this._tilesRaw = layer.data;
-			this._tiles = [];
-			this._x = layer.x;
-			this._y = layer.y;
-			this._height = layer.height;
-			this._width = layer.width;
-			this._name = layer.name;
-			this._opacity = layer.opacity;
-			this._visible = layer.visible;
+			this.id = layer.id;
+			this.map = map;
+			this.mapId = map.name;
+			this.tilesets = tilesets;
+			this.tilesRaw = layer.data;
+			this.tiles = [];
+			this.x = layer.x;
+			this.y = layer.y;
+			this.height = layer.height;
+			this.width = layer.width;
+			this.name = layer.name;
+			this.opacity = layer.opacity;
+			this.visible = layer.visible;
 		}
 		else {
 			throw "Layer is not of type: TileLayer";
@@ -65,14 +65,14 @@ class TileLayer extends MapLayer {
 	 */
 	getTileset(localTileId) {
 		var layer = this;
-		let tilesetKeys = Object.keys(this._tilesets);
+		let tilesetKeys = Object.keys(this.tilesets);
 		let ts = tilesetKeys.find((k) => { // cache this
-			return localTileId >= this._tilesets[k].firstgid && localTileId < this._tilesets[k].firstgid  + this._tilesets[k].tileSet._tileCount ;
+			return localTileId >= this.tilesets[k].firstgid && localTileId < this.tilesets[k].firstgid  + this.tilesets[k].tileSet._tileCount ;
 		});
-		let tilesetElement = this._tilesets[ts];
+		let tilesetElement = this.tilesets[ts];
 		let tileset = tilesetElement.tileSet;
 		if (!ts) {
-			throw new Error("Tileset not found for gid: " + localTileId + " on map: " + this._mapId);
+			throw new Error("Tileset not found for gid: " + localTileId + " on map: " + this.mapId);
 		}
 		return tileset;
 	}
@@ -81,15 +81,15 @@ class TileLayer extends MapLayer {
 		// getTileset above should use this method to reduce number of tilesets searched
 	}
 
-	render(time, ctx) { // should probably make a renderer object instead of duping really similar code between game objects
-		this._tilesRaw.forEach((tileId, idx) => {
+	render(ctx: CanvasRenderingContext2D, time: DOMHighResTimeStamp) { // should probably make a renderer object instead of duping really similar code between game objects
+		this.tilesRaw.forEach((tileId: number, idx: number) => {
 			if (tileId > 0) { // empty space
 				let tileset = this.getTileset(tileId);
 				if (tileset) {
 					let ts = tileset;
-					let destination_x = ((idx % this._map.rawMap.width) * ts._tileWidth);
-					let destination_y = ts._tileHeight * Math.floor(idx / this._map.rawMap.width);
-					let source = ts.getTileCoords(tileId - ts.getLocalfirstGid(this._map));
+					let destination_x = ((idx % this.map.rawMap.width) * ts._tileWidth);
+					let destination_y = ts._tileHeight * Math.floor(idx / this.map.rawMap.width);
+					let source = ts.getTileCoords(tileId - ts.getLocalfirstGid(this.map));
 					ctx.drawImage(
 						ts.getTilesetImage(), 
 						source.x,

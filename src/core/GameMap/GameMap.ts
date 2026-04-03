@@ -13,22 +13,25 @@ import Rectangle from '../primitives/Rectangle'
 import AnimatedSprite from '../AnimatedSprite'
 import Events from '../events/Events'
 import MapLayer from './Layers/MapLayer'
+import IRenderable from '../Interfaces/IRenderable'
 
-export default class GameMap {
-	loaded: boolean;
-	name: string;
-	children: any[];
-	layers: MapLayer[];
-	rawMap: any;
-	_events: {
-		string: Events;
-	};
-	_tilesets: {
+interface MapTilesets {
 		[key: string]: {
 			tileSet:Tileset,
 			firstgid:number
 		}
 	};
+
+export default class GameMap implements IRenderable {
+	loaded: boolean;
+	name: string;
+	children: any[];
+	layers: MapLayer[];
+	rawMap: any;
+	events: {
+		string: Events;
+	};
+	tilesets: MapTilesets;
 	selection: { x: any; y: any };
 	collisions: CollisionLayer;
 
@@ -41,9 +44,9 @@ export default class GameMap {
 		this.children = [];
 		this.layers = [];
 		this.rawMap = map;
-		this._events;
+		this.events;
 		this.collisions;
-		this._tilesets = this.parseTilesets(); // promise on completion, since they may rely on image downloads
+		this.tilesets = this.parseTilesets(); // promise on completion, since they may rely on image downloads
 		this.parseLayers();
 		// mouse selection coords
 		this.selection = {
@@ -56,7 +59,7 @@ export default class GameMap {
 	parseLayers() {
 		this.rawMap.layers.forEach(layer => {
 			if(layer.type.toLowerCase() == 'tilelayer') {
-				this.layers.push(new TileLayer(layer, this, this._tilesets));
+				this.layers.push(new TileLayer(layer, this, this.tilesets));
 			}
 			else if(layer.type.toLowerCase() === 'objectgroup') {
 				if (layer.name.toLowerCase() === 'collisions') {
@@ -65,10 +68,10 @@ export default class GameMap {
 					this.layers.push(collisions);
 				}
 				else if (layer.name.toLowerCase() === 'events') {
-					let events = new EventLayer(layer, this, this._tilesets);
+					let events = new EventLayer(layer, this, this.tilesets);
 					this.layers.push(events);
 				} else {
-					this.layers.push(new ObjectLayer(layer, this, this._tilesets));
+					this.layers.push(new ObjectLayer(layer, this, this.tilesets));
 				}
 			}
 		});
@@ -76,13 +79,9 @@ export default class GameMap {
 	}
 
 	/**
-	 * @typedef {Object} Tilesets
-	 * @property {Tileset} tileset
-	 * @property {number} firstgid
-	 * @return  {Tilesets | Object} tilesets
-	 * 
+	 * @return  {MapTilesets} tilesets
 	 */
-	parseTilesets() {
+	parseTilesets(): MapTilesets {
 		let tilesets = {};
 		if (!this.rawMap.tilesets.length) {
 			throw new Error("No tilesets present in map data");
@@ -96,6 +95,7 @@ export default class GameMap {
 			else {
 				mapTileset = TilesetStore.get(tileset.name);
 			}
+			
 			tilesets[tileset.name] = { tileSet: mapTileset, firstgid: tileset.firstgid };
 		}
 		return tilesets;
@@ -112,7 +112,7 @@ export default class GameMap {
 	}
 
 	registerEvent(eventName, fn) {
-		this._events[eventName] = fn;
+		this.events[eventName] = fn;
 	}
 
 	handleEvent(eventName, eventObject) {
@@ -131,12 +131,12 @@ export default class GameMap {
 		let highlight = new Rectangle(x, y, ConfigMgr.getGlobal('TILE_WIDTH'), ConfigMgr.getGlobal('TILE_HEIGHT'));
 	}
 
-	render(time, ctx) {
+	render(ctx: CanvasRenderingContext2D,time: number) {
 		//this.drawMap(time, ctx);
 		//this.drawHighlight(ctx);
 		this.layers.forEach((layer) => {
 			if (typeof layer.render == 'function') {
-				layer.render(time, ctx);
+				layer.render(ctx, time);
 			}
 		});
 	}

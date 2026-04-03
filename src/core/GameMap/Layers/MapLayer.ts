@@ -1,3 +1,4 @@
+import IRenderable from "../../Interfaces/IRenderable";
 import GameMap from "../GameMap";
 interface layerJSON {
 	name: string;
@@ -6,21 +7,21 @@ interface layerJSON {
 	objects?: any[]
 };
 
-class MapLayer {
+class MapLayer implements IRenderable {
 	name: string;
 	width: number;
 	height: number;
-	_map: GameMap;
+	map: GameMap;
 	raw: layerJSON;
 	constructor(layer: layerJSON, map: GameMap) {
 		this.raw = layer;
 		this.name = layer.name;
 		this.width = layer.width;
 		this.height = layer.height;
-		this._map = map;
+		this.map = map;
     }
     
-    render(ctx: CanvasRenderingContext2D, time: Number) {
+    render(ctx: CanvasRenderingContext2D, time: DOMHighResTimeStamp) {
         
     }
 }

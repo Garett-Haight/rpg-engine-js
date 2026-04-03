@@ -1,21 +1,21 @@
-import axiosWrapper from '../AxiosWrapper'
+import fetchWrapper from '../FetchWrapper'
 
 class MapService {
     baseurl: string;
     ajax: any;
     constructor () {
         this.baseurl = '/maps/';
-        this.ajax = new axiosWrapper({ 
+        this.ajax = new fetchWrapper({ 
             "baseURL": this.baseurl 
         });
     }
 
-    getMap(name) {
-        return this.ajax.request( name + '.json', 'GET');
+    async getMap(name) {
+        return await this.ajax.request( name + '.json', 'GET', null);
     }
 
-    fetchMap(name) {
-        return fetch(name + '.json');
+    async fetchMap(name) {
+        return await fetch(name + '.json');
     }
 }
 

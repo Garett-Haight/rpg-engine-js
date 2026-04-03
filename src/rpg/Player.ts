@@ -2,7 +2,7 @@ import Globals from './Globals'
 import TilesetService from '../core/services/TilesetService'
 import TilesetStore from '../core/TilesetStore'
 import Tileset from '../core/Tileset'
-import SpriteStore from '../core/SpriteStore'
+import SpriteStore from '../core/SpriteRepository'
 import Sprite from '../core/Sprite'
 import AnimatedSprite from '../core/AnimatedSprite'
 import Rectangle from '../core/primitives/Rectangle'
@@ -10,21 +10,23 @@ import Config from './Config'
 import Controls from './Controls'
 import Game from './Game';
 import ConfigMgr from '../core/ConfigMgr'
+import IRenderable from '../core/Interfaces/IRenderable'
+import IControllable from '../core/Interfaces/IControllable'
 
-class Player {
-	_spriteStore: typeof SpriteStore
-	_builtGraphics: boolean
-	_currentAnimation: string
+class Player implements IRenderable, IControllable {
+	spriteStore: typeof SpriteStore
+	builtGraphics: boolean
+	currentAnimation: string
 	static instance: any = null;
-	_playerSize: number
-	_movementSpeed: number
-	_facing: string
-	private _bounds: Rectangle
-	_hp: number
-	_mp: number
-	_inventory: any[]
-	private _controls: Controls;
-	private _animations: {
+	playerSize: number
+	movementSpeed: number
+	facing: string
+	private bounds: Rectangle
+	hp: number
+	mp: number
+	inventory: any[]
+	private controls: Controls;
+	private animations: {
 		default: AnimatedSprite;
 		walkUp: AnimatedSprite;
 		walkDown: AnimatedSprite;
@@ -33,7 +35,7 @@ class Player {
 	}
 	game: typeof Game
 
-	constructor(x, y) {
+	constructor(x: number, y: number) {
 		console.log("player constructor called");
 		if(!Player.instance) {
 			this.init(x, y);
@@ -41,37 +43,37 @@ class Player {
 		return Player.instance;
 	};
 
-	init(x, y) {
+	init(x: number, y: number) {
 		console.log("building players....");
-		this._spriteStore = SpriteStore;
-		this._builtGraphics = false;
+		this.spriteStore = SpriteStore;
+		this.builtGraphics = false;
 		this.loadTileset();
-		this._currentAnimation = 'default';
+		this.currentAnimation = 'default';
 		this.game = Game;
-		this._controls = new Controls(this);
-		this._controls.on('ArrowDown', (e: Event) => {
+		this.controls = new Controls(this);
+		this.controls.on('ArrowDown', (e: Event) => {
 			e.preventDefault();
 			this.moveDown();
 		});
-		this._controls.on('ArrowUp', (e: Event) => {
+		this.controls.on('ArrowUp', (e: Event) => {
 			e.preventDefault();
 			this.moveUp();
 		});
-		this._controls.on('ArrowRight', (e: Event) => {
+		this.controls.on('ArrowRight', (e: Event) => {
 			e.preventDefault();
 			this.moveRight();
 		});
-		this._controls.on('ArrowLeft', (e: Event) => {
+		this.controls.on('ArrowLeft', (e: Event) => {
 			e.preventDefault();
 			this.moveLeft();
 		});
 
 		Player.instance = this;
-		this._playerSize = ConfigMgr.getGlobal('TILE_WIDTH');
-		this._movementSpeed = 5;
-		this._facing = Globals.FACING.DOWN;
+		this.playerSize = ConfigMgr.getGlobal('TILE_WIDTH');
+		this.movementSpeed = 5;
+		this.facing = Globals.FACING.DOWN;
 		// player positioning
-		this._bounds = new Rectangle(
+		this.bounds = new Rectangle(
 			x, 
 			y, 
 			16, 
@@ -79,9 +81,9 @@ class Player {
 		);
 
 		// player attrs
-		this._hp = 100;
-		this._mp = 100;
-		this._inventory = [];
+		this.hp = 100;
+		this.mp = 100;
+		this.inventory = [];
 	}
 
 	setPosition(x, y) {
@@ -90,11 +92,11 @@ class Player {
 	}
 
 	setPositionX(x) {
-		this._bounds.setX(x);
+		this.bounds.setX(x);
 	}
 
 	setPositionY(y) {
-		this._bounds.setY(y);
+		this.bounds.setY(y);
 	}
 
 	
@@ -183,7 +185,7 @@ class Player {
 		this.setPosition(e.x, e.y);
 	}
 
-	loadTileset() {
+	async loadTileset() {
 		let playerTileset = null;
 		if (TilesetStore.exists("hero")) {
 			playerTileset = TilesetStore.get("hero");
@@ -193,10 +195,11 @@ class Player {
 			// playerTileset = TilesetStore.add(new Tileset("DungeonTileset2")).then(() => {
 
 			// });
-			TilesetService.getTileset("hero").then((res) => {
-				playerTileset = TilesetStore.add(new Tileset(res.data));
-				this.buildGraphics(playerTileset);
-			})
+			let playerTilesetRes:any = await TilesetService.getTileset("hero")
+			let playerTilesetJSON = await playerTilesetRes.json();
+			playerTileset = TilesetStore.add(new Tileset(playerTilesetJSON));
+			this.buildGraphics(playerTileset);
+			
 		}
 	}
 
@@ -207,9 +210,9 @@ class Player {
 		let playerIdle02 = new Sprite(playerTileset, 16, 0, 16, 32, "playerIdle02");
 		let playerIdle03 = new Sprite(playerTileset, 32, 0, 16, 32, "playerIdle03");
 
-		this._spriteStore.add(playerIdle01);
-		this._spriteStore.add(playerIdle02);
-		this._spriteStore.add(playerIdle03);
+		this.spriteStore.add(playerIdle01);
+		this.spriteStore.add(playerIdle02);
+		this.spriteStore.add(playerIdle03);
 
 		let idleAnimation = new AnimatedSprite([
 			playerIdle01,
@@ -224,11 +227,11 @@ class Player {
 		let playerStepRight04 = new Sprite(playerTileset, 96, 0, 16, 32, "playerStepRight04");
 		let playerStepRight05 = new Sprite(playerTileset, 112, 0, 16, 32, "playerStepRight05");
 
-		this._spriteStore.add(playerStepRight01);
-		this._spriteStore.add(playerStepRight02);
-		this._spriteStore.add(playerStepRight03);
-		this._spriteStore.add(playerStepRight04);
-		this._spriteStore.add(playerStepRight05);
+		this.spriteStore.add(playerStepRight01);
+		this.spriteStore.add(playerStepRight02);
+		this.spriteStore.add(playerStepRight03);
+		this.spriteStore.add(playerStepRight04);
+		this.spriteStore.add(playerStepRight05);
 
 		let walkRightAnimation = new AnimatedSprite([
 			playerStepRight01,
@@ -243,11 +246,11 @@ class Player {
 		let playerStepLeft03 = new Sprite(playerTileset, 80, 32, 16, 32, "playerStepLeft03");
 		let playerStepLeft04 = new Sprite(playerTileset, 96, 32, 16, 32, "playerStepLeft04");
 		let playerStepLeft05 = new Sprite(playerTileset, 112, 32, 16, 32, "playerStepLeft05");
-		this._spriteStore.add(playerStepLeft01);
-		this._spriteStore.add(playerStepLeft02);
-		this._spriteStore.add(playerStepLeft03);
-		this._spriteStore.add(playerStepLeft04);
-		this._spriteStore.add(playerStepLeft05);
+		this.spriteStore.add(playerStepLeft01);
+		this.spriteStore.add(playerStepLeft02);
+		this.spriteStore.add(playerStepLeft03);
+		this.spriteStore.add(playerStepLeft04);
+		this.spriteStore.add(playerStepLeft05);
 
 		let walkLeftAnimation = new AnimatedSprite([
 			playerStepLeft01,
@@ -257,42 +260,42 @@ class Player {
 			playerStepLeft05,
 		], "walkLeft");
 
-		this._animations = {
+		this.animations = {
 			default: idleAnimation,
 			walkUp: idleAnimation,
 			walkDown: idleAnimation,
 			walkLeft: walkLeftAnimation,
 			walkRight: walkRightAnimation
 		};
-		this._builtGraphics = true;
+		this.builtGraphics = true;
 	}
 
 	getCurrentAnimation() {
-		return this._currentAnimation;
+		return this.currentAnimation;
 	}
 
 	getAnimations() {
-		return Object.keys(this._animations);
+		return Object.keys(this.animations);
 	}
 
 	setCurrentAnimation(animation) {
-		this._currentAnimation = animation;
+		this.currentAnimation = animation;
 	}
 
 	getBounds() {
-		return this._bounds;
+		return this.bounds;
 	}
 
 	getMovementSpeed() {
-		return this._movementSpeed;
+		return this.movementSpeed;
 	}
 
 	update() {
 		
 	}
 
-	render(ctx:CanvasRenderingContext2D, time:number) {
-		this._animations[this._currentAnimation].render(
+	render(ctx:CanvasRenderingContext2D, time:DOMHighResTimeStamp) {
+		this.animations[this.currentAnimation].render(
 			ctx,
 			this.getBounds().getX(), 
 			this.getBounds().getY(),
