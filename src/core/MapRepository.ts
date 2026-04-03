@@ -15,28 +15,24 @@ class MapRepository {
         return MapRepository.instance;
     }
 
-    add(map) {
+    add(map:GameMap) {
         this.mapCount++;
-        map.id = this.mapCount;
         this.maps[map.name] = map;
-        return map.id;
+        return map.name;
     }
 
-    get(name) {
-        return new Promise((resolve, reject) => {
-            let map;
+    async get(name) {
+            var map;
             if (!this.exists(name)) {
-                MapService.getMap(name).then(m => {
-                    map = new GameMap(m.data);
-                    this.add(map);
-                    return resolve(map);
-                });
+                let m = await MapService.getMap(name)
+                map = new GameMap(await m.json());
+                this.add(map);
             }
             else {
                 map = this.get(name);
-                return resolve(map);
             }
-        });   
+            
+            return map;
     }
 
     exists(name) {

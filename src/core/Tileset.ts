@@ -59,7 +59,7 @@ export default class Tileset {
     }
 
     getLocalfirstGid(map: GameMap) {
-        return map._tilesets[this._name].firstgid;
+        return map.tilesets[this._name].firstgid;
     }
 
     getTileCoords(id) { // This should be cached?

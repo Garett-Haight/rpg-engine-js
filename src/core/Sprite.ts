@@ -1,7 +1,7 @@
 import ConfigMgr from './ConfigMgr'
 import TilesetStore from './TilesetStore'
 import Tileset from './Tileset'
-import SpriteStore from './SpriteStore'
+import SpriteStore from './SpriteRepository'
 
 export default class Sprite {
     _name: string;

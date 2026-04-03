@@ -1,4 +1,6 @@
 const path = require('path');
+const NyanProgressPlugin = require('nyan-progress-webpack-plugin');
+
 module.exports = {
   entry: "./src/rpg/index.ts",
   mode: "development",
@@ -25,4 +27,5 @@ module.exports = {
       { test: /\.js$/, loader: "source-map-loader" },
     ],
   },
+  plugins: [NyanProgressPlugin()],
 };

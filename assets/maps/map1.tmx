@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="17">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="17">
  <tileset firstgid="1" name="DungeonEntities" tilewidth="16" tileheight="16" tilecount="256" columns="16">
-  <image source="0x72_16x16DungeonTileset.v4.png" width="256" height="256"/>
+  <image source="../images/0x72_16x16DungeonTileset.v4.png" width="256" height="256"/>
  </tileset>
  <tileset firstgid="257" name="DungeonBase" tilewidth="16" tileheight="16" tilecount="256" columns="16">
-  <image source="0x72_16x16DungeonTileset_walls.v1.png" width="256" height="256"/>
+  <image source="../images/0x72_16x16DungeonTileset_walls.v1.png" width="256" height="256"/>
   <tile id="3">
    <objectgroup draworder="index" id="2">
     <object id="1" x="0" y="12" width="16" height="4"/>

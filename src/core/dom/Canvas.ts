@@ -16,7 +16,7 @@
     }
     constructor(w:number, h:number, name:string, parent:HTMLElement) {
         this.canvas = this.create(w, h, parent, name);
-        this.id = Object.keys(CanvasStore.canvasStore).length;
+        this.id = CanvasStore.getAll().length;
         this.name = name;
     }
 

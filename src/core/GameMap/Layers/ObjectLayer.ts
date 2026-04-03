@@ -22,20 +22,18 @@ interface Tilesets {
 
 class ObjectLayer extends MapLayer {
 	tilesets: Tilesets;
-	objects: any;
+	objects: any[];
 	initializedObjects: any[];
 
 	/**
-	 * @param  {Object} layer
+	 * @param  {ObjectLayerJSON} layer
 	 * @param {GameMap} map
-	 * @param  {Object} tilesets
-	 * @param {Tileset} tilesets.tileSet
-	 * @param {number} tilesets.firstgid
+	 * @param  {Tilesets} tilesets
 	 */
 	constructor(layer: ObjectLayerJSON, map: GameMap, tilesets: Tilesets) {
 		super(layer, map);
-		this.tilesets = tilesets;
-		this._map = map;
+		tilesets = tilesets;
+		this.map = map;
 		this.objects = layer.objects;
 		this.initializedObjects = [];
 		let player = this.objects.find(o => o.name === 'Player');
@@ -53,7 +51,7 @@ class ObjectLayer extends MapLayer {
 	 * @param {number} localTileId
 	 * @return  {Tileset} Tileset for gid
 	 */
-	getTileset(localTileId) {
+	getTileset(localTileId: number): Tileset {
 		var layer = this;
 		let tilesetKeys = Object.keys(this.tilesets);
 		let ts = tilesetKeys.find((k) => { // cache this
@@ -62,12 +60,12 @@ class ObjectLayer extends MapLayer {
 		let tilesetElement = this.tilesets[ts];
 		let tileset = tilesetElement.tileSet;
 		if (!ts) {
-			throw new Error("Tileset not found for gid: " + localTileId + " on map: " + this._map.name);
+			throw new Error("Tileset not found for gid: " + localTileId + " on map: " + this.map.name);
 		}
 		return tileset;
 	}
 
-	render(ctx: CanvasRenderingContext2D, time) {
+	render(ctx: CanvasRenderingContext2D, time: DOMHighResTimeStamp) {
 		this.objects.forEach(obj => {
 			if(obj.visible && obj.gid && this.tilesets) {
 				let ts = this.getTileset(obj.gid);

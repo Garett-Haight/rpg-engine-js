@@ -1,10 +1,10 @@
 {
-    "activeFile": "",
+    "activeFile": "maps/map1.tmx",
     "expandedProjectPaths": [
-        "images",
-        "maps",
         "tilesets",
-        "."
+        "images",
+        ".",
+        "maps"
     ],
     "fileStates": {
         "maps/hero.tsx": {
@@ -14,9 +14,25 @@
             "scale": 1.13109375,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 155.60160243127504,
-                "y": 327.1170051112032
+                "x": 152.94930238983287,
+                "y": 324.464705069761
             }
+        },
+        "maps/map1.tmx": {
+            "scale": 1.4487499999999998,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": 158.75754961173428,
+                "y": 258.15358067299405
+            }
+        },
+        "maps/map1.tmx#DungeonBase": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "maps/map1.tmx#DungeonEntities": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "tilesets/hero.tsx": {
             "scaleInDock": 1,
@@ -28,11 +44,14 @@
     "last.imagePath": "C:/Users/garet/projects/rpg-engine-js/assets/images",
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "openFiles": [
+        "maps/loading.tmx",
+        "maps/map1.tmx"
     ],
     "project": "rpg.tiled-project",
     "recentFiles": [
-        "tilesets/hero.tsx",
-        "maps/loading.tmx"
+        "maps/loading.tmx",
+        "maps/map1.tmx",
+        "tilesets/hero.tsx"
     ],
     "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)"
 }

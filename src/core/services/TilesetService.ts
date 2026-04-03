@@ -1,18 +1,18 @@
-import axiosWrapper from '../AxiosWrapper'
+import FetchWrapper from '../FetchWrapper';
 import Tileset from '../Tileset';
 
 class TilesetService {
     baseurl: string;
-    ajax: axiosWrapper;
+    ajax: FetchWrapper;
     constructor () {
         this.baseurl = '/tilesets/';
-        this.ajax = new axiosWrapper({ 
+        this.ajax = new FetchWrapper({ 
             "baseURL": this.baseurl 
         });
     }
 
-    getTileset(name) {
-        return this.ajax.request(name + '.json', 'GET', null);
+    async getTileset(name: string) {
+        return await this.ajax.request(name + '.json', 'GET', null);
     }
 }
 
